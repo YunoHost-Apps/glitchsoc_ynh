@@ -1,4 +1,4 @@
-# Glitch-Soc for YunoHost
+# [WIP] Glitch-Soc pour YunoHost
 
 *[Lire ce readme en français.](./README_fr.md)*
 
