@@ -1,5 +1,5 @@
 [Unit]
- Description=__APP__-web
+ Description=__APP__-sidekiq
  After=network.target
 
 [Service]
@@ -7,9 +7,9 @@
  User=__APP__
  WorkingDirectory=__FINALPATH__/live
  Environment="RAILS_ENV=production"
- Environment="PORT=__PORT_WEB__"
- ExecStart=/opt/rbenv/versions/2.6.5/bin/bundle exec puma -C config/puma.rb
- ExecReload=/bin/kill -SIGUSR1 $MAINPID
+ Environment="DB_POOL=25"
+ Environment="MALLOC_ARENA_MAX=2"
+ ExecStart=/opt/rbenv/versions/2.6.6/bin/bundle exec sidekiq -c 25
  TimeoutSec=15
  Restart=always
  StandardError=syslog

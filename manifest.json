@@ -1,25 +1,17 @@
 {
-	"name": "Mastodon",
-	"id": "mastodon",
+	"name": "Glitch-Soc",
+	"id": "glitch-soc",
 	"packaging_format": 1,
 	"description": {
 		"en": "A libre and federated social network.",
 		"fr": "Un réseau social libre et fédéré."
 	},
-	"version": "3.1.2~ynh3",
-	"url": "https://github.com/tootsuite/mastodon",
+	"version": "2020-05-14~ynh1",
+	"url": "https://glitch-soc.github.io/docs/",
 	"license": "AGPL-3.0-or-later",
 	"maintainer": [
 	    {
-		    "name": "cyp",
-		    "email": "cyp@rouquin.me"
-	    },
-	    {
-		    "name": "nemsia",
-		    "email": "nemsia@nemsia.org"
-	    },
-	    {
-		    "name": "yalh76"
+		    "name": "Tagada"
 	    }
 	],
     "requirements": {

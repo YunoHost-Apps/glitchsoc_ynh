@@ -110,9 +110,6 @@ ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 mkdir $final_path
 ynh_setup_source  --dest_dir="$final_path/live"
 
-# Temporary workaround for https://github.com/tootsuite/mastodon/issues/13292
-ynh_replace_string --match_string="sidekiq-unique-jobs (6.0.18)" --replace_string="sidekiq-unique-jobs (6.0.20)" --target_file="$final_path/live/Gemfile.lock"
-
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
@@ -153,9 +150,9 @@ ynh_add_swap --size=$swap_needed
 #=================================================
 ynh_script_progression --message="Installing Ruby..." --weight=424
 
-ynh_install_ruby --ruby_version=2.6.5
-/opt/rbenv/versions/2.6.5/bin/gem update --system
-/opt/rbenv/versions/2.6.5/bin/gem install bundler:1.17.3 --no-document
+ynh_install_ruby --ruby_version=2.6.6
+/opt/rbenv/versions/2.6.6/bin/gem update --system
+/opt/rbenv/versions/2.6.6/bin/gem install bundler:1.17.3 --no-document
 
 #=================================================
 # MODIFY A CONFIG FILE
@@ -185,20 +182,20 @@ ynh_replace_string --match_string="__OTP_SECRET__" --replace_string="$otp_secret
 ynh_app_setting_set --app="$app" --key=otp_secret --value="$otp_secret"
 
 #=================================================
-# INSTALLING MASTODON
+# INSTALLING Glitch-Soc
 #=================================================
-ynh_script_progression --message="Installing Mastodon..." --weight=2230
+ynh_script_progression --message="Installing Glitch-Soc..." --weight=2230
 
 chown -R "$app": "$final_path"
 
 pushd "$final_path/live"
 	ynh_use_nodejs
-	sudo -u "$app" env PATH=$PATH /opt/rbenv/versions/2.6.5/bin/bundle install -j$(getconf _NPROCESSORS_ONLN) --deployment --without development test
+	sudo -u "$app" env PATH=$PATH /opt/rbenv/versions/2.6.6/bin/bundle install -j$(getconf _NPROCESSORS_ONLN) --deployment --without development test
 	sudo -u "$app" env PATH=$PATH yarn install --pure-lockfile
 	sudo -u "$app" echo "SAFETY_ASSURED=1">> .env.production
-	sudo -u "$app" env PATH=$PATH RAILS_ENV=production /opt/rbenv/versions/2.6.5/bin/bundle exec rails db:setup --quiet
-	sudo -u "$app" env PATH=$PATH RAILS_ENV=production /opt/rbenv/versions/2.6.5/bin/bundle exec rails assets:precompile --quiet
-	sudo -u "$app" env PATH=$PATH RAILS_ENV=production /opt/rbenv/versions/2.6.5/bin/bundle exec rake mastodon:webpush:generate_vapid_key > key.txt
+	sudo -u "$app" env PATH=$PATH RAILS_ENV=production /opt/rbenv/versions/2.6.6/bin/bundle exec rails db:setup --quiet
+	sudo -u "$app" env PATH=$PATH RAILS_ENV=production /opt/rbenv/versions/2.6.6/bin/bundle exec rails assets:precompile --quiet
+	sudo -u "$app" env PATH=$PATH RAILS_ENV=production /opt/rbenv/versions/2.6.6/bin/bundle exec rake mastodon:webpush:generate_vapid_key > key.txt
 	sudo -u "$app" env PATH=$PATH RAILS_ENV=production bin/tootctl accounts create "$admin" --email="$admin_mail" --confirmed --role=admin > acc.txt
 popd
 
@@ -231,12 +228,12 @@ sudo cp -f ../conf/cron /etc/cron.d/$app
 ynh_script_progression --message="Configuring a systemd service..." --weight=5
 
 # Create a dedicated systemd config
-ynh_replace_string --match_string="__PORT_WEB__"    --replace_string="$port_web"    --target_file="../conf/mastodon-web.service"
-ynh_replace_string --match_string="__PORT_STREAM__" --replace_string="$port_stream" --target_file="../conf/mastodon-streaming.service"
-ynh_replace_string --match_string="__NODEJS_PATH__" --replace_string="$nodejs_path" --target_file="../conf/mastodon-streaming.service"
-ynh_add_systemd_config --service="$app-web"       --template="mastodon-web.service"
-ynh_add_systemd_config --service="$app-sidekiq"   --template="mastodon-sidekiq.service"
-ynh_add_systemd_config --service="$app-streaming" --template="mastodon-streaming.service"
+ynh_replace_string --match_string="__PORT_WEB__"    --replace_string="$port_web"    --target_file="../conf/glitch-web.service"
+ynh_replace_string --match_string="__PORT_STREAM__" --replace_string="$port_stream" --target_file="../conf/glitch-streaming.service"
+ynh_replace_string --match_string="__NODEJS_PATH__" --replace_string="$nodejs_path" --target_file="../conf/glitch-streaming.service"
+ynh_add_systemd_config --service="$app-web"       --template="glitch-web.service"
+ynh_add_systemd_config --service="$app-sidekiq"   --template="glitch-sidekiq.service"
+ynh_add_systemd_config --service="$app-streaming" --template="glitch-streaming.service"
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
