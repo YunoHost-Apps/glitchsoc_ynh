@@ -11,6 +11,7 @@ source ../settings/scripts/_common.sh
 source ../settings/scripts/ynh_install_ruby__2
 source ../settings/scripts/ynh_add_swap
 source ../settings/scripts/ynh_check_ram
+source ../settings/scripts/ynh_apt
 source /usr/share/yunohost/helpers
 
 #=================================================
