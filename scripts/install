@@ -81,15 +81,16 @@ ynh_app_setting_set --app=$app --key=port_stream --value=$port_stream
 ynh_script_progression --message="Installing dependencies..." --weight=86
 
 ynh_install_nodejs --nodejs_version="10"
-ynh_install_app_dependencies $pkg_dependencies	
 ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
 
 # Get Redis >= 4.0
 if [ "$(lsb_release --codename --short)" = "buster" ]; then
-	ynh_install_app_dependencies "redis-server redis-tools"
+	ynh_add_app_dependencies "redis-server redis-tools"
 else
 	ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian stretch-backports main" --package="redis-server redis-tools"
 end
+  
+ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
@@ -188,6 +189,7 @@ ynh_replace_string --match_string="__OTP_SECRET__" --replace_string="$otp_secret
 ynh_app_setting_set --app="$app" --key=otp_secret --value="$otp_secret"
 
 ynh_replace_string --match_string="dev.glitch.social" --replace_string="$domain" --target_file="$final_path/live/config/settings.yml"
+ynh_replace_string --match_string="registrations_mode: 'open'" --replace_string="registrations_mode: 'none'" --target_file="$final_path/live/config/settings.yml"
 
 #=================================================
 # INSTALLING Glitch-Soc
@@ -230,7 +232,7 @@ ynh_script_progression --message="Setuping a cron job for removing cache..." --w
 
 ynh_replace_string --match_string="__FINAL_PATH__" --replace_string="$final_path" --target_file="../conf/cron"
 ynh_replace_string --match_string="__USER__" --replace_string="$app"  --target_file="../conf/cron"
-sudo cp -f ../conf/cron /etc/cron.d/$app 
+cp -f ../conf/cron /etc/cron.d/$app 
 
 #=================================================
 # SETUP SYSTEMD
