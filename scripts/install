@@ -8,7 +8,6 @@
 
 source _common.sh
 source ynh_install_ruby__2
-source ynh_send_readme_to_admin__2
 source ynh_add_swap
 source ynh_check_ram
 source ynh_apt
@@ -181,6 +180,8 @@ otp_secret=$(head -n128 /dev/urandom | tail -n +1 | tr -dc -d 'a-z0-9' | head -c
 ynh_replace_string --match_string="__OTP_SECRET__" --replace_string="$otp_secret" --target_file="$final_path/live/.env.production"
 ynh_app_setting_set --app="$app" --key=otp_secret --value="$otp_secret"
 
+ynh_replace_string --match_string="dev.glitch.social" --replace_string="$domain" --target_file="$final_path/live/config/settings.yml"
+
 #=================================================
 # INSTALLING Glitch-Soc
 #=================================================
@@ -190,7 +191,9 @@ chown -R "$app": "$final_path"
 
 pushd "$final_path/live"
 	ynh_use_nodejs
-	sudo -u "$app" env PATH=$PATH /opt/rbenv/versions/2.6.6/bin/bundle install -j$(getconf _NPROCESSORS_ONLN) --deployment --without development test
+	sudo -u "$app" env PATH=$PATH /opt/rbenv/versions/2.6.6/bin/bundle config deployment 'true'
+  sudo -u "$app" env PATH=$PATH /opt/rbenv/versions/2.6.6/bin/bundle config without 'development test'
+	sudo -u "$app" env PATH=$PATH /opt/rbenv/versions/2.6.6/bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
 	sudo -u "$app" env PATH=$PATH yarn install --pure-lockfile
 	sudo -u "$app" echo "SAFETY_ASSURED=1">> .env.production
 	sudo -u "$app" env PATH=$PATH RAILS_ENV=production /opt/rbenv/versions/2.6.6/bin/bundle exec rails db:setup --quiet
