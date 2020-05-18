@@ -84,6 +84,13 @@ ynh_install_nodejs --nodejs_version="10"
 ynh_install_app_dependencies $pkg_dependencies	
 ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
 
+# Get Redis >= 4.0
+if [ "$(lsb_release --codename --short)" = "buster" ]; then
+	ynh_install_app_dependencies "redis-server redis-tools"
+else
+	ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian stretch-backports main" --package="redis-server redis-tools"
+end
+
 #=================================================
 # CREATE A POSTGRESQL DATABASE
 #=================================================
