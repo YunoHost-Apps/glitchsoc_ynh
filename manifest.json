@@ -30,7 +30,7 @@
 					"en": "Choose a domain for Mastodon",
 					"fr": "Choisissez un domaine pour Mastodon"
 				},
-                "example": "example.com"
+                                "example": "example.com"
 			},
 			{
 				"name": "admin",
@@ -39,7 +39,7 @@
 					"en": "Choose an admin user",
 					"fr": "Choisissez l'administrateur"
 				},
-                "example": "johndoe"
+                		"example": "johndoe"
 			},
             {
                 "name": "is_public",
@@ -50,16 +50,16 @@
                 },
                 "default": true
             },
-			{
-				"name": "language",
+	    {
+		"name": "language",
                 "type": "string",
-				"ask": {
-					"en": "Choose the application language",
-					"fr": "Choisissez la langue de l'application"
-				},
-				"choices": ["en_EN", "fr_FR"],
-				"default": "fr_FR"
-			}
-		]
-	}
+		"ask": {
+		    "en": "Choose the application language",
+		    "fr": "Choisissez la langue de l'application"
+		},
+		"choices": ["en_EN", "fr_FR"],
+		"default": "fr_FR"
+	    }
+	]
+    }
 }
