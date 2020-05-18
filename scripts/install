@@ -88,7 +88,7 @@ if [ "$(lsb_release --codename --short)" = "buster" ]; then
 	ynh_add_app_dependencies "redis-server redis-tools"
 else
 	ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian stretch-backports main" --package="redis-server redis-tools"
-end
+fi
   
 ynh_install_app_dependencies $pkg_dependencies
 
