@@ -1,13 +1,13 @@
 {
-    "name": "Mastodon",
-    "id": "mastodon",
+    "name": "Glich-Soc",
+    "id": "glitchsoc",
     "packaging_format": 1,
     "description": {
         "en": "A libre and federated social network.",
         "fr": "Un réseau social libre et fédéré."
     },
-    "version": "3.3.0~ynh2",
-    "url": "https://github.com/tootsuite/mastodon",
+    "version": "2021-04-11-ynh2",
+    "url": "https://github.com/glitch-soc/mastodon",
     "license": "AGPL-3.0-or-later",
     "maintainer": {
         "name": "yalh76"
