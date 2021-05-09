@@ -1,6 +1,6 @@
 # Glich-Soc pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/mastodon.svg)](https://dash.yunohost.org/appci/app/mastodon) ![](https://ci-apps.yunohost.org/ci/badges/mastodon.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/mastodon.maintain.svg)  
+[![Niveau d'intégration](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)  
 [![Installer Glich-Soc avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
 *[Read this readme in english.](./README.md)* 
@@ -47,9 +47,13 @@ L'utilisateur admin est créé automatiquement comme : user@domain.tld
 
 `$ sudo yunohost app upgrade glitchsoc -u https://github.com/YunoHost-Apps/glitch-soc_ynh --debug `
 
+### Administration avec tooctl
+
+`$ (cd /var/www/glitchsoc/live && sudo -u glitchsoc RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl --help)`
+
 ## Documentation
 
- * Documentation officielle : https://docs.joinmastodon.org/
+ * Documentation officielle : https://glitch-soc.github.io/docs/
 
 ## Caractéristiques spécifiques YunoHost
 
@@ -59,13 +63,13 @@ L'authentification LDAP est activée. Tous les utilisateurs YunoHost peuvent s'a
 
 #### Architectures supportées
 
-* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/mastodon.svg)](https://ci-apps.yunohost.org/ci/apps/mastodon/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/mastodon.svg)](https://ci-apps-arm.yunohost.org/ci/apps/mastodon/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/glitchsoc.svg)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/glitchsoc.svg)](https://ci-apps-arm.yunohost.org/ci/apps/glitchsoc/)
 
 ## Liens
 
  * Signaler un bug : https://github.com/YunoHost-Apps/glitch-soc_ynh/issues
- * Site de l'application : https://joinmastodon.org/
+ * Site de l'application : https://glitch-soc.github.io/docs/
  * Dépôt de l'application principale : https://github.com/glitch-soc/mastodon
  * Site web YunoHost : https://yunohost.org/
 

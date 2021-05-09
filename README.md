@@ -1,6 +1,6 @@
 # Glich-Soc for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/mastodon.svg)](https://dash.yunohost.org/appci/app/mastodon) ![](https://ci-apps.yunohost.org/ci/badges/mastodon.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/mastodon.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)  
 [![Install Glich-Soc with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
 *[Lire ce readme en français.](./README_fr.md)*
@@ -46,9 +46,13 @@ $ screen -r
 
 `$ sudo yunohost app upgrade glitchsoc -u https://github.com/YunoHost-Apps/glitch-soc_ynh --debug `
 
+### Administrate with tooctl
+
+`$ (cd /var/www/glitchsoc/live && sudo -u glitchsoc RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl --help)`
+
 ## Documentation
 
- * Official documentation: https://docs.joinmastodon.org/
+ * Official documentation: https://glitch-soc.github.io/docs/
 
 ## YunoHost specific features
 
@@ -58,13 +62,13 @@ LDAP authentication is activated. All YunoHost users can authenticate.
 
 #### Supported architectures
 
-* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/mastodon.svg)](https://ci-apps.yunohost.org/ci/apps/mastodon/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/mastodon.svg)](https://ci-apps-arm.yunohost.org/ci/apps/mastodon/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/glitchsoc.svg)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/glitchsoc.svg)](https://ci-apps-arm.yunohost.org/ci/apps/glitchsoc/)
 
 ## Links
 
  * Report a bug: https://github.com/YunoHost-Apps/glitch-soc_ynh/issues
- * App website: https://joinmastodon.org/
+ * App website: https://glitch-soc.github.io/docs/
  * Upstream app repository: https://github.com/glitch-soc/mastodon
  * YunoHost website: https://yunohost.org/
 
