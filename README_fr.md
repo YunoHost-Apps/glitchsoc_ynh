@@ -1,21 +1,24 @@
-# [WIP] Glitch-Soc pour YunoHost
+# Glich-Soc pour YunoHost
+
+[![Niveau d'intégration](https://dash.yunohost.org/integration/mastodon.svg)](https://dash.yunohost.org/appci/app/mastodon) ![](https://ci-apps.yunohost.org/ci/badges/mastodon.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/mastodon.maintain.svg)  
+[![Installer Glich-Soc avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
 *[Read this readme in english.](./README.md)* 
 
-> *Ce package vous permet d'installer Glitch-Soc rapidement et simplement sur un serveur Yunohost.  
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d'installer Glich-Soc rapidement et simplement sur un serveur YunoHost.  
+Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/#/install) pour apprendre comment l'installer.*
 
 ## Vue d'ensemble
-Glitch-Soc est un réseau social gratuit et open source. Une alternative décentralisée aux plates-formes commerciales, elle évite les risques d'une seule société qui monopolise votre communication. Choisissez un serveur sur lequel vous faites confiance - selon votre choix, vous pouvez interagir avec tous les autres. N'importe qui peut exécuter sa propre instance de Glitch-Soc et participer au réseau social de façon transparente.
+Glich-Soc est un réseau social de microblog auto-hébergé et open source. C'est une alternative décentralisée aux plates-formes commerciales comme Twitter. Glich-Soc évite ainsi les risques qu'une seule société monopolise votre communication à des fins commerciales.
 
-**Version incluse:** 3.1.2
+**Version incluse:** 3.3.0
 
 ## Points importants à lire avant l'installation
 
-1. **Glitch-Soc** nécessite un **nom de domaine** dédié, par exemple: glitch.domain.tld
-1. L'utilisateur sélectionné pendant l'installation sera créé automatiquement dans Glitch-Soc avec des droits d'administration.
-1. A la fin de l'installation, un mail est envoyé à cet utilisateur avec le mot de passe qui a été généré automatiquement.
-1. Il semble important de fermer les inscriptions pour votre Glitch-Soc, pour que Ã§a reste une instance privÃ©. Nous vous invitons Ã  bloquer les instances distantes malfaisantes depuis l'interface d'administration. Vous pouvez Ã©galement ajouter un texte sur votre page d'accueil dans l'administration.
+1. **Glich-Soc** nécessite un **nom de domaine** dédié, par exemple : glitchsoc.domain.tld
+1. L'utilisateur sélectionné pendant l'installation sera créé automatiquement dans Glich-Soc avec des droits d'administration.
+1. À la fin de l'installation, un mail est envoyé à cet utilisateur avec un mot de passe généré automatiquement.
+1. Pour que votre instance Glich-Soc reste privée, il est important de fermer les inscriptions. Nous vous invitons à bloquer les instances distantes indésirables depuis l'interface d'administration. Vous pouvez également ajouter un texte sur votre page d'accueil dans l'administration.
 
 ## Captures d'écran
 
@@ -25,51 +28,56 @@ Glitch-Soc est un réseau social gratuit et open source. Une alternative décent
 
 ### Installation
 
-#### Utilisation de __screen__ en cas de dÃ©connection
+#### Utilisation de *screen* en cas de déconnection
 ```
 $ sudo apt-get install screen
 $ screen
-$ sudo yunohost app install https://github.com/Tagadda/glitch-soc_ynh.git
+$ sudo yunohost app install https://github.com/YunoHost-Apps/glitch-soc_ynh.git
 ```
-RÃ©cuperer l'installation aprÃ¨s une deconnection:
+Récupérer l'installation après une deconnection :
 ```
 $ screen -d
 $ screen -r
 ```
-L'utilisateur admin est crÃ©e automatiquement comme: user@domain.tld
+L'utilisateur admin est créé automatiquement comme : user@domain.tld
 
-### Mise Ã jour
+### Mise à jour
 
-#### Utilisation de __screen__ fortement recommandée
+#### Utilisation de *screen* fortement recommandée
 
-`$ sudo yunohost app upgrade glitch-soc -u https://github.com/Tagadda/glitch-soc_ynh --debug `
+`$ sudo yunohost app upgrade glitchsoc -u https://github.com/YunoHost-Apps/glitch-soc_ynh --debug `
 
 ## Documentation
 
- * Documentation officielle: https://docs.joinmastodon.org/
+ * Documentation officielle : https://docs.joinmastodon.org/
 
 ## Caractéristiques spécifiques YunoHost
 
-#### Support multi-utilisateurs
+#### Support multi-utilisateur
 
 L'authentification LDAP est activée. Tous les utilisateurs YunoHost peuvent s'authentifier.
 
-## Links
+#### Architectures supportées
 
- * Signaler un bug: https://github.com/Tagadda/glitch-soc_ynh/issues
- * Site de l'application: https://glitch-soc.github.io/docs/
- * Dépôt de l'application principale: https://github.com/glitch-soc/mastodon
- * Site web YunoHost: https://yunohost.org/
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/mastodon.svg)](https://ci-apps.yunohost.org/ci/apps/mastodon/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/mastodon.svg)](https://ci-apps-arm.yunohost.org/ci/apps/mastodon/)
+
+## Liens
+
+ * Signaler un bug : https://github.com/YunoHost-Apps/glitch-soc_ynh/issues
+ * Site de l'application : https://joinmastodon.org/
+ * Dépôt de l'application principale : https://github.com/glitch-soc/mastodon
+ * Site web YunoHost : https://yunohost.org/
 
 ---
 
-Informations pour les développeurs
-----------------
+## Informations pour les développeurs
 
-Merci de faire vos pull request sur la [branche testing](https://github.com/Tagadda/glitch-soc_ynh/tree/testing).
+Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/glitch-soc_ynh/tree/testing).
 
 Pour essayer la branche testing, procédez comme suit.
 ```
-sudo yunohost app install https://github.com/Tagadda/glitch-soc_ynh/tree/testing
-sudo yunohost app upgrade glitch-soc -u https://github.com/Tagadda/glitch-soc_ynh/tree/testing --debug
+sudo yunohost app install https://github.com/YunoHost-Apps/glitch-soc_ynh/tree/testing --debug
+ou
+sudo yunohost app upgrade glitchsoc -u https://github.com/YunoHost-Apps/glitch-soc_ynh/tree/testing --debug
 ```
