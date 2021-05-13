@@ -6,14 +6,14 @@
 *[Read this readme in english.](./README.md)*
 *[Lire ce readme en français.](./README_fr.md)*
 
-> *Ce package vous permet d'installer Glich-Soc rapidement et simplement sur un serveur YunoHost.  
-Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/#/install) pour apprendre comment l'installer.*
+> *This package allows you to install glitchsoc quickly and simply on a YunoHost server.
+If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/install) to learn how to install it.*
 
 ## Vue d'ensemble
 
 Un réseau social libre et fédéré, scission de Mastodon.
 
-**Version incluse:** 3.3.0~ynh1
+**Version incluse:** 3.4.0-rc2~ynh1
 
 
 
