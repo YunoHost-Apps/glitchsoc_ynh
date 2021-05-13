@@ -1,4 +1,4 @@
-# Glich-Soc pour YunoHost
+# Glitch-Soc pour YunoHost
 
 [![Niveau d'intégration](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg)  ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
 [![Installer glitchsoc avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
