@@ -23,6 +23,7 @@ path_url=$(ynh_app_setting_get --app=$app --key=path)
 admin=$(ynh_app_setting_get --app=$app --key=admin)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 language=$(ynh_app_setting_get --app=$app --key=language)
+redis_namespace=$(ynh_app_setting_get --app=$app --key=db_name)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$(ynh_sanitize_dbid --db_name=$app)
 db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
@@ -84,6 +85,12 @@ fi
 
 # Remove paperclip_secret
 ynh_app_setting_delete --app=$app --key=paperclip_secret
+
+# If redis_namespace doesn't exist, create it
+if [[ -z "$redis_namespace" ]]; then
+	redis_namespace=${app}_production
+	ynh_app_setting_set --app=$app --key=redis_namespace --value=$redis_namespace
+fi
 
 # If secret_key_base doesn't exist, retrieve it or create it
 if [[ -z "$secret_key_base" ]]; then
