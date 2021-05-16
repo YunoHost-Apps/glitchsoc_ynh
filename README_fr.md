@@ -25,7 +25,7 @@ Un réseau social libre et fédéré, scission de Mastodon.
 Glitch-Soc is beta software, and under active development. Use at your own risk!
 
 * This app require a dedicated domain or subdomain.
-* The user choosen during the installation is created in Glich-Soc with admin rights.
+* The user choosen during the installation is created in Glitch-Soc with admin rights.
 * LDAP authentication is activated. All YunoHost users can authenticate.
 * Single sign-on doesn't work.
 

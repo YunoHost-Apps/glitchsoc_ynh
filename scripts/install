@@ -200,7 +200,7 @@ ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streamin
 #=================================================
 # INSTALLING GLITCH-SOC
 #=================================================
-ynh_script_progression --message="Installing Glich-Soc..."
+ynh_script_progression --message="Installing Glitch-Soc..."
 
 pushd "$final_path/live"
 	sudo -u $app $ynh_ruby_load_path bin/bundle config deployment 'true'
