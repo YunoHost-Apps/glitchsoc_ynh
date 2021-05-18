@@ -1,87 +1,56 @@
-# Glich-Soc pour YunoHost
+# Glitch-Soc pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)  
-[![Installer Glich-Soc avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
+[![Niveau d'intégration](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg)  ![](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+[![Installer glitchsoc avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
-*[Read this readme in english.](./README.md)* 
+*[Read this readme in english.](./README.md)*
+*[Lire ce readme en français.](./README_fr.md)*
 
-> *Ce package vous permet d'installer Glich-Soc rapidement et simplement sur un serveur YunoHost.  
-Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/#/install) pour apprendre comment l'installer.*
+> *This package allows you to install glitchsoc quickly and simply on a YunoHost server.
+If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/install) to learn how to install it.*
 
 ## Vue d'ensemble
-Glich-Soc est un réseau social de microblog auto-hébergé et open source. C'est une alternative décentralisée aux plates-formes commerciales comme Twitter. Glich-Soc évite ainsi les risques qu'une seule société monopolise votre communication à des fins commerciales.
 
-**Version incluse:** 3.3.0
+Un réseau social libre et fédéré, scission de Mastodon.
 
-## Points importants à lire avant l'installation
+**Version incluse:** 3.4.0-rc2~ynh1
 
-1. **Glich-Soc** nécessite un **nom de domaine** dédié, par exemple : glitchsoc.domain.tld
-1. L'utilisateur sélectionné pendant l'installation sera créé automatiquement dans Glich-Soc avec des droits d'administration.
-1. À la fin de l'installation, un mail est envoyé à cet utilisateur avec un mot de passe généré automatiquement.
-1. Pour que votre instance Glich-Soc reste privée, il est important de fermer les inscriptions. Nous vous invitons à bloquer les instances distantes indésirables depuis l'interface d'administration. Vous pouvez également ajouter un texte sur votre page d'accueil dans l'administration.
 
-## Captures d'écran
 
-![](https://framalibre.org/sites/default/files/mastodon.png)
 
-## Configuration
 
-### Installation
 
-#### Utilisation de *screen* en cas de déconnection
-```
-$ sudo apt-get install screen
-$ screen
-$ sudo yunohost app install https://github.com/YunoHost-Apps/glitch-soc_ynh.git
-```
-Récupérer l'installation après une deconnection :
-```
-$ screen -d
-$ screen -r
-```
-L'utilisateur admin est créé automatiquement comme : user@domain.tld
+## Avertissements / informations importantes
 
-### Mise à jour
+Glitch-Soc is beta software, and under active development. Use at your own risk!
 
-#### Utilisation de *screen* fortement recommandée
+* This app require a dedicated domain or subdomain.
+* The user choosen during the installation is created in Glitch-Soc with admin rights.
+* LDAP authentication is activated. All YunoHost users can authenticate.
+* Single sign-on doesn't work.
 
-`$ sudo yunohost app upgrade glitchsoc -u https://github.com/YunoHost-Apps/glitch-soc_ynh --debug `
+It seems important to close the inscriptions for your Glitch-Soc, so that it remains a private body. We invite you to block remote malicious instances from the administration interface. You can also add text on your home page.
 
-### Administration avec tooctl
 
-`$ (cd /var/www/glitchsoc/live && sudo -u glitchsoc RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl --help)`
 
-## Documentation
+## Documentations et ressources
 
- * Documentation officielle : https://glitch-soc.github.io/docs/
+* Site official de l'app : https://glitch-soc.github.io/docs/
 
-## Caractéristiques spécifiques YunoHost
 
-#### Support multi-utilisateur
-
-L'authentification LDAP est activée. Tous les utilisateurs YunoHost peuvent s'authentifier.
-
-#### Architectures supportées
-
-* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/glitchsoc.svg)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/glitchsoc.svg)](https://ci-apps-arm.yunohost.org/ci/apps/glitchsoc/)
-
-## Liens
-
- * Signaler un bug : https://github.com/YunoHost-Apps/glitch-soc_ynh/issues
- * Site de l'application : https://glitch-soc.github.io/docs/
- * Dépôt de l'application principale : https://github.com/glitch-soc/mastodon
- * Site web YunoHost : https://yunohost.org/
-
----
+* Dépôt de code officiel de l'app:  https://github.com/glitch-soc/mastodon
+* Documentation YunoHost pour cette app: https://yunohost.org/app_glitchsoc
+* Signaler un bug: https://github.com/YunoHost-Apps/glitchsoc_ynh/issues
 
 ## Informations pour les développeurs
 
-Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/glitch-soc_ynh/tree/testing).
+Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing).
 
 Pour essayer la branche testing, procédez comme suit.
 ```
-sudo yunohost app install https://github.com/YunoHost-Apps/glitch-soc_ynh/tree/testing --debug
-ou
-sudo yunohost app upgrade glitchsoc -u https://github.com/YunoHost-Apps/glitch-soc_ynh/tree/testing --debug
+sudo yunohost app install https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing --debug
+or
+sudo yunohost app upgrade glitchsoc -u https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing --debug
 ```
+
+**Plus d'infos sur le packaging d'applications:** https://yunohost.org/packaging_apps

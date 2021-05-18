@@ -1,29 +1,24 @@
 {
-    "name": "Glich-Soc",
+    "name": "Glitch-Soc",
     "id": "glitchsoc",
     "packaging_format": 1,
     "description": {
-        "en": "A libre and federated social network.",
-        "fr": "Un réseau social libre et fédéré."
+        "en": "A libre and federated social network, fork of Mastodon.",
+        "fr": "Un réseau social libre et fédéré, scission de Mastodon."
     },
-    "version": "2021-04-11-ynh3",
+    "version": "3.4.0-rc2~ynh1",
     "url": "https://github.com/glitch-soc/mastodon",
+    "upstream": {
+        "license": "free",
+        "website": "https://glitch-soc.github.io/docs/",
+        "code": "https://github.com/glitch-soc/mastodon"
+    },
     "license": "AGPL-3.0-or-later",
     "maintainer": {
-        "name": ""
+        "name": "Tagada"
     },
-    "previous_maintainer": [
-        {
-            "name": "cyp",
-            "email": "cyp@rouquin.me"
-        },
-        {
-            "name": "nemsia",
-            "email": "nemsia@nemsia.org"
-        }
-    ],
     "requirements": {
-        "yunohost": ">= 4.1.7"
+        "yunohost": ">= 4.2.0"
     },
     "multi_instance": true,
     "services": [

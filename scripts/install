@@ -162,6 +162,9 @@ config="$final_path/live/.env.production"
 
 language="$(echo $language | head -c 2)"
 
+redis_namespace=${app}_production
+ynh_app_setting_set --app="$app" --key=redis_namespace --value="$redis_namespace"
+
 secret_key_base=$(ynh_string_random --length=128)
 ynh_app_setting_set --app="$app" --key=secret_key_base --value="$secret_key_base"
 
@@ -190,14 +193,14 @@ chown $app:$app "$final_path/live/config/settings.yml"
 ynh_script_progression --message="Configuring a systemd service..."
 
 # Create a dedicated systemd config
-ynh_add_systemd_config --service="$app-web" --template="glitchsoc-web.service" --others_var="port_web RBENV_ROOT"
-ynh_add_systemd_config --service="$app-sidekiq" --template="glitchsoc-sidekiq.service" --others_var="RBENV_ROOT"
-ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streaming.service" --others_var="port_stream ynh_node_load_PATH ynh_node"
+ynh_add_systemd_config --service="$app-web" --template="glitchsoc-web.service"
+ynh_add_systemd_config --service="$app-sidekiq" --template="glitchsoc-sidekiq.service"
+ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streaming.service"
 
 #=================================================
 # INSTALLING GLITCH-SOC
 #=================================================
-ynh_script_progression --message="Installing Glich-Soc..."
+ynh_script_progression --message="Installing Glitch-Soc..."
 
 pushd "$final_path/live"
 	sudo -u $app $ynh_ruby_load_path bin/bundle config deployment 'true'
