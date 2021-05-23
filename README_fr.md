@@ -13,7 +13,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Un réseau social libre et fédéré, scission de Mastodon.
 
-**Version incluse:** 3.4.0~ynh1
+**Version incluse:** 2021-05-22~ynh2
 
 
 
