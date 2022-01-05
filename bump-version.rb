@@ -55,7 +55,7 @@ end
 
 github = JSON.parse(URI.parse('https://api.github.com/repos/glitch-soc/mastodon/branches/main').read)
 last_commit = github["commit"]["sha"]
-version = Date.parse(github["commit"]["commit"]["author"]["date"]).to_s
+version = Date.parse(github["commit"]["commit"]["author"]["date"]).to_s.gsub '-', '.'
 
 url = "https://github.com/glitch-soc/mastodon/archive/#{last_commit}.tar.gz"
 

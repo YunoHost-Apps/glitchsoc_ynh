@@ -7,8 +7,6 @@
 #=================================================
 
 source _common.sh
-source ynh_install_ruby__2
-source ynh_add_swap
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -86,12 +84,6 @@ fi
 # Remove paperclip_secret
 ynh_app_setting_delete --app=$app --key=paperclip_secret
 
-# If redis_namespace doesn't exist, create it
-if [[ -z "$redis_namespace" ]]; then
-	redis_namespace=${app}_production
-	ynh_app_setting_set --app=$app --key=redis_namespace --value=$redis_namespace
-fi
-
 # If secret_key_base doesn't exist, retrieve it or create it
 if [[ -z "$secret_key_base" ]]; then
 	secret_key_base=$(grep -oP "SECRET_KEY_BASE=\K\w+" $config)
@@ -116,6 +108,12 @@ if [[ -z "$vapid_private_key" ]]; then
 	vapid_public_key=$(grep -oP "VAPID_PUBLIC_KEY=\K.+" $config)
 	ynh_app_setting_set "$app" vapid_private_key "$vapid_private_key"
 	ynh_app_setting_set "$app" vapid_public_key "$vapid_public_key"
+fi
+
+# If redis_namespace doesn't exist, create it
+if [[ -z "$redis_namespace" ]]; then
+	redis_namespace=${app}_production
+	ynh_app_setting_set --app=$app --key=redis_namespace --value=$redis_namespace
 fi
 
 #Remove previous added repository
@@ -202,10 +200,10 @@ ynh_add_nginx_config 'port_web port_stream'
 #=================================================
 ynh_script_progression --message="Upgrading dependencies..."
 
-ynh_install_app_dependencies $pkg_dependencies
-ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
-ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
-ynh_install_ruby --ruby_version=$RUBY_VERSION
+ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
+ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
+ynh_exec_warn_less ynh_install_ruby --ruby_version=$RUBY_VERSION
 
 #=================================================
 # SPECIFIC UPGRADE
@@ -269,10 +267,10 @@ pushd "$final_path/live"
 	sudo -u $app $ynh_ruby_load_path bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
 	ynh_use_nodejs
 	sudo -u $app $ynh_node_load_PATH yarn install --pure-lockfile
-	sudo -u $app RAILS_ENV=production $ynh_ruby_load_path bin/bundle exec rails assets:clean
-	sudo -u $app RAILS_ENV=production $ynh_ruby_load_path bin/bundle exec rails assets:precompile
-	sudo -u $app RAILS_ENV=production $ynh_ruby_load_path bin/bundle exec rails db:migrate
-	sudo -u $app RAILS_ENV=production $ynh_ruby_load_path bin/tootctl cache clear
+	ynh_exec_warn_less sudo -u $app RAILS_ENV=production $ynh_ruby_load_path bin/bundle exec rails assets:clean
+	ynh_exec_warn_less sudo -u $app RAILS_ENV=production $ynh_ruby_load_path bin/bundle exec rails assets:precompile
+	ynh_exec_warn_less sudo -u $app RAILS_ENV=production $ynh_ruby_load_path bin/bundle exec rails db:migrate
+	ynh_exec_warn_less sudo -u $app RAILS_ENV=production $ynh_ruby_load_path bin/tootctl cache clear
 popd
 
 #=================================================
