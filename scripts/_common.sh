@@ -9,9 +9,9 @@ pkg_dependencies="imagemagick ffmpeg libpq-dev libxml2-dev libxslt1-dev file git
 
 MEMORY_NEEDED="2560"
 
-RUBY_VERSION="2.7.2"
+RUBY_VERSION="3.0.3"
 
-NODEJS_VERSION="16"
+NODEJS_VERSION="12"
 
 #=================================================
 # PERSONAL HELPERS
@@ -117,6 +117,7 @@ ynh_is_main_device_a_sd_card () {
 # FUTURE OFFICIAL HELPERS
 #=================================================
 
+# ynh_install_ruby__2
 ynh_ruby_try_bash_extension() {
   if [ -x src/configure ]; then
     src/configure && make -C src || {
