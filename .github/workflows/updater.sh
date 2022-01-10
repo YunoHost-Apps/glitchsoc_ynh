@@ -62,7 +62,7 @@ cat <<EOT > conf/app.src
 SOURCE_URL=$asset_url
 SOURCE_SUM=$checksum
 SOURCE_SUM_PRG=sha256sum
-SOURCE_FORMAT=.tar.gz
+SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
 SOURCE_FILENAME=$filename
 SOURCE_EXTRACT=true
