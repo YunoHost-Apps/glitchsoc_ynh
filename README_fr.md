@@ -11,7 +11,8 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 ## Vue d'ensemble
 
-Réseau social libre et fédéré, scission de Mastodon
+Glitch-Soc, une scission de Mastodon, est un réseau social de microblog auto-hébergé et open source. C'est une alternative décentralisée aux plates-formes commerciales comme Twitter. Glitch-Soc évite ainsi les risques qu'une seule société monopolise votre communication à des fins commerciales.
+
 
 **Version incluse :** 2022.01.10~ynh2
 
