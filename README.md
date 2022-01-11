@@ -17,7 +17,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Libre and federated social network, fork of Mastodon
 
-**Shipped version:** 2022.01.10~ynh1
+**Shipped version:** 2022.01.10~ynh2
 
 
 

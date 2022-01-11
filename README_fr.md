@@ -13,7 +13,7 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 Réseau social libre et fédéré, scission de Mastodon
 
-**Version incluse :** 2022.01.10~ynh1
+**Version incluse :** 2022.01.10~ynh2
 
 
 
