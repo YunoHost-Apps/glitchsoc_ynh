@@ -1,0 +1,74 @@
+version = "1.0"
+
+[main]
+name = "Main configuration"
+services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
+
+    [main.customization]
+    name = "Customization"
+        
+        [main.customization.max_toot_chars]
+        ask = "Maximum allowed character count in a toot"
+        type = "number"
+        bind = ":/var/www/__APP__/live/live/.env.production"
+        example = 500
+
+        [main.customization.max_pinned_toots]
+        ask = "Maximum number of pinned posts"
+        type = "number"
+        example = "5"
+        bind = ":/var/www/__APP__/live/.env.production"
+
+        [main.customization.max_bio_chars]
+        ask = "Maximum allowed bio characters"
+        type = "number"
+        accept = "500"
+        bind = ":/var/www/__APP__/live/.env.production"
+
+        [main.customization.max_profile_fields]
+        ask = "Maximim number of profile fields allowed"
+        type = "number"
+        accept = "4"
+        bind = ":/var/www/__APP__/live/.env.production"
+
+        [main.customization.max_display_name_chars]
+        ask = "Maximum allowed bio characters"
+        type = "number"
+        accept = "30"
+        bind = ":/var/www/__APP__/live/.env.production"
+
+        [main.customization.max_poll_options]
+        ask = "Maximum allowed poll options"
+        type = "number"
+        accept = "5"
+        bind = ":/var/www/__APP__/live/.env.production"
+
+        [main.customization.max_poll_option_chars]
+        ask = "Maximum allowed poll option characters"
+        type = "number"
+        accept = "100"
+        bind = ":/var/www/__APP__/live/.env.production"
+
+        [main.customization.max_image_size]
+        ask = "Maximum image upload size, in bytes"
+        type = "number"
+        accept = "8388608"
+        bind = ":/var/www/__APP__/live/.env.production"
+
+        [main.customization.max_video_size]
+        ask = "Maximum video and audio upload sizes, in bytes"
+        type = "number"
+        accept = "41943040"
+        bind = ":/var/www/__APP__/live/.env.production"
+
+        [main.customization.max_emoji_size]
+        ask = "Maximum custom emoji file sizes"
+        type = "number"
+        accept = "51200"
+        bind = ":/var/www/__APP__/live/.env.production"
+
+        [main.customization.max_remote_emoji_size]
+        ask = "Maximum remote custom emoji file sizes"
+        type = "number"
+        accept = "204800"
+        bind = ":/var/www/__APP__/live/.env.production"
