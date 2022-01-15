@@ -11,22 +11,23 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 ## Vue d'ensemble
 
-Réseau social libre et fédéré, scission de Mastodon
+Glitch-Soc, une scission de Mastodon, est un réseau social de microblog auto-hébergé et open source. C'est une alternative décentralisée aux plates-formes commerciales comme Twitter. Glitch-Soc évite ainsi les risques qu'une seule société monopolise votre communication à des fins commerciales.
 
-**Version incluse :** 2022.01.10~ynh1
+
+**Version incluse :** 2022.01.10~ynh2
 
 
 
 ## Avertissements / informations importantes
 
-Glitch-Soc is beta software, and under active development. Use at your own risk!
+Glitch-Soc est en constant développement, fournis avec les dernières fonctionnalités (incluant les derniers bugs).
 
-* This app require a dedicated domain or subdomain.
-* The user choosen during the installation is created in Glitch-Soc with admin rights.
-* LDAP authentication is activated. All YunoHost users can authenticate.
-* Single sign-on doesn't work.
+* L'application a besoin d'un domaine dédié.
+* L'utilisateur⋅ice choisi⋅es lors de l'installation sera administrateur⋅ice de l'instance. Il est possible d'en ajouter d'autre depuis l'application.
 
-It seems important to close the inscriptions for your Glitch-Soc, so that it remains a private body. We invite you to block remote malicious instances from the administration interface. You can also add text on your home page.
+L'authentification par LDAP et le Single-Sign-On sont activés pour les utilisateur⋅ices YunoHost. Se déconnecter depuis le portail YunoHost ne vous déconnecte pas de Glitch-Soc. Voir https://github.com/YunoHost/issues/issues/501
+
+Nous vous invitons à bloquer les instances malveillantes depuis l'interface d'administration. Vous pouvez également ajouter du texte sur votre page d'accueil.
 
 ## Documentations et ressources
 

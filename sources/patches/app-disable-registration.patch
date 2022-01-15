@@ -1,0 +1,13 @@
+diff --git a/config/settings.yml b/config/settings.yml
+index 094209822..2e2a5147d 100644
+--- a/config/settings.yml
++++ b/config/settings.yml
+@@ -9,7 +9,7 @@ defaults: &defaults
+   site_terms: ''
+   site_contact_username: ''
+   site_contact_email: ''
+-  registrations_mode: 'open'
++  registrations_mode: 'none'
+   profile_directory: true
+   closed_registrations_message: ''
+   open_deletion: true
