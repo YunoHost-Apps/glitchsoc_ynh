@@ -12,13 +12,13 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
-		# 2022.01.10~ynh1
-		upgrade=1	from_commit=9fb00be10143ee57685d4c84b21029921b33e159
+		# 2022.01.10~ynh2
+		upgrade=1	from_commit=325f6befc0d6da2b5102ad9c4ac64a5235ee470e
 		backup_restore=1
 		multi_instance=0
 		port_already_use=0
 		change_url=0
 ;;; Options
 ;;; Upgrade options
-	; commit=efbdbb05350b820c6e59a7bbbf70f57cf679fff8
-		name=2022.01.10~ynh1
+	; commit=325f6befc0d6da2b5102ad9c4ac64a5235ee470e
+		name=2022.01.10~ynh2
