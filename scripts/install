@@ -70,7 +70,7 @@ ynh_app_setting_set --app=$app --key=port_stream --value=$port_stream
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=600
+ynh_script_progression --message="Installing dependencies..." --weight=60
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
@@ -198,7 +198,7 @@ ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streamin
 #=================================================
 # INSTALLING GLITCH-SOC
 #=================================================
-ynh_script_progression --message="Installing Glitch-Soc..." --weight=300
+ynh_script_progression --message="Installing Glitch-Soc..." --weight=30
 
 pushd "$final_path/live"
 	ynh_exec_as $app $ynh_ruby_load_path bin/bundle config deployment 'true'

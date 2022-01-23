@@ -75,7 +75,7 @@ chown -R $app:www-data "$final_path"
 #=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Reinstalling dependencies..." --weight=600
+ynh_script_progression --message="Reinstalling dependencies..." --weight=60
 
 # Define and install dependencies
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
@@ -112,7 +112,7 @@ ynh_add_swap --size=$swap_needed
 #=================================================
 # INSTALLING RUBY AND BUNDLER
 #=================================================
-ynh_script_progression --message="Installing Ruby dependencies..." --weight=300
+ynh_script_progression --message="Installing Ruby dependencies..." --weight=30
 
 pushd "$final_path/live"
 	ynh_use_ruby
