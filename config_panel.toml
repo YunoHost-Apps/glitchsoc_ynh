@@ -41,7 +41,7 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         ask = "Maximum allowed poll options"
         type = "number"
         example = "5"
-        bind = ":__FINALPATH____/live/.env.production"
+        bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_poll_option_chars]
         ask = "Maximum allowed poll option characters"
