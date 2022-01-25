@@ -17,7 +17,7 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         ask = "Maximum number of pinned posts"
         type = "number"
         example = "5"
-        bind = ":__FINALPATH____/live/.env.production"
+        bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_bio_chars]
         ask = "Maximum allowed bio characters"
