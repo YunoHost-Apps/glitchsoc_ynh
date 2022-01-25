@@ -36,7 +36,7 @@ vapid_public_key=$(ynh_app_setting_get --app=$app --key=vapid_public_key)
 
 config="$final_path/live/.env.production"
 
-max_toot_chars=$(ynh_app_setting_get --app=$app --key=max_toot_chars
+max_toot_chars=$(ynh_app_setting_get --app=$app --key=max_toot_chars)
 max_pinned_toots=$(ynh_app_setting_get --app=$app --key=max_pinned_toots)
 max_bio_chars=$(ynh_app_setting_get --app=$app --key=max_bio_chars)
 max_profile_fields=$(ynh_app_setting_get --app=$app --key=max_profile_fields)
