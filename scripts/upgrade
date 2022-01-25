@@ -36,6 +36,18 @@ vapid_public_key=$(ynh_app_setting_get --app=$app --key=vapid_public_key)
 
 config="$final_path/live/.env.production"
 
+max_toot_chars=$(ynh_app_setting_get --app=$app --key=max_toot_chars)
+max_pinned_toots=$(ynh_app_setting_get --app=$app --key=max_pinned_toots)
+max_bio_chars=$(ynh_app_setting_get --app=$app --key=max_bio_chars)
+max_profile_fields=$(ynh_app_setting_get --app=$app --key=max_profile_fields)
+max_display_name_chars=$(ynh_app_setting_get --app=$app --key=max_display_name_chars)
+max_poll_options=$(ynh_app_setting_get --app=$app --key=max_poll_options)
+max_poll_option_chars=$(ynh_app_setting_get --app=$app --key=max_poll_option_chars)
+max_image_size=$(ynh_app_setting_get --app=$app --key=max_image_size)
+max_video_size=$(ynh_app_setting_get --app=$app --key=max_video_size)
+max_emoji_size=$(ynh_app_setting_get --app=$app --key=max_emoji_size)
+max_remote_emoji_size=$(ynh_app_setting_get --app=$app --key=max_remote_emoji_size)
+
 #=================================================
 # CHECK VERSION
 #=================================================
@@ -146,6 +158,61 @@ fi
 if [[ -z "$redis_namespace" ]]; then
 	redis_namespace=${app}_production
 	ynh_app_setting_set --app=$app --key=redis_namespace --value=$redis_namespace
+fi
+
+if [ -z "$max_toot_chars" ]; then
+	max_toot_chars="500"
+	ynh_app_setting_set --app=$app --key=max_toot_chars --value=$max_toot_chars
+fi
+
+if [ -z "$max_pinned_toots" ]; then
+	max_pinned_toots="5"
+	ynh_app_setting_set --app=$app --key=max_pinned_toots --value=$max_pinned_toots
+fi
+
+if [ -z "$max_bio_chars" ]; then
+	max_bio_chars="500"
+	ynh_app_setting_set --app=$app --key=max_bio_chars --value=$max_bio_chars
+fi
+
+if [ -z "$max_profile_fields" ]; then
+	max_profile_fields="4"
+	ynh_app_setting_set --app=$app --key=max_profile_fields --value=$max_profile_fields
+fi
+
+if [ -z "$max_display_name_chars" ]; then
+	max_display_name_chars="30"
+	ynh_app_setting_set --app=$app --key=max_display_name_chars --value=$max_display_name_chars
+fi
+
+if [ -z "$max_poll_options" ]; then
+	max_poll_options="5"
+	ynh_app_setting_set --app=$app --key=max_poll_options --value=$max_poll_options
+fi
+
+if [ -z "$max_poll_option_chars" ]; then
+	max_poll_option_chars="100"
+	ynh_app_setting_set --app=$app --key=max_poll_option_chars --value=$max_poll_option_chars
+fi
+
+if [ -z "$max_image_size" ]; then
+	max_image_size="8388608"
+	ynh_app_setting_set --app=$app --key=max_image_size --value=$max_image_size
+fi
+
+if [ -z "$max_video_size" ]; then
+	max_video_size="41943040"
+	ynh_app_setting_set --app=$app --key=max_video_size --value=$max_video_size
+fi
+
+if [ -z "$max_emoji_size" ]; then
+	max_emoji_size="51200"
+	ynh_app_setting_set --app=$app --key=max_emoji_size --value=$max_emoji_size
+fi
+
+if [ -z "$max_remote_emoji_size" ]; then
+	max_remote_emoji_size="204800"
+	ynh_app_setting_set --app=$app --key=max_remote_emoji_size --value=$max_remote_emoji_size
 fi
 
 #Remove previous added repository
