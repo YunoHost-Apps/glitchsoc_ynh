@@ -71,4 +71,4 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         ask = "Maximum remote custom emoji file sizes"
         type = "number"
         example = "204800"
-        bind = ":__FINALPATH____/live/.env.production"
+        bind = ":__FINALPATH__/live/.env.production"
