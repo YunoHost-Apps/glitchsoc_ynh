@@ -11,7 +11,7 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         ask = "Maximum allowed character count in a toot"
         type = "number"
         example = "500"
-        bind = ":/var/www/__APP__/live/live/.env.production"
+        bind = ":/var/www/__APP__/live/.env.production"
 
         [main.customization.max_pinned_toots]
         ask = "Maximum number of pinned posts"
