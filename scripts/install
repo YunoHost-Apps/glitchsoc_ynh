@@ -32,6 +32,18 @@ admin_mail=$(ynh_user_get_info $admin 'mail')
 
 app=$YNH_APP_INSTANCE_NAME
 
+max_toot_chars="500"
+max_pinned_toots="5"
+max_bio_chars="500"
+max_profile_fields="4"
+max_display_name_chars="30"
+max_poll_options="5"
+max_poll_option_chars="100"
+max_image_size="8388608"
+max_video_size="41943040"
+max_emoji_size="51200"
+max_remote_emoji_size="204800"
+
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
@@ -52,6 +64,17 @@ ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=admin --value=$admin
 ynh_app_setting_set --app=$app --key=language --value=$language
+ynh_app_setting_set --app=$app --key=max_toot_chars --value=$max_toot_chars
+ynh_app_setting_set --app=$app --key=max_pinned_toots --value=$max_pinned_toots
+ynh_app_setting_set --app=$app --key=max_bio_chars --value=$max_bio_chars
+ynh_app_setting_set --app=$app --key=max_profile_fields --value=$max_profile_fields
+ynh_app_setting_set --app=$app --key=max_display_name_chars--value=$max_display_name_chars
+ynh_app_setting_set --app=$app --key=max_poll_options --value=$max_poll_options
+ynh_app_setting_set --app=$app --key=max_poll_option_chars --value=$max_poll_option_chars
+ynh_app_setting_set --app=$app --key=max_image_size --value=$max_image_size
+ynh_app_setting_set --app=$app --key=max_video_size --value=$max_video_size
+ynh_app_setting_set --app=$app --key=max_emoji_size --value=$max_emoji_size
+ynh_app_setting_set --app=$app --key=max_remote_emoji_size --value=$max_remote_emoji_size
 
 #=================================================
 # STANDARD MODIFICATIONS
