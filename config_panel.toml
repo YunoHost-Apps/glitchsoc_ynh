@@ -47,7 +47,7 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         ask = "Maximum allowed poll option characters"
         type = "number"
         example = "100"
-        bind = ":__FINALPATH____/live/.env.production"
+        bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_image_size]
         ask = "Maximum image upload size, in bytes"
