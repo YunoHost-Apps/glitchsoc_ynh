@@ -68,7 +68,7 @@ ynh_app_setting_set --app=$app --key=max_toot_chars --value=$max_toot_chars
 ynh_app_setting_set --app=$app --key=max_pinned_toots --value=$max_pinned_toots
 ynh_app_setting_set --app=$app --key=max_bio_chars --value=$max_bio_chars
 ynh_app_setting_set --app=$app --key=max_profile_fields --value=$max_profile_fields
-ynh_app_setting_set --app=$app --key=max_display_name_chars--value=$max_display_name_chars
+ynh_app_setting_set --app=$app --key=max_display_name_chars --value=$max_display_name_chars
 ynh_app_setting_set --app=$app --key=max_poll_options --value=$max_poll_options
 ynh_app_setting_set --app=$app --key=max_poll_option_chars --value=$max_poll_option_chars
 ynh_app_setting_set --app=$app --key=max_image_size --value=$max_image_size
