@@ -50,25 +50,29 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_image_size]
-        ask = "Maximum image upload size, in bytes"
+        ask = "Maximum image upload size"
+        help = "in bytes"
         type = "number"
         example = "8388608"
         bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_video_size]
-        ask = "Maximum video and audio upload sizes, in bytes"
+        ask = "Maximum video and audio upload sizes"
+        help = "in bytes"
         type = "number"
         example = "41943040"
         bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_emoji_size]
         ask = "Maximum custom emoji file sizes"
+        help = "in bytes"
         type = "number"
         example = "51200"
         bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_remote_emoji_size]
         ask = "Maximum remote custom emoji file sizes"
+        help = "in bytes"
         type = "number"
         example = "204800"
         bind = ":__FINALPATH__/live/.env.production"
