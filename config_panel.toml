@@ -59,7 +59,7 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         ask = "Maximum video and audio upload sizes, in bytes"
         type = "number"
         example = "41943040"
-        bind = ":__FINALPATH____/live/.env.production"
+        bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_emoji_size]
         ask = "Maximum custom emoji file sizes"
