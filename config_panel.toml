@@ -35,7 +35,7 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         ask = "Maximum allowed bio characters"
         type = "number"
         example = "30"
-        bind = ":__FINALPATH____/live/.env.production"
+        bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_poll_options]
         ask = "Maximum allowed poll options"
