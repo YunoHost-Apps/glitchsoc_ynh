@@ -23,7 +23,7 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         ask = "Maximum allowed bio characters"
         type = "number"
         example = "500"
-        bind = ":__FINALPATH____/live/.env.production"
+        bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_profile_fields]
         ask = "Maximim number of profile fields allowed"
