@@ -18,7 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 Glitch-Soc, a fork of Mastodon, is a free, open-source microblogging social network. It is a decentralized alternative to commercial platforms like Twitter and avoids the risks of a single company monopolizing your communication for commercial purposes. 
 
 
-**Shipped version:** 2022.01.31~ynh1
+**Shipped version:** 2022.02.05~ynh1
 
 
 
