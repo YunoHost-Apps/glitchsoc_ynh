@@ -15,7 +15,31 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-Glitch-Soc, a fork of Mastodon, is a free, open-source microblogging social network. It is a decentralized alternative to commercial platforms like Twitter and avoids the risks of a single company monopolizing your communication for commercial purposes. 
+`glitch-soc` is a friendly [fork](https://en.wikipedia.org/wiki/Fork_(software_development)) of the open-source social media software [Mastodon](https://joinmastodon.org/), with the aim of providing additional features at the risk of potentially less stable software.
+
+###  What's different from Mastodon?
+
+`glitch-soc` adds a number of experimental features to Mastodon, such as:
+
+- Media improvements
+  - Images inside the CW spoiler
+  - fullwidth images
+  - scaling options
+- Formatted toots
+- Reply selection in lists
+- Filter improvements
+- Highlighting of misleading links
+- Hiding follower count
+- An app settings modal
+- Collapsible toots
+- Toot visibility icons
+- Local-only toots
+- Threaded mode
+- `data-*` attributes on statuses
+- Advanced theming via flavours+skins
+- Doodle
+
+See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
 **Shipped version:** 2022.02.12~ynh1
@@ -25,6 +49,8 @@ Glitch-Soc, a fork of Mastodon, is a free, open-source microblogging social netw
 ## Disclaimers / important information
 
 ⚠️ Glitch-Soc is beta software, and under active development. Use at your own risk!
+
+### Install
 
 * This app require a dedicated domain or subdomain.
 * The user choosen during the installation is created in Glitch-Soc with admin rights.
