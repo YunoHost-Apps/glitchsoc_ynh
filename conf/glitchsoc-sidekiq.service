@@ -19,19 +19,21 @@ StandardError=syslog
 # Depending on specificities of your service/app, you may need to tweak these 
 # .. but this should be a good baseline
 # Details for these options: https://www.freedesktop.org/software/systemd/man/systemd.exec.html
-NoNewPrivileges=yes
+# We need to disable everything that implie NoNewPrivileges=yes else sidekiq
+# can't deliver mail to YunoHost users. See #30 -Tagada
+NoNewPrivileges=no
 PrivateTmp=yes
-PrivateDevices=yes
-RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
-RestrictNamespaces=yes
-RestrictRealtime=yes
+#PrivateDevices=yes
+#RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+#RestrictNamespaces=yes
+#RestrictRealtime=yes
 DevicePolicy=closed
 ProtectSystem=full
 ProtectControlGroups=yes
-ProtectKernelModules=yes
-ProtectKernelTunables=yes
-LockPersonality=yes
-SystemCallFilter=~@clock @debug @module @mount @obsolete @reboot @setuid @swap
+#ProtectKernelModules=yes
+#ProtectKernelTunables=yes
+#LockPersonality=yes
+#SystemCallFilter=~@clock @debug @module @mount @obsolete @reboot @setuid @swap
 
 # Denying access to capabilities that should not be relevant for webapps
 # Doc: https://man7.org/linux/man-pages/man7/capabilities.7.html
