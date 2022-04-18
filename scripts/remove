@@ -83,7 +83,7 @@ ynh_remove_nginx_config
 #=================================================
 # REMOVE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Removing dependencies..." --weight=30
+ynh_script_progression --message="Removing dependencies..." --weight=10
 
 # Remove metapackage and its dependencies
 ynh_remove_ruby

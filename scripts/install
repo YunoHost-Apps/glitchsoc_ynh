@@ -93,7 +93,7 @@ ynh_app_setting_set --app=$app --key=port_stream --value=$port_stream
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=60
+ynh_script_progression --message="Installing dependencies..." --weight=10
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
@@ -111,7 +111,7 @@ ynh_system_user_create --username=$app --home_dir=$final_path
 #=================================================
 # CREATE A POSTGRESQL DATABASE
 #=================================================
-ynh_script_progression --message="Creating a PostgreSQL database..." --weight=14
+ynh_script_progression --message="Creating a PostgreSQL database..." --weight=3
 
 ynh_psql_test_if_first_run
 # Create PostgreSQL database
@@ -127,7 +127,7 @@ ynh_psql_execute_as_root --sql="ALTER USER $db_user CREATEDB;"
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Setting up source files..." --weight=5
+ynh_script_progression --message="Setting up source files..." --weight=3
 
 ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
@@ -166,7 +166,7 @@ ynh_add_swap --size=$swap_needed
 #=================================================
 # INSTALLING RUBY AND BUNDLER
 #=================================================
-ynh_script_progression --message="Installing Ruby dependencies..." --weight=6
+ynh_script_progression --message="Installing Ruby dependencies..." --weight=3
 
 pushd "$final_path/live"
 	ynh_use_ruby
@@ -221,7 +221,7 @@ ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streamin
 #=================================================
 # INSTALLING GLITCH-SOC
 #=================================================
-ynh_script_progression --message="Installing Glitch-Soc..." --weight=30
+ynh_script_progression --message="Installing Glitch-Soc..." --weight=5
 
 pushd "$final_path/live"
 	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config deployment 'true'
@@ -273,7 +273,7 @@ yunohost service add "$app-streaming" --description="$app streaming service"
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=3
+ynh_script_progression --message="Starting a systemd service..." --weight=2
 
 ynh_systemd_action --service_name=${app}-web --action="start" --log_path=systemd --line_match="Listening on"
 ynh_systemd_action --service_name=${app}-sidekiq --action="start" --log_path=systemd --line_match="Schedules Loaded"
