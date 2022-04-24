@@ -38,7 +38,7 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 Voir plus [sur la documentation](https://glitch-soc.github.io/docs/) (en anglais).
 
 
-**Version incluse :** 2022.04.16~ynh1
+**Version incluse :** 2022.04.20~ynh1
 
 
 
