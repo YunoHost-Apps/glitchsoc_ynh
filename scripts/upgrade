@@ -271,7 +271,7 @@ ynh_add_nginx_config
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=60
+ynh_script_progression --message="Upgrading dependencies..." --weight=10
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
@@ -299,7 +299,7 @@ ynh_add_swap --size=$swap_needed
 #=================================================
 # INSTALLING RUBY AND BUNDLER
 #=================================================
-ynh_script_progression --message="Installing Ruby dependencies..." --weight=6
+ynh_script_progression --message="Installing Ruby dependencies..." --weight=5
 
 pushd "$final_path/live"
 	ynh_use_ruby
@@ -334,7 +334,7 @@ ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streamin
 #=================================================
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
-	ynh_script_progression --message="Upgrading Glitch-Soc..." --weight=30
+	ynh_script_progression --message="Upgrading Glitch-Soc..." --weight=10
 
 	pushd "$final_path/live"
 		ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config deployment 'true'
