@@ -6,7 +6,7 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
 
     [main.customization]
     name = "Customization"
-        
+
         [main.customization.max_toot_chars]
         ask = "Maximum allowed character count in a toot"
         type = "number"
@@ -32,7 +32,7 @@ services = ["__APP__-web", "__APP__-sidekiq", "__APP__-streaming"]
         bind = ":__FINALPATH__/live/.env.production"
 
         [main.customization.max_display_name_chars]
-        ask = "Maximum allowed bio characters"
+        ask = "Maximum allowed display name characters"
         type = "number"
         example = "30"
         bind = ":__FINALPATH__/live/.env.production"
