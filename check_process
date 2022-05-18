@@ -12,17 +12,14 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
-		# 2022.01.10~ynh2
-		upgrade=1	from_commit=325f6befc0d6da2b5102ad9c4ac64a5235ee470e
-		# 2022.03.31~ynh1
-		upgrade=1	from_commit=a8f28047602b498cde25bfa05137d84518f13bbe
+		# 2022.04.28~ynh1
+		upgrade=1	from_commit=66aba621d331db1a90c527e920f622b06c18a842
 		backup_restore=1
 		multi_instance=0
 		port_already_use=0
 		change_url=0
 ;;; Options
 ;;; Upgrade options
-	; commit=325f6befc0d6da2b5102ad9c4ac64a5235ee470e
-		name=2022.01.10~ynh2
-	; commit=a8f28047602b498cde25bfa05137d84518f13bbe
-	    name=2022.03.31~ynh1
+	; commit=66aba621d331db1a90c527e920f622b06c18a842
+		name=2022.04.28~ynh1
+
