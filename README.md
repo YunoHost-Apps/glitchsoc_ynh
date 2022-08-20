@@ -43,6 +43,7 @@ See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
 **Shipped version:** 2022.08.01~ynh1
+
 ## Disclaimers / important information
 
 ⚠️ Glitch-Soc is beta software, and under active development. Use at your own risk!
