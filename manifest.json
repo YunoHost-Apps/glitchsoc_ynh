@@ -9,7 +9,7 @@
     "version": "2022.08.27~ynh1",
     "url": "https://github.com/glitch-soc/mastodon",
     "upstream": {
-        "license": "free",
+        "license": "AGPL-3.0-or-later",
         "website": "https://glitch-soc.github.io/docs/",
         "code": "https://github.com/glitch-soc/mastodon"
     },
