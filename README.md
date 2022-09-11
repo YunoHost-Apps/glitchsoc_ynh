@@ -42,7 +42,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Shipped version:** 2022.08.27~ynh1
+**Shipped version:** 2022.09.07~ynh1
 
 ## Disclaimers / important information
 
