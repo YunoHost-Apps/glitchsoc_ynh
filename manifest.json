@@ -6,10 +6,10 @@
         "en": "Libre and federated social network, fork of Mastodon",
         "fr": "Réseau social libre et fédéré, scission de Mastodon"
     },
-    "version": "2022.08.01~ynh1",
+    "version": "2022.10.21~ynh1",
     "url": "https://github.com/glitch-soc/mastodon",
     "upstream": {
-        "license": "free",
+        "license": "AGPL-3.0-or-later",
         "website": "https://glitch-soc.github.io/docs/",
         "code": "https://github.com/glitch-soc/mastodon"
     },
