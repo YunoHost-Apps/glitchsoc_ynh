@@ -9,7 +9,7 @@ pkg_dependencies="imagemagick ffmpeg libpq-dev libxml2-dev libxslt1-dev file git
 
 MEMORY_NEEDED="2560"
 
-RUBY_VERSION="3.0.3"
+RUBY_VERSION="3.0.4"
 
 NODEJS_VERSION="16"
 
