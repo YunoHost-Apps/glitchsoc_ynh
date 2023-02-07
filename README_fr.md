@@ -5,15 +5,15 @@ It shall NOT be edited by hand.
 
 # Glitch-Soc pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
 [![Installer Glitch-Soc avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer Glitch-Soc rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer Glitch-Soc rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 `glitch-soc` est une [scission](https://fr.wikipedia.org/wiki/Fork_(d%C3%A9veloppement_logiciel)) sympa du logiciel de réseau social libre [Mastodon](https://joinmastodon.org/), avec comme objectif de fournir des fonctionnalités supplémentaires, au risque d'un logiciel un peu moins stable.
 
@@ -62,8 +62,8 @@ Nous vous invitons à bloquer les instances malveillantes depuis l'interface d'a
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://glitch-soc.github.io/docs/>
-* Dépôt de code officiel de l'app : <https://github.com/glitch-soc/mastodon>
+* Site officiel de l’app : <https://glitch-soc.github.io/docs/>
+* Dépôt de code officiel de l’app : <https://github.com/glitch-soc/mastodon>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_glitchsoc>
 * Signaler un bug : <https://github.com/YunoHost-Apps/glitchsoc_ynh/issues>
 
@@ -79,4 +79,4 @@ ou
 sudo yunohost app upgrade glitchsoc -u https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>
