@@ -6,6 +6,7 @@ It shall NOT be edited by hand.
 # Glitch-Soc pour YunoHost
 
 [![Niveau d’intégration](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+
 [![Installer Glitch-Soc avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
 *[Read this readme in english.](./README.md)*
