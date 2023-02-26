@@ -6,7 +6,7 @@
         "en": "Libre and federated social network, fork of Mastodon",
         "fr": "Réseau social libre et fédéré, scission de Mastodon"
     },
-    "version": "2022.11.15~ynh1",
+    "version": "2023.02.20~ynh1",
     "url": "https://github.com/glitch-soc/mastodon",
     "upstream": {
         "license": "AGPL-3.0-or-later",
