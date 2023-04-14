@@ -2,14 +2,15 @@ diff --git a/app/controllers/application_controller.rb b/app/controllers/applica
 index 7c36bc6b8..3f691d102 100644
 --- a/app/controllers/application_controller.rb
 +++ b/app/controllers/application_controller.rb
-@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
+@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
+     if ENV['OMNIAUTH_ONLY'] == 'true' && ENV['OIDC_ENABLED'] == 'true'
+       '/auth/auth/openid_connect/logout'
+     else
+-      new_user_session_path
++      "https://#{File.read('/etc/yunohost/current_host')}/yunohost/sso/?action=logout"
+     end
    end
- 
-   def after_sign_out_path_for(_resource_or_scope)
--    new_user_session_path
-+    "https://#{File.read('/etc/yunohost/current_host')}/yunohost/sso/?action=logout"
-   end
- 
+
    def pack(data, pack_name, skin = 'default')
 diff --git a/config/initializers/devise.rb b/config/initializers/devise.rb
 index 5232e6cfd..160348674 100644
