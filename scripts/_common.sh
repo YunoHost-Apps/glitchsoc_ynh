@@ -5,7 +5,7 @@
 #=================================================
 
 # dependencies used by the app
-pkg_dependencies="imagemagick ffmpeg libpq-dev libxml2-dev libxslt1-dev file git-core g++ libprotobuf-dev protobuf-compiler pkg-config gcc autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3|libgdbm6 libgdbm-dev redis-server redis-tools postgresql postgresql-contrib libidn11-dev libicu-dev libjemalloc-dev curl apt-transport-https"
+#REMOVEME? pkg_dependencies="imagemagick ffmpeg libpq-dev libxml2-dev libxslt1-dev file git-core g++ libprotobuf-dev protobuf-compiler pkg-config gcc autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3|libgdbm6 libgdbm-dev redis-server redis-tools postgresql postgresql-contrib libidn11-dev libicu-dev libjemalloc-dev curl apt-transport-https"
 
 MEMORY_NEEDED="2560"
 
@@ -171,14 +171,14 @@ export rbenv_root="$rbenv_install_dir"
 # However, $PATH is duplicated into $ruby_path to outlast any manipulation of $PATH
 # You can use the variable `$ynh_ruby_load_path` to quickly load your Ruby version
 #  in $PATH for an usage into a separate script.
-# Exemple: $ynh_ruby_load_path $final_path/script_that_use_gem.sh`
+# Exemple: $ynh_ruby_load_path $install_dir/script_that_use_gem.sh`
 #
 #
 # Finally, to start a Ruby service with the correct version, 2 solutions
 #  Either the app is dependent of Ruby or gem, but does not called it directly.
 #  In such situation, you need to load PATH
 #    `Environment="__YNH_RUBY_LOAD_ENV_PATH__"`
-#    `ExecStart=__FINALPATH__/my_app`
+#    `ExecStart=__INSTALL_DIR__/my_app`
 #     You will replace __YNH_RUBY_LOAD_ENV_PATH__ with $ynh_ruby_load_path
 #
 #  Or Ruby start the app directly, then you don't need to load the PATH variable
@@ -193,10 +193,10 @@ export rbenv_root="$rbenv_install_dir"
 #
 # Requires YunoHost version 3.2.2 or higher.
 ynh_use_ruby () {
-    ruby_version=$(ynh_app_setting_get --app=$app --key=ruby_version)
+#REMOVEME?     ruby_version=$(ynh_app_setting_get --app=$app --key=ruby_version)
 
     # Get the absolute path of this version of Ruby
-    ruby_path="$ruby_version_path/$YNH_APP_INSTANCE_NAME/bin"
+#REMOVEME?     ruby_path="$ruby_version_path/$YNH_APP_INSTANCE_NAME/bin"
 
     # Allow alias to be used into bash script
     shopt -s expand_aliases
@@ -216,7 +216,7 @@ ynh_use_ruby () {
     ynh_ruby_load_path="PATH=$PATH"
 
     # Sets the local application-specific Ruby version
-    pushd $final_path
+    pushd $install_dir
         $rbenv_install_dir/bin/rbenv local $ruby_version
     popd
 }
@@ -354,16 +354,16 @@ ynh_install_ruby () {
     CONFIGURE_OPTS="--disable-install-doc --with-jemalloc" MAKE_OPTS="-j2" rbenv install --skip-existing $final_ruby_version > /dev/null 2>&1
 
     # Store ruby_version into the config of this app
-    ynh_app_setting_set --app=$YNH_APP_INSTANCE_NAME --key=ruby_version --value=$final_ruby_version
+#REMOVEME?     ynh_app_setting_set --app=$YNH_APP_INSTANCE_NAME --key=ruby_version --value=$final_ruby_version
 
     # Remove app virtualenv
-    if  `rbenv alias --list | grep --quiet "$YNH_APP_INSTANCE_NAME " 1>/dev/null 2>&1`
+#REMOVEME?     if  `rbenv alias --list | grep --quiet "$YNH_APP_INSTANCE_NAME " 1>/dev/null 2>&1`
     then
-        rbenv alias $YNH_APP_INSTANCE_NAME --remove
+#REMOVEME?         rbenv alias $YNH_APP_INSTANCE_NAME --remove
     fi
 
     # Create app virtualenv
-    rbenv alias $YNH_APP_INSTANCE_NAME $final_ruby_version
+#REMOVEME?     rbenv alias $YNH_APP_INSTANCE_NAME $final_ruby_version
 
     # Cleanup Ruby versions
     ynh_cleanup_ruby
@@ -385,7 +385,7 @@ eval \"\$(rbenv init -)\"
 #
 # usage: ynh_remove_ruby
 ynh_remove_ruby () {
-    local ruby_version=$(ynh_app_setting_get --app=$YNH_APP_INSTANCE_NAME --key=ruby_version)
+#REMOVEME? #REMOVEME?     local ruby_version=$(ynh_app_setting_get --app=$YNH_APP_INSTANCE_NAME --key=ruby_version)
 
     # Load rbenv path in PATH
     local CLEAR_PATH="$rbenv_install_dir/bin:$PATH"
@@ -393,10 +393,10 @@ ynh_remove_ruby () {
     # Remove /usr/local/bin in PATH in case of Ruby prior installation
     PATH=$(echo $CLEAR_PATH | sed 's@/usr/local/bin:@@')
 
-    rbenv alias $YNH_APP_INSTANCE_NAME --remove
+#REMOVEME?     rbenv alias $YNH_APP_INSTANCE_NAME --remove
 
     # Remove the line for this app
-    ynh_app_setting_delete --app=$YNH_APP_INSTANCE_NAME --key=ruby_version
+#REMOVEME?     ynh_app_setting_delete --app=$YNH_APP_INSTANCE_NAME --key=ruby_version
 
     # Cleanup Ruby versions
     ynh_cleanup_ruby
@@ -416,7 +416,7 @@ ynh_cleanup_ruby () {
     local required_ruby_versions=""
     for installed_app in $installed_apps
     do
-        local installed_app_ruby_version=$(ynh_app_setting_get --app=$installed_app --key="ruby_version")
+#REMOVEME?         local installed_app_ruby_version=$(ynh_app_setting_get --app=$installed_app --key="ruby_version")
         if [[ $installed_app_ruby_version ]]
         then
             required_ruby_versions="${installed_app_ruby_version}\n${required_ruby_versions}"
