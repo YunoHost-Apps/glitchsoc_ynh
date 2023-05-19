@@ -30,7 +30,7 @@ max_remote_emoji_size="204800"
 #=================================================
 # STORE SETTINGS
 #=================================================
-REMOVEME? ynh_script_progression --message="Storing installation settings..." --weight=1
+ynh_script_progression --message="Storing settings..." --weight=1
 
 ynh_app_setting_set --app=$app --key=language --value=$language
 ynh_app_setting_set --app=$app --key=max_toot_chars --value=$max_toot_chars
@@ -50,7 +50,7 @@ ynh_app_setting_set --app=$app --key=max_remote_emoji_size --value=$max_remote_e
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-REMOVEME? ynh_script_progression --message="Installing Ruby and NodeJS..." --weight=10
+ynh_script_progression --message="Installing Ruby and NodeJS..." --weight=10
 
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
 ynh_exec_warn_less ynh_install_ruby --ruby_version=$RUBY_VERSION
