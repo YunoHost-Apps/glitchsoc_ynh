@@ -5,7 +5,8 @@ It shall NOT be edited by hand.
 
 # Glitch-Soc for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![Working status](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![Working status](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+
 [![Install Glitch-Soc with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
 *[Lire ce readme en français.](./README_fr.md)*
@@ -42,7 +43,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Shipped version:** 2022.11.15~ynh1
+**Shipped version:** 2023.05.27~ynh1
 ## Disclaimers / important information
 
 ⚠️ Glitch-Soc is beta software, and under active development. Use at your own risk!
