@@ -21,8 +21,4 @@ test_format = 1.0
     # Commits to test upgrade from
     # -------------------------------
 
-    test_upgrade_from.614380ee.name = "Upgrade from 2022.04.28~ynh1"
-    test_upgrade_from.614380ee.args.domain="domain.tld"
-	test_upgrade_from.614380ee.args.admin="john"
-	test_upgrade_from.614380ee.args.language="fr_FR"
-	test_upgrade_from.614380ee.args.is_public=1
+    test_upgrade_from.d5def5c.name = "Upgrade from 2023.05.27~ynh2"

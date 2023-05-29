@@ -5,7 +5,7 @@ name = "Glitch-Soc"
 description.en = "Libre and federated social network, fork of Mastodon"
 description.fr = "Réseau social libre et fédéré, scission de Mastodon"
 
-version = "2023.05.27~ynh1"
+version = "2023.05.27~ynh2"
 
 maintainers = ["Tagada"]
 
