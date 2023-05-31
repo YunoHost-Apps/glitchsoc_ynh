@@ -9,44 +9,8 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-
 #=================================================
-# RETRIEVE SETTINGS
-#=================================================
-
-admin_mail=$(ynh_user_get_info $admin 'mail')
-max_toot_chars="500"
-max_pinned_toots="5"
-max_bio_chars="500"
-max_profile_fields="4"
-max_display_name_chars="30"
-max_poll_options="5"
-max_poll_option_chars="100"
-max_image_size="8388608"
-max_video_size="41943040"
-max_emoji_size="51200"
-max_remote_emoji_size="204800"
-
-#=================================================
-# STORE SETTINGS
-#=================================================
-ynh_script_progression --message="Storing settings..." --weight=1
-
-ynh_app_setting_set --app=$app --key=language --value=$language
-ynh_app_setting_set --app=$app --key=max_toot_chars --value=$max_toot_chars
-ynh_app_setting_set --app=$app --key=max_pinned_toots --value=$max_pinned_toots
-ynh_app_setting_set --app=$app --key=max_bio_chars --value=$max_bio_chars
-ynh_app_setting_set --app=$app --key=max_profile_fields --value=$max_profile_fields
-ynh_app_setting_set --app=$app --key=max_display_name_chars --value=$max_display_name_chars
-ynh_app_setting_set --app=$app --key=max_poll_options --value=$max_poll_options
-ynh_app_setting_set --app=$app --key=max_poll_option_chars --value=$max_poll_option_chars
-ynh_app_setting_set --app=$app --key=max_image_size --value=$max_image_size
-ynh_app_setting_set --app=$app --key=max_video_size --value=$max_video_size
-ynh_app_setting_set --app=$app --key=max_emoji_size --value=$max_emoji_size
-ynh_app_setting_set --app=$app --key=max_remote_emoji_size --value=$max_remote_emoji_size
-
-#=================================================
-# STANDARD MODIFICATIONS
+# APP "BUILD" (DEPLOYING SOURCES, VENV, COMPILING ETC)
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
@@ -65,35 +29,19 @@ ynh_setup_source --dest_dir="$install_dir/live"
 
 chown -R $app:www-data "$install_dir"
 
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Configuring NGINX web server..." --weight=1
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
-
-#=================================================
-# SPECIFIC SETUP
-#=================================================
-# ADD SWAP IF NEEDED
-#=================================================
-ynh_script_progression --message="Adding swap if needed..." --weight=1
-
+# Add swap if needed
 total_memory=$(ynh_get_ram --total)
 swap_needed=0
 
 if [ $total_memory -lt $MEMORY_NEEDED ]; then
 	# Need a minimum of 2.5Go of memory
 	swap_needed=$(($MEMORY_NEEDED - $total_memory))
+
+	ynh_script_progression --message="Adding $swap_needed Mo to swap..." --weight=1
+	ynh_add_swap --size=$swap_needed
 fi
 
-ynh_script_progression --message="Adding $swap_needed Mo to swap..." --weight=1
-ynh_add_swap --size=$swap_needed
-
-#=================================================
-# INSTALLING RUBY AND BUNDLER
-#=================================================
+# Installing Ruby and Bundler
 ynh_script_progression --message="Installing Ruby dependencies..." --weight=3
 
 pushd "$install_dir/live"
@@ -102,6 +50,41 @@ pushd "$install_dir/live"
 	ynh_gem install bundler --no-document
 popd
 
+# Installing Glitch-Soc
+ynh_script_progression --message="Installing Glitch-Soc..." --weight=5
+
+pushd "$install_dir/live"
+	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config deployment 'true'
+	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config without 'development test'
+	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
+	ynh_use_nodejs
+	ynh_exec_warn_less ynh_exec_as $app $ynh_node_load_PATH yarn install --pure-lockfile
+	echo "SAFETY_ASSURED=1">> $config
+	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails db:migrate --quiet
+	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:precompile --quiet
+popd
+
+#=================================================
+# SYSTEM CONFIGURATION
+#=================================================
+ynh_script_progression --message="Adding system configurations related to $app..." --weight=1
+
+# Create a dedicated NGINX config
+ynh_add_nginx_config
+
+# Create a dedicated systemd config
+ynh_add_systemd_config --service="$app-web" --template="web.service"
+ynh_add_systemd_config --service="$app-sidekiq" --template="sidekiq.service"
+ynh_add_systemd_config --service="$app-streaming" --template="streaming.service"
+
+yunohost service add "$app-web" --description="$app web service"
+yunohost service add "$app-sidekiq" --description="$app sidekiq service"
+yunohost service add "$app-streaming" --description="$app streaming service"
+
+ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
+
+#=================================================
+# APP INITIAL CONFIGURATION
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
@@ -120,15 +103,22 @@ ynh_app_setting_set --app="$app" --key=secret_key_base --value="$secret_key_base
 otp_secret=$(ynh_string_random --length=128)
 ynh_app_setting_set --app="$app" --key=otp_secret --value="$otp_secret"
 
-# We need rake to build vapid keys, we generate them later once the app is installed
-vapid_private_key=""
-vapid_public_key=""
+# Generate vapid keys
+pushd "$install_dir/live"
+	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rake mastodon:webpush:generate_vapid_key > key.txt
+popd
+vapid_private_key=$(grep -oP "VAPID_PRIVATE_KEY=\K.+" "$install_dir/live/key.txt")
+ynh_app_setting_set --app="$app" --key=vapid_private_key --value="$vapid_private_key"
+vapid_public_key=$(grep -oP "VAPID_PUBLIC_KEY=\K.+" "$install_dir/live/key.txt")
+ynh_app_setting_set --app="$app" --key=vapid_public_key --value="$vapid_public_key"
+ynh_secure_remove --file="$install_dir/live/key.txt"
 
 ynh_add_config --template="../conf/.env.production.sample" --destination="$config"
 
 chmod 400 "$config"
 chown $app:$app "$config"
 
+# Disable registration and invites
 ynh_replace_string --match_string="registrations_mode: 'open'" --replace_string="registrations_mode: 'none'" --target_file="$install_dir/live/config/settings.yml"
 ynh_replace_string --match_string="min_invite_role: 'admin'" --replace_string="min_invite_role: 'none'" --target_file="$install_dir/live/config/settings.yml"
 
@@ -138,65 +128,17 @@ chmod 400 "$install_dir/live/config/settings.yml"
 chown $app:$app "$install_dir/live/config/settings.yml"
 
 #=================================================
-# SETUP SYSTEMD
+# SETUP ADMIN USER
 #=================================================
-ynh_script_progression --message="Configuring a systemd service..." --weight=1
-
-# Create a dedicated systemd config
-ynh_add_systemd_config --service="$app-web" --template="glitchsoc-web.service"
-ynh_add_systemd_config --service="$app-sidekiq" --template="glitchsoc-sidekiq.service"
-ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streaming.service"
-
-#=================================================
-# INSTALLING GLITCH-SOC
-#=================================================
-ynh_script_progression --message="Installing Glitch-Soc..." --weight=5
+ynh_script_progression --message="Creating admin user..." --weight=1
 
 pushd "$install_dir/live"
-	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config deployment 'true'
-	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config without 'development test'
-	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
-	ynh_use_nodejs
-	ynh_exec_warn_less ynh_exec_as $app $ynh_node_load_PATH yarn install --pure-lockfile
-	echo "SAFETY_ASSURED=1">> $config
-	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails db:migrate --quiet
-	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:precompile --quiet
-	# Generate vapid keys
-	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rake mastodon:webpush:generate_vapid_key > key.txt
 	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/tootctl accounts create "$admin" --email="$admin_mail" --confirmed --role="Owner" > /dev/null
 	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/tootctl accounts modify "$admin" --approve
 popd
 
-# Store vapid keys as settings and generate config again
-vapid_private_key=$(grep -oP "VAPID_PRIVATE_KEY=\K.+" "$install_dir/live/key.txt")
-ynh_app_setting_set --app="$app" --key=vapid_private_key --value="$vapid_private_key"
-vapid_public_key=$(grep -oP "VAPID_PUBLIC_KEY=\K.+" "$install_dir/live/key.txt")
-ynh_app_setting_set --app="$app" --key=vapid_public_key --value="$vapid_public_key"
-ynh_secure_remove --file="$install_dir/live/key.txt"
-
-ynh_delete_file_checksum --file="$config"
-ynh_add_config --template="../conf/.env.production.sample" --destination="$config"
-chmod 400 "$config"
-chown $app:$app "$config"
-
-#=================================================
-# SETUP THE CRON FILE
-#=================================================
-ynh_script_progression --message="Setuping the cron file..." --weight=1
-
-ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
-
 #=================================================
 # GENERIC FINALIZATION
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
-
-yunohost service add "$app-web" --description="$app web service"
-yunohost service add "$app-sidekiq" --description="$app sidekiq service"
-yunohost service add "$app-streaming" --description="$app streaming service"
-
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
