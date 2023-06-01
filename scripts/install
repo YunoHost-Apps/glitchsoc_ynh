@@ -139,6 +139,7 @@ vapid_public_key=$(grep -oP "VAPID_PUBLIC_KEY=\K.+" "$install_dir/live/key.txt")
 ynh_app_setting_set --app="$app" --key=vapid_public_key --value="$vapid_public_key"
 ynh_secure_remove --file="$install_dir/live/key.txt"
 
+ynh_delete_file_checksum --file="$config"
 ynh_add_config --template="../conf/.env.production.sample" --destination="$config"
 
 chmod 400 "$config"
