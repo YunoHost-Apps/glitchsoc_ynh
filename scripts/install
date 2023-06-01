@@ -55,6 +55,7 @@ popd
 #=================================================
 ynh_script_progression --message="Adding a configuration file..." --weight=1
 
+admin_mail=$(ynh_user_get_info --username=$admin --key='mail')
 config="$install_dir/live/.env.production"
 
 language="$(echo $language | head -c 2)"

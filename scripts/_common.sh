@@ -8,8 +8,6 @@ MEMORY_NEEDED="2560"
 RUBY_VERSION="3.2.2"
 NODEJS_VERSION="16"
 
-admin_mail=$(ynh_user_get_info --username=$admin --key='mail')
-
 # Workaround for Mastodon on Bullseye
 # See https://github.com/mastodon/mastodon/issues/15751#issuecomment-873594463
 if [ "$(lsb_release --codename --short)" = "bullseye" ]; 

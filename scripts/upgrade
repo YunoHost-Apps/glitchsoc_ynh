@@ -9,6 +9,7 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+admin_mail=$(ynh_user_get_info --username=$admin --key='mail')
 config="$install_dir/live/.env.production"
 upgrade_type=$(ynh_check_app_version_changed)
 
