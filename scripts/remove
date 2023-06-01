@@ -50,6 +50,8 @@ ynh_remove_nodejs
 # Remove other various files specific to the app... such as :
 ynh_secure_remove --file="/etc/cron.d/$app"
 
+ynh_remove_logrotate
+
 # Remove swap
 ynh_del_swap
 

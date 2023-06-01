@@ -9,7 +9,6 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-admin_mail=$(ynh_user_get_info --username=$admin --key='mail')
 config="$install_dir/live/.env.production"
 upgrade_type=$(ynh_check_app_version_changed)
 
@@ -138,6 +137,12 @@ yunohost service add "$app-streaming" --description="$app streaming service"
 
 ynh_add_systemd_config
 
+ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
+
+ynh_use_logrotate --logfile=/var/log/__APP__/__APP__-sidekiq.log
+ynh_use_logrotate --logfile=/var/log/__APP__/__APP__-streaming.log
+ynh_use_logrotate --logfile=/var/log/__APP__/__APP__-web.log
+
 #=================================================
 # RECONFIGURE THE APP (UPDATE CONF, APPLY MIGRATIONS...)
 #=================================================
@@ -150,8 +155,6 @@ language="$(echo $language | head -c 2)"
 ynh_add_config --template="../conf/.env.production.sample" --destination="$config"
 chmod 400 "$config"
 chown $app:$app "$config"
-
-ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
 
 #=================================================
 # START SYSTEMD SERVICE

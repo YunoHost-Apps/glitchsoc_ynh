@@ -78,6 +78,10 @@ yunohost service add "$app-streaming" --description="$app streaming service"
 
 # Other various files...
 
+ynh_use_logrotate --logfile=/var/log/__APP__/__APP__-sidekiq.log
+ynh_use_logrotate --logfile=/var/log/__APP__/__APP__-streaming.log
+ynh_use_logrotate --logfile=/var/log/__APP__/__APP__-web.log
+
 ynh_restore_file --origin_path="/etc/cron.d/$app"
 
 #=================================================

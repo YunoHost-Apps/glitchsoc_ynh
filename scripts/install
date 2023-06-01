@@ -121,6 +121,10 @@ yunohost service add "$app-streaming" --description="$app streaming service"
 
 ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
 
+ynh_use_logrotate --logfile=/var/log/__APP__/__APP__-sidekiq.log
+ynh_use_logrotate --logfile=/var/log/__APP__/__APP__-streaming.log
+ynh_use_logrotate --logfile=/var/log/__APP__/__APP__-web.log
+
 #=================================================
 # APP INITIAL CONFIGURATION
 #=================================================
