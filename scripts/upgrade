@@ -55,6 +55,17 @@ if [[ -z "$redis_namespace" ]]; then
 	ynh_app_setting_set --app=$app --key=redis_namespace --value=$redis_namespace
 fi
 
+# Rename the database to match packaging v2 defaults db_name
+if [[ $db_name = *'_production' ]]; then
+	ynh_systemd_action --service_name=${app}-web --action="stop" --log_path=systemd --line_match="Stopped"
+	ynh_systemd_action --service_name=${app}-sidekiq --action="stop" --log_path=systemd --line_match="Stopped"
+	ynh_systemd_action --service_name=${app}-streaming --action="stop" --log_path=systemd --line_match="Stopped"
+
+	ynh_psql_execute_as_root --sql="ALTER DATABASE $db_name RENAME TO $app;"
+	db_name=$app
+	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
+fi
+
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
