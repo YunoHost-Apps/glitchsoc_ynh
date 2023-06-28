@@ -55,7 +55,7 @@ if [[ -z "$redis_namespace" ]]; then
 	ynh_app_setting_set --app=$app --key=redis_namespace --value=$redis_namespace
 fi
 
-# Rename the database to match packaging v2 defaults db_name
+# Rename the database to match packaging v2 defaults db_name (`$app_production` to `$app`)
 if [[ $db_name = *'_production' ]]; then
 	ynh_systemd_action --service_name=${app}-web --action="stop" --log_path=systemd --line_match="Stopped"
 	ynh_systemd_action --service_name=${app}-sidekiq --action="stop" --log_path=systemd --line_match="Stopped"
@@ -64,6 +64,11 @@ if [[ $db_name = *'_production' ]]; then
 	ynh_psql_execute_as_root --sql="ALTER DATABASE $db_name RENAME TO $app;"
 	db_name=$app
 	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
+fi
+
+if ynh_compare_current_package_version --comparison lt --version 2023.06.19~ynh2
+then
+    ynh_remove_logrotate
 fi
 
 #=================================================
@@ -77,6 +82,13 @@ ynh_systemd_action --service_name=${app}-streaming --action="stop" --log_path=sy
 
 #=================================================
 # "REBUILD" THE APP (DEPLOY NEW SOURCES, RERUN NPM BUILD...)
+#=================================================
+# Update Ruby and NodeJS
+ynh_script_progression --message="Upgrading Ruby and NodeJS..." --weight=5
+
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
+ynh_exec_warn_less ynh_install_ruby --ruby_version=$RUBY_VERSION
+
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
@@ -103,12 +115,6 @@ then
 	chmod 750 "$install_dir"
 	chmod -R o-rwx "$install_dir"
 	chown -R $app:www-data "$install_dir"
-
-	# Update Ruby and NodeJS
-	ynh_script_progression --message="Upgrading Ruby and NodeJS..." --weight=10
-
-	ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
-	ynh_exec_warn_less ynh_install_ruby --ruby_version=$RUBY_VERSION
 
 	pushd "$install_dir/live"
 		ynh_use_ruby
@@ -150,9 +156,6 @@ yunohost service add "$app-streaming" --description="$app streaming service"
 ynh_add_systemd_config
 
 ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
-
-mkdir -p "/var/log/$app"
-ynh_use_logrotate
 
 #=================================================
 # RECONFIGURE THE APP (UPDATE CONF, APPLY MIGRATIONS...)
