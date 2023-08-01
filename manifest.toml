@@ -42,12 +42,6 @@ ram.runtime = "1G"
     type = "group"
     default = "visitors"
 
-    [install.init_api_permission]
-    help.en = "visitors group is needed to be able to use thrid party clients."
-    help.fr = "Le groupe visitors est nécessaire pour pouvoir utiliser des clients tiers."
-    type = "group"
-    default = "visitors"
-
     [install.language]
     ask.en = "Choose the application language"
     ask.fr = "Choisissez la langue de l'application"
