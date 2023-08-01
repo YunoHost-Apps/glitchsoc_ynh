@@ -13,7 +13,8 @@ ExecStart=__RBENV_ROOT__/versions/__APP__/bin/bundle exec puma -C config/puma.rb
 ExecReload=/bin/kill -SIGUSR1 $MAINPID
 TimeoutSec=15
 Restart=always
-StandardError=syslog
+StandardOutput=append:/var/log/__APP__/__APP__-web.log
+StandardError=inherit
 
 # Sandboxing options to harden security
 # Depending on specificities of your service/app, you may need to tweak these 
