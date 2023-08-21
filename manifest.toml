@@ -13,8 +13,6 @@ maintainers = ["Tagada"]
 license = "AGPL-3.0-or-later"
 website = "https://glitch-soc.github.io/docs/"
 code = "https://github.com/glitch-soc/mastodon"
-cpe = "???" # XXX: No CPE yet... The CPE may be obtained by searching here: https://nvd.nist.gov/products/cpe/search
-fund = "???" # XXX: Nothing yet...
 
 [integration]
 yunohost = ">= 11.1"
