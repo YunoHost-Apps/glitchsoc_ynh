@@ -35,7 +35,7 @@ ram.runtime = "1G"
     type = "user"
 
     [install.init_main_permission]
-    help.en = "visitors group is needed for federation."
+    help.en = "Visitors group is needed for federation."
     help.fr = "Le groupe visitors est nécessaire pour la fédération."
     type = "group"
     default = "visitors"
