@@ -44,7 +44,6 @@ Voir plus [sur la documentation](https://glitch-soc.github.io/docs/) (en anglais
 
 
 **Version incluse :** 2023.08.29~ynh1
-
 ## Avertissements / informations importantes
 
 Glitch-Soc est en constant développement, fournis avec les dernières fonctionnalités (incluant les derniers bugs).
