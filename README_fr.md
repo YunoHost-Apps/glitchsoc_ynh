@@ -43,7 +43,7 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 Voir plus [sur la documentation](https://glitch-soc.github.io/docs/) (en anglais).
 
 
-**Version incluse :** 2023.09.19~ynh1
+**Version incluse :** 2023.09.26~ynh1
 ## Avertissements / informations importantes
 
 Glitch-Soc est en constant développement, fournis avec les dernières fonctionnalités (incluant les derniers bugs).
@@ -65,7 +65,6 @@ Nous vous invitons à bloquer les instances malveillantes depuis l'interface d'a
 
 * Site officiel de l’app : <https://glitch-soc.github.io/docs/>
 * Dépôt de code officiel de l’app : <https://github.com/glitch-soc/mastodon>
-* Documentation YunoHost pour cette app : <https://yunohost.org/app_glitchsoc>
 * Signaler un bug : <https://github.com/YunoHost-Apps/glitchsoc_ynh/issues>
 
 ## Informations pour les développeurs
