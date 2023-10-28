@@ -19,12 +19,12 @@ Vous devriez réfléchir à vider votre cache local avant de faire une sauvegard
 
 Pour vérifier l'utilisation du stockage, en ligne de commande utilisez :
 
-`$ sudo cd /var/www/glitchsoc/live && sudo -u glitchsoc RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media usage`
+`$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media usage`
 
 Si le cache est trop gros pour être sauvegardé, vous pouvez lancer la commande suivante pour en supprimer les médias attachés. Changez `X` par le nombre de cache à conserver, par ex. 1 jour. Tous les médias plus anciens seront supprimés, mais ils pourront être rechargé du serveur d'origine si nécessaire.
 
 En premier faite un essai à blanc pour voir combien de place sera libérée (sans rien supprimer):
-`$ sudo cd /var/www/glitchsoc/live && sudo -u glitchsoc RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media remove --days=X --dry-run`
+`$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media remove --days=X --dry-run`
 
 Si cela semble bon, effectuez le nettoyage :
-`$ sudo cd /var/www/glitchsoc/live && sudo -u glitchsoc RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media remove --days=X `
+`$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media remove --days=X `
