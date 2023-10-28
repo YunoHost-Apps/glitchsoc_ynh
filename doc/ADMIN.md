@@ -9,7 +9,7 @@ See [tutorial](https://www.howtogeek.com/662422/how-to-use-linuxs-screen-command
 
 ```
 $ screen
-$ sudo yunohost app upgrade glitchsoc
+$ sudo yunohost app upgrade __APP__
 ```
 
 ## Backups
