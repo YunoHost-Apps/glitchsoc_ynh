@@ -1,6 +1,6 @@
 ## Administration avec tooctl
 
-`$ cd /var/www/glitchsoc/live && sudo -u glitchsoc RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl --help`
+`$ cd  __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl --help`
 
 ## Mise à jour
 
