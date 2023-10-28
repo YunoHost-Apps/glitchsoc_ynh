@@ -25,7 +25,6 @@ max_image_size="8388608"
 max_video_size="41943040"
 max_emoji_size="51200"
 max_remote_emoji_size="204800"
-ynh_app_setting_set --app=$app --key=language --value=$language
 ynh_app_setting_set --app=$app --key=max_toot_chars --value=$max_toot_chars
 ynh_app_setting_set --app=$app --key=max_pinned_toots --value=$max_pinned_toots
 ynh_app_setting_set --app=$app --key=max_bio_chars --value=$max_bio_chars
