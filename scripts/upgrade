@@ -25,7 +25,7 @@ ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
 ynh_app_setting_delete --app=$app --key=paperclip_secret
 
 # If secret_key_base doesn't exist, retrieve it or create it
-if [[ -z "$secret_key_base" ]]; then
+if [[ -z "${secret_key_base:-}" ]]; then
 	secret_key_base=$(grep -oP "SECRET_KEY_BASE=\K\w+" $config)
 	if [[ -z "$secret_key_base" ]]; then
 		secret_key_base=$(ynh_string_random --length=128)
@@ -34,7 +34,7 @@ if [[ -z "$secret_key_base" ]]; then
 fi
 
 # If otp_secret doesn't exist, retrieve it or create it
-if [[ -z "$otp_secret" ]]; then
+if [[ -z "${otp_secret:-}" ]]; then
 	otp_secret=$(grep -oP "OTP_SECRET=\K\w+" $config)
 	if [[ -z "$otp_secret" ]]; then
 		otp_secret=$(ynh_string_random --length=128)
@@ -43,7 +43,7 @@ if [[ -z "$otp_secret" ]]; then
 fi
 
 # If vapid_private_key doesn't exist, retrieve it or create it
-if [[ -z "$vapid_private_key" ]]; then
+if [[ -z "${vapid_private_key:-}" ]]; then
 	vapid_private_key=$(grep -oP "VAPID_PRIVATE_KEY=\K.+" $config)
 	vapid_public_key=$(grep -oP "VAPID_PUBLIC_KEY=\K.+" $config)
 	ynh_app_setting_set "$app" vapid_private_key "$vapid_private_key"
@@ -51,68 +51,68 @@ if [[ -z "$vapid_private_key" ]]; then
 fi
 
 # If redis_namespace doesn't exist, create it
-if [[ -z "$redis_namespace" ]]; then
+if [[ -z "${redis_namespace:-}" ]]; then
 	redis_namespace=${app}_production
 	ynh_app_setting_set --app=$app --key=redis_namespace --value=$redis_namespace
 fi
 
-if [ -z "$max_toot_chars" ]; then
+if [ -z "${max_toot_chars:-}" ]; then
 	max_toot_chars="500"
 	ynh_app_setting_set --app=$app --key=max_toot_chars --value=$max_toot_chars
 fi
 
-if [ -z "$max_pinned_toots" ]; then
+if [ -z "${max_pinned_toots:-}" ]; then
 	max_pinned_toots="5"
 	ynh_app_setting_set --app=$app --key=max_pinned_toots --value=$max_pinned_toots
 fi
 
-if [ -z "$max_bio_chars" ]; then
+if [ -z "${max_bio_chars:-}" ]; then
 	max_bio_chars="500"
 	ynh_app_setting_set --app=$app --key=max_bio_chars --value=$max_bio_chars
 fi
 
-if [ -z "$max_profile_fields" ]; then
+if [ -z "${max_profile_fields:-}" ]; then
 	max_profile_fields="4"
 	ynh_app_setting_set --app=$app --key=max_profile_fields --value=$max_profile_fields
 fi
 
-if [ -z "$max_display_name_chars" ]; then
+if [ -z "${max_display_name_chars:-}" ]; then
 	max_display_name_chars="30"
 	ynh_app_setting_set --app=$app --key=max_display_name_chars --value=$max_display_name_chars
 fi
 
-if [ -z "$max_poll_options" ]; then
+if [ -z "${max_poll_options:-}" ]; then
 	max_poll_options="5"
 	ynh_app_setting_set --app=$app --key=max_poll_options --value=$max_poll_options
 fi
 
-if [ -z "$max_poll_option_chars" ]; then
+if [ -z "${max_poll_option_chars:-}" ]; then
 	max_poll_option_chars="100"
 	ynh_app_setting_set --app=$app --key=max_poll_option_chars --value=$max_poll_option_chars
 fi
 
-if [ -z "$max_image_size" ]; then
+if [ -z "${max_image_size:-}" ]; then
 	max_image_size="8388608"
 	ynh_app_setting_set --app=$app --key=max_image_size --value=$max_image_size
 fi
 
-if [ -z "$max_video_size" ]; then
+if [ -z "${max_video_size:-}" ]; then
 	max_video_size="41943040"
 	ynh_app_setting_set --app=$app --key=max_video_size --value=$max_video_size
 fi
 
-if [ -z "$max_emoji_size" ]; then
+if [ -z "${max_emoji_size:-}" ]; then
 	max_emoji_size="51200"
 	ynh_app_setting_set --app=$app --key=max_emoji_size --value=$max_emoji_size
 fi
 
-if [ -z "$max_remote_emoji_size" ]; then
+if [ -z "${max_remote_emoji_size:-}" ]; then
 	max_remote_emoji_size="204800"
 	ynh_app_setting_set --app=$app --key=max_remote_emoji_size --value=$max_remote_emoji_size
 fi
 
 # If service doesn't exist, create it
-if [[ -z "$service" ]]; then
+if [[ -z "${service:-}" ]]; then
 	# Set `service` settings to support `yunohost app shell` command
 	ynh_app_setting_set --app="$app" --key=service --value="$app-web.service"
 fi
