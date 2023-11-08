@@ -43,7 +43,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Shipped version:** 2023.10.21~ynh1
+**Shipped version:** null~ynh1
 ## Disclaimers / important information
 
 ⚠️ Glitch-Soc is beta software, and under active development. Use at your own risk!
@@ -65,6 +65,7 @@ We invite you to block remote malicious instances from the administration interf
 
 * Official app website: <https://glitch-soc.github.io/docs/>
 * Upstream app code repository: <https://github.com/glitch-soc/mastodon>
+* YunoHost Store: <https://apps.yunohost.org/app/glitchsoc>
 * Report a bug: <https://github.com/YunoHost-Apps/glitchsoc_ynh/issues>
 
 ## Developer info
