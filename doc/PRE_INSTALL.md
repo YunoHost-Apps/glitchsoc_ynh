@@ -12,7 +12,7 @@ Glitch-Soc's install can be long, depending on the server performance. To preven
 ```
 $ sudo apt-get install screen
 $ screen
-$ sudo yunohost app install https://github.com/YunoHost-Apps/glitchsoc_ynh.git
+$ sudo yunohost app install glitchsoc
 ```
 Recover after disconnect:
 ```
