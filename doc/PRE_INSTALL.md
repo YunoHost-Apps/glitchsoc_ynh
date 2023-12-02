@@ -8,9 +8,6 @@
 
 ## Using *screen* in case of disconnect
 
-
-L'installation de Glitch-Soc peut être longue, selon les performances du serveur. Pour éviter que le processus soit interrompu par une déconnexion, on peut utiliser `screen`.
-
 Glitch-Soc's install can be long, depending on the server performance. To prevent the process from being stopped because of disconnect, you can use a `screen` session
 ```
 $ sudo apt-get install screen
