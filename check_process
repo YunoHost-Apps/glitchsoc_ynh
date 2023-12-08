@@ -12,8 +12,8 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
-		# 2023.07.22~ynh1
-		upgrade=1	from_commit=b1e08ae563686ecd0bfb98eba1537cb1e76d264d
+		# 2023.12.06~ynh1
+		upgrade=1	from_commit=5261944ceaea7db55468f41d600984e49d6faf0d
 		backup_restore=1
 		multi_instance=0
 		port_already_use=0
