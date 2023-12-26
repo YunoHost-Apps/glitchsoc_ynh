@@ -11,7 +11,7 @@ MEMORY_NEEDED="2560"
 
 RUBY_VERSION="3.2.2"
 
-NODEJS_VERSION="18"
+NODEJS_VERSION="16"
 
 # Workaround for Mastodon on Bullseye
 # See https://github.com/mastodon/mastodon/issues/15751#issuecomment-873594463
