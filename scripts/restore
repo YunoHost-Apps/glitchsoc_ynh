@@ -80,7 +80,6 @@ ynh_script_progression --message="Reinstalling dependencies..." --weight=10
 # Define and install dependencies
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
-ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
 ynh_install_ruby --ruby_version=$RUBY_VERSION
 
 #=================================================
