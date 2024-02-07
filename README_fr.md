@@ -43,7 +43,7 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 Voir plus [sur la documentation](https://glitch-soc.github.io/docs/) (en anglais).
 
 
-**Version incluse :** 2023.12.18~ynh1
+**Version incluse :** 2024.02.06~ynh1
 ## Avertissements / informations importantes
 
 Glitch-Soc est en constant développement, fournis avec les dernières fonctionnalités (incluant les derniers bugs).
