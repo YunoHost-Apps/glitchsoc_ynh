@@ -9,9 +9,9 @@ pkg_dependencies="imagemagick ffmpeg libpq-dev libxml2-dev libxslt1-dev file git
 
 MEMORY_NEEDED="2560"
 
-RUBY_VERSION="3.2.2"
+RUBY_VERSION="3.2.3"
 
-NODEJS_VERSION="16"
+NODEJS_VERSION="20"
 
 # Workaround for Mastodon on Bullseye
 # See https://github.com/mastodon/mastodon/issues/15751#issuecomment-873594463
