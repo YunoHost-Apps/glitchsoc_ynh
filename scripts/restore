@@ -80,7 +80,6 @@ ynh_script_progression --message="Reinstalling dependencies..." --weight=10
 # Define and install dependencies
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
-ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
 ynh_install_ruby --ruby_version=$RUBY_VERSION
 
 #=================================================
@@ -110,7 +109,7 @@ ynh_script_progression --message="Adding $swap_needed Mo to swap..." --weight=1
 ynh_add_swap --size=$swap_needed
 
 #=================================================
-# INSTALLING RUBY AND BUNDLER
+# INSTALLING RUBY, BUNDLER, AND YARN
 #=================================================
 ynh_script_progression --message="Installing Ruby dependencies..." --weight=10
 
@@ -118,6 +117,13 @@ pushd "$final_path/live"
 	ynh_use_ruby
 	ynh_gem update --system --no-document
 	ynh_gem install bundler --no-document
+popd
+
+ynh_script_progression --message="Installing Yarn dependencies..." --weight=10
+
+pushd "$final_path/live"
+	corepack enable
+	yarn install
 popd
 
 #=================================================
