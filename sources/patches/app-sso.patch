@@ -25,10 +25,10 @@ index 5232e6cfd..160348674 100644
  
    # If 401 status code should be returned for AJAX requests. True by default.
    # config.http_authenticatable_on_xhr = true
-diff --git a/lib/devise/two_factor_ldap_authenticatable.rb b/lib/devise/two_factor_ldap_authenticatable.rb
+diff --git a/lib/devise/strategies/two_factor_ldap_authenticatable.rb b/lib/devise/strategies/two_factor_ldap_authenticatable.rb
 index 065aa2de8..0eb4be10c 100644
---- a/lib/devise/two_factor_ldap_authenticatable.rb
-+++ b/lib/devise/two_factor_ldap_authenticatable.rb
+--- a/lib/devise/strategies/two_factor_ldap_authenticatable.rb
++++ b/lib/devise/strategies/two_factor_ldap_authenticatable.rb
 @@ -5,13 +5,13 @@ require 'devise/strategies/base'
  
  module Devise
