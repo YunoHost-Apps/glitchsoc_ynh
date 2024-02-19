@@ -1,7 +1,7 @@
-SOURCE_URL=https://github.com/glitch-soc/mastodon/archive/c0279385d70202bb3ee2b7e277e558ec1245cc7a.tar.gz
-SOURCE_SUM=18a1c5ac55c83e76b303d1af0894b03e20f684f7fff1b7dda12d889bc7a85a01
+SOURCE_URL=https://github.com/glitch-soc/mastodon/archive/bbecf1c56b12fc2fa3c980d30a66e46903d12b7a.tar.gz
+SOURCE_SUM=5206f243138f6492db267117782d3b66d363179b936d4ad7ec7bfb6e127e37c4
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=c0279385d70202bb3ee2b7e277e558ec1245cc7a.tar.gz
+SOURCE_FILENAME=bbecf1c56b12fc2fa3c980d30a66e46903d12b7a.tar.gz
 SOURCE_EXTRACT=true
