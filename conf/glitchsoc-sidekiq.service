@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=__APP__
-WorkingDirectory=__FINALPATH__/live
+WorkingDirectory=__INSTALL_DIR__/live
 Environment="__LD_PRELOAD__"
 Environment="RAILS_ENV=production"
 Environment="DB_POOL=25"
@@ -23,17 +23,17 @@ StandardError=syslog
 # can't deliver mail to YunoHost users. See #30 -Tagada
 NoNewPrivileges=no
 PrivateTmp=yes
-#PrivateDevices=yes
-#RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
-#RestrictNamespaces=yes
-#RestrictRealtime=yes
+PrivateDevices=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+RestrictNamespaces=yes
+RestrictRealtime=yes
 DevicePolicy=closed
 ProtectSystem=full
 ProtectControlGroups=yes
-#ProtectKernelModules=yes
-#ProtectKernelTunables=yes
-#LockPersonality=yes
-#SystemCallFilter=~@clock @debug @module @mount @obsolete @reboot @setuid @swap
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+LockPersonality=yes
+SystemCallFilter=~@clock @debug @module @mount @obsolete @reboot @setuid @swap
 
 # Denying access to capabilities that should not be relevant for webapps
 # Doc: https://man7.org/linux/man-pages/man7/capabilities.7.html
