@@ -65,7 +65,7 @@ chown -R $app:www-data "$install_dir"
 ynh_script_progression --message="Installing Ruby and NodeJS..." --weight=1
 
 ynh_exec_warn_less ynh_install_ruby --ruby_version=$RUBY_VERSION
-ynh_exec_warn_less ynh_install_nodejs --NODEJS_VERSION=$NODEJS_VERSION
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
 
 #=================================================
 # ADD SWAP IF NEEDED

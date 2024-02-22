@@ -55,7 +55,7 @@ ynh_add_swap --size=$swap_needed
 ynh_script_progression --message="Reinstalling Ruby and NodeJS..." --weight=1
 
 ynh_exec_warn_less ynh_install_ruby --ruby_version=$RUBY_VERSION
-ynh_exec_warn_less ynh_install_nodejs --NODEJS_VERSION=$NODEJS_VERSION
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
 
 ynh_script_progression --message="Installing Yarn dependencies..." --weight=10
 
