@@ -64,8 +64,8 @@ chown -R $app:www-data "$install_dir"
 #=================================================
 ynh_script_progression --message="Installing Ruby and NodeJS..." --weight=1
 
-ynh_exec_warn_less ynh_install_ruby --ruby_version=$RUBY_VERSION
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
+ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
 # ADD SWAP IF NEEDED
@@ -75,12 +75,13 @@ ynh_script_progression --message="Adding swap if needed..." --weight=1
 total_memory=$(ynh_get_ram --total)
 swap_needed=0
 
-if [ $total_memory -lt $MEMORY_NEEDED ]; then
+if [ $total_memory -lt $memory_needed ]; then
 	# Need a minimum of 2.5Go of memory
-	swap_needed=$(($MEMORY_NEEDED - $total_memory))
+	swap_needed=$(($memory_needed - $total_memory))
 fi
 
-ynh_script_progression --message="Adding $swap_needed Mo to swap..."
+ynh_script_progression --message="Adding $swap_needed Mo to swap..." --weight=1
+
 ynh_add_swap --size=$swap_needed
 
 #=================================================
@@ -105,7 +106,7 @@ ynh_app_setting_set --app="$app" --key=otp_secret --value="$otp_secret"
 vapid_private_key=""
 vapid_public_key=""
 
-ynh_add_config --template="../conf/.env.production.sample" --destination="$config"
+ynh_add_config --template=".env.production.sample" --destination="$config"
 chmod 400 "$config"
 chown $app:$app "$config"
 
@@ -151,7 +152,7 @@ vapid_public_key=$(grep -oP "VAPID_PUBLIC_KEY=\K.+" "$install_dir/live/key.txt")
 ynh_app_setting_set --app="$app" --key=vapid_public_key --value="$vapid_public_key"
 ynh_secure_remove --file="$install_dir/live/key.txt"
 ynh_delete_file_checksum --file="$config"
-ynh_add_config --template="../conf/.env.production.sample" --destination="$config"
+ynh_add_config --template=".env.production.sample" --destination="$config"
 chmod 400 "$config"
 chown $app:$app "$config"
 
@@ -174,7 +175,7 @@ ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streamin
 yunohost service add "$app-streaming" --description="$app streaming service"
 
 # Create a cron file
-ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
+ynh_add_config --template="cron" --destination="/etc/cron.d/$app"
 
 # Use logrotate to manage application logfile(s)
 mkdir -p /var/log/$app
@@ -190,7 +191,7 @@ ynh_script_progression --message="Starting all systemd services..." --weight=1
 
 ynh_systemd_action --service_name=${app}-web --action="start" --log_path=/var/log/$app/$app-web.log --line_match="Listening on"
 ynh_systemd_action --service_name=${app}-sidekiq --action="start" --log_path=/var/log/$app/$app-sidekiq.log --line_match="Schedules Loaded"
-ynh_systemd_action --service_name=${app}-streaming --action="start" --log_path=/var/log/$app/$app-streaming.log --line_match="Streaming API now listening on"
+ynh_systemd_action --service_name=${app}-streaming --action="start" --log_path=/var/log/$app/$app-streaming.log --line_match="Streaming API now listening"
 
 #=================================================
 # END OF SCRIPT

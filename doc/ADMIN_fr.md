@@ -27,4 +27,8 @@ En premier faite un essai à blanc pour voir combien de place sera libérée (sa
 `$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media remove --days=X --dry-run`
 
 Si cela semble bon, effectuez le nettoyage :
-`$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media remove --days=X `
+`$ sudo cd /var/www/mastodon/live && sudo -u mastodon RAILS_ENV=production PATH=/opt/rbenv/versions/mastodon/bin bin/tootctl media remove --days=X `
+
+## Bugs connus
+
+- Se déconnecter depuis le portail YunoHost ne vous déconnecte pas de Mastodon. Voir https://github.com/YunoHost/issues/issues/501

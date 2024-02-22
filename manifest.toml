@@ -18,22 +18,20 @@ code = "https://github.com/glitch-soc/mastodon"
 yunohost = ">= 11.2"
 architectures = "all"
 multi_instance = true
+
 ldap = true
-sso = true
+
+sso = false
+
 disk = "2G"
-ram.build = "4G"
-ram.runtime = "1G"
+ram.build = "1G"
+ram.runtime = "500M"
 
 [install]
     [install.domain]
     type = "domain"
 
-    [install.admin]
-    type = "user"
-
     [install.init_main_permission]
-    help.en = "Visitors group is needed for federation."
-    help.fr = "Le groupe visitors est nécessaire pour la fédération."
     type = "group"
     default = "visitors"
 
@@ -44,7 +42,11 @@ ram.runtime = "1G"
     choices = ["en_EN", "fr_FR"]
     default = "fr_FR"
 
+    [install.admin]
+    type = "user"
+
 [resources]
+    [resources.sources]
         [resources.sources.main]
         url = "https://github.com/glitch-soc/mastodon/archive/3341db939cd077820ad598b0445d02ab2382eaf4.tar.gz"
         sha256 = "abf095bbf7f879d35b3e62f3fd4f339ff99b6aac98023fcc836baccfe91a0b97"
@@ -70,7 +72,7 @@ ram.runtime = "1G"
     stream.default = 4000
 
     [resources.apt]
-    packages = "imagemagick, ffmpeg, libpq-dev, libxml2-dev, libxslt1-dev, file, git-core, g++, libprotobuf-dev, protobuf-compiler, pkg-config, gcc, autoconf, bison, build-essential, libssl-dev, libyaml-dev, libreadline6-dev, zlib1g-dev, libncurses5-dev, libffi-dev, libgdbm6, libgdbm-dev, redis-server, redis-tools, postgresql, postgresql-contrib, libidn11-dev, libicu-dev, libjemalloc-dev, curl, apt-transport-https"
+    packages = "imagemagick, ffmpeg, libpq-dev, libxml2-dev, libxslt1-dev, file, git, git-core, g++, libprotobuf-dev, protobuf-compiler, pkg-config, gcc, autoconf, bison, build-essential, libssl-dev, libyaml-dev, libreadline6-dev, zlib1g-dev, libncurses5-dev, libffi-dev, libgdbm6, libgdbm-dev, redis-tools, redis-server, postgresql, postgresql-contrib, libidn11-dev, libicu-dev, libjemalloc-dev, curl, apt-transport-https"
 
         [resources.apt.extras.yarn]
         repo = "deb https://dl.yarnpkg.com/debian/ stable main"

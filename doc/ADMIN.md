@@ -29,4 +29,8 @@ First dry-run to see how much space is freed up (without actually removing):
 
 If all looks good commit the cleanup:
 
-`$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media remove --days=X `
+`$ sudo cd /var/www/mastodon/live && sudo -u mastodon RAILS_ENV=production PATH=/opt/rbenv/versions/mastodon/bin bin/tootctl media remove --days=X `
+
+## Known Bugs
+
+- Log-out from YunoHost's portal doesn't log out from Mastodon. See https://github.com/YunoHost/issues/issues/501
