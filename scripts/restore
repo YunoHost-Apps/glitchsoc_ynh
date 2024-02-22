@@ -41,9 +41,9 @@ ynh_script_progression --message="Adding swap if needed..." --weight=1
 total_memory=$(ynh_get_ram --total)
 swap_needed=0
 
-if [ $total_memory -lt $memory_needed ]; then
+if [ $total_memory -lt $MEMORY_NEEDED ]; then
 	# Need a minimum of 8Go of memory
-	swap_needed=$(($memory_needed - $total_memory))
+	swap_needed=$(($MEMORY_NEEDED - $total_memory))
 fi
 
 ynh_script_progression --message="Adding $swap_needed Mo to swap..." --weight=1
@@ -54,8 +54,8 @@ ynh_add_swap --size=$swap_needed
 #=================================================
 ynh_script_progression --message="Reinstalling Ruby and NodeJS..." --weight=1
 
-ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+ynh_exec_warn_less ynh_install_ruby --RUBY_VERSION=$RUBY_VERSION
+ynh_exec_warn_less ynh_install_nodejs --NODEJS_VERSION=$NODEJS_VERSION
 
 ynh_script_progression --message="Installing Yarn dependencies..." --weight=10
 
