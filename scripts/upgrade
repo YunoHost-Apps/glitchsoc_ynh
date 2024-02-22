@@ -141,35 +141,40 @@ ynh_systemd_action --service_name=${app}-sidekiq --action="stop" --log_path=syst
 ynh_systemd_action --service_name=${app}-streaming --action="stop" --log_path=systemd --line_match="Stopped"
 
 #=================================================
-# "REBUILD" THE APP (DEPLOY NEW SOURCES, RERUN NPM BUILD...)
+# ADD SWAP IF NEEDED
 #=================================================
-# Update Ruby and NodeJS
-ynh_script_progression --message="Upgrading Ruby and NodeJS..." --weight=5
+ynh_script_progression --message="Adding swap if needed..." --weight=1
 
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
-ynh_exec_warn_less ynh_install_ruby --ruby_version=$RUBY_VERSION
+total_memory=$(ynh_get_ram --total)
+swap_needed=0
 
+if [ $total_memory -lt $memory_needed ]; then
+	# Need a minimum of 8Go of memory
+	swap_needed=$(($memory_needed - $total_memory))
+fi
+
+ynh_script_progression --message="Adding $swap_needed Mo to swap..."
+ynh_add_swap --size=$swap_needed
+
+#=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading Ruby and NodeJS..." --weight=1
+
+ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+
+#=================================================
+# "REBUILD" THE APP (DEPLOY NEW SOURCES, RERUN NPM BUILD...)
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
-	# Add swap if needed
-	total_memory=$(ynh_get_ram --total)
-	swap_needed=0
-
-	if [ $total_memory -lt $MEMORY_NEEDED ]; then
-		# Need a minimum of 2.5Go of memory
-		swap_needed=$(($MEMORY_NEEDED - $total_memory))
-
-		ynh_script_progression --message="Adding $swap_needed Mo to swap..." --weight=1
-		ynh_add_swap --size=$swap_needed
-	fi
-
-	# Update Glitch-Soc
 	ynh_script_progression --message="Upgrading source files..." --weight=1
 
+	# Download Mastodon
 	ynh_setup_source --dest_dir="$install_dir/live" --keep="public/system/"
 
 	chmod 750 "$install_dir"
@@ -208,15 +213,15 @@ ynh_script_progression --message="Upgrading system configurations related to $ap
 
 ynh_add_nginx_config
 
-ynh_add_systemd_config --service="$app-web" --template="web.service"
-ynh_add_systemd_config --service="$app-sidekiq" --template="sidekiq.service"
-ynh_add_systemd_config --service="$app-streaming" --template="streaming.service"
-
+# Create a dedicated systemd config
+ynh_add_systemd_config --service="$app-web" --template="mastodon-web.service"
 yunohost service add "$app-web" --description="$app web service"
-yunohost service add "$app-sidekiq" --description="$app sidekiq service"
-yunohost service add "$app-streaming" --description="$app streaming service"
 
-ynh_add_systemd_config
+ynh_add_systemd_config --service="$app-sidekiq" --template="mastodon-sidekiq.service"
+yunohost service add "$app-sidekiq" --description="$app sidekiq service"
+
+ynh_add_systemd_config --service="$app-streaming" --template="mastodon-streaming.service"
+yunohost service add "$app-streaming" --description="$app streaming service"
 
 ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
 
@@ -225,13 +230,44 @@ ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
 #=================================================
 # UPDATE A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Updating a configuration file..." --weight=1
+ynh_script_progression --message="Updating a config file..." --weight=1
 
 language="$(echo $language | head -c 2)"
 
 ynh_add_config --template="../conf/.env.production.sample" --destination="$config"
+
 chmod 400 "$config"
 chown $app:$app "$config"
+
+#=================================================
+# BUILD ASSETS
+#=================================================
+ynh_script_progression --message="Building assets..." --weight=1
+
+pushd "$install_dir/live"
+	ynh_use_ruby
+	ynh_gem update --system
+	ynh_gem install bundler --no-document
+	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config deployment 'true'
+	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config without 'development test'
+	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config set force_ruby_platform true --quiet
+	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
+	ynh_use_nodejs
+	ynh_exec_as $app $ynh_node_load_PATH yarn install --pure-lockfile
+	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:clean
+	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:precompile
+popd
+
+#=================================================
+# APPLY MIGRATIONS
+#=================================================
+ynh_script_progression --message="Applying migrations..." --weight=1
+
+pushd "$install_dir/live"
+	ynh_use_ruby
+	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails db:migrate
+	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/tootctl cache clear
+popd
 
 #=================================================
 # START SYSTEMD SERVICE
@@ -246,4 +282,4 @@ ynh_systemd_action --service_name=${app}-streaming --action="start" --log_path=s
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed" --weight=1
+ynh_script_progression --message="Upgrade of $app completed" --last
