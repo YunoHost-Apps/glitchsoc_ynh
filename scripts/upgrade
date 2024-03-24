@@ -1,8 +1,6 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
@@ -11,11 +9,8 @@ source ynh_install_ruby__2
 source ynh_add_swap
 source /usr/share/yunohost/helpers
 
-upgrade_type=$(ynh_check_app_version_changed)
 config="$install_dir/live/.env.production"
 
-#=================================================
-# STANDARD UPGRADE STEPS
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
@@ -35,9 +30,9 @@ ynh_remove_extra_repo
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=${app}-web --action="stop" --log_path=/var/log/$app/$app-web.log --line_match="Goodbye"
-ynh_systemd_action --service_name=${app}-sidekiq --action="stop" --log_path=/var/log/$app/$app-sidekiq.log --line_match="Bye"
-ynh_systemd_action --service_name=${app}-streaming --action="stop" --log_path=/var/log/$app/$app-streaming.log --line_match="exiting"
+ynh_systemd_action --service_name="${app}-web" --action="stop" --log_path="/var/log/$app/$app-web.log" --line_match="Goodbye"
+ynh_systemd_action --service_name="${app}-sidekiq" --action="stop" --log_path="/var/log/$app/$app-sidekiq.log" --line_match="Bye"
+ynh_systemd_action --service_name="${app}-streaming" --action="stop" --log_path="/var/log/$app/$app-streaming.log" --line_match="exiting"
 
 # Rename the database to match packaging v2 defaults db_name (`$app_production` to `$app`)
 if [[ $db_name = *'_production' ]]; then
@@ -65,28 +60,34 @@ ynh_add_swap --size=$swap_needed
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading Ruby and NodeJS..." --weight=1
-
+ynh_script_progression --message="Upgrading Ruby..." --weight=1
 ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
+
+ynh_script_progression --message="Upgrading NodeJS..." --weight=1
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
-# "REBUILD" THE APP (DEPLOY NEW SOURCES, RERUN NPM BUILD...)
-#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
+ynh_script_progression --message="Upgrading source files..." --weight=1
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Upgrading source files..." --weight=1
+# Download Mastodon
+ynh_setup_source --dest_dir="$install_dir/live" --keep="public/system/"
 
-	# Download Mastodon
-	ynh_setup_source --dest_dir="$install_dir/live" --keep="public/system/"
+chmod -R o-rwx "$install_dir"
+chown -R "$app:www-data" "$install_dir"
 
-	chmod 750 "$install_dir"
-	chmod -R o-rwx "$install_dir"
-	chown -R $app:www-data "$install_dir"
-fi
+#=================================================
+# UPDATE A CONFIG FILE
+#=================================================
+ynh_script_progression --message="Updating a config file..." --weight=1
+
+language="$(echo $language | head -c 2)"
+
+ynh_add_config --template=".env.production.sample" --destination="$config"
+
+chmod 400 "$config"
+chown "$app:$app" "$config"
 
 #=================================================
 # BUILD ASSETS
@@ -97,19 +98,30 @@ pushd "$install_dir/live"
 	ynh_use_ruby
 	ynh_gem update --system
 	ynh_gem install bundler --no-document
-	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config deployment 'true'
-	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config without 'development test'
-	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config set force_ruby_platform true --quiet
-	ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
+	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle config deployment 'true'
+	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle config without 'development test'
+	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle config set force_ruby_platform true --quiet
+	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
 	ynh_use_nodejs
 	corepack enable
 	yarn install
 	if [ -d "$install_dir/live/public/assets" ]; then
-		ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:clean
+		ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails assets:clean
 	fi
-	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:precompile
-	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails db:migrate
-	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/tootctl cache clear
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails assets:precompile
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:migrate
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/tootctl cache clear
+popd
+
+#=================================================
+# APPLY MIGRATIONS
+#=================================================
+ynh_script_progression --message="Applying migrations..." --weight=1
+
+pushd "$install_dir/live"
+	ynh_use_ruby
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:migrate
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/tootctl cache clear
 popd
 
 #=================================================
@@ -134,43 +146,17 @@ yunohost service add "$app-streaming" --description="$app streaming service"
 ynh_add_config --template="cron" --destination="/etc/cron.d/$app"
 
 # Use logrotate to manage app-specific logfile(s)
-mkdir -p /var/log/$app
-chown $app:$app /var/log/$app
 ynh_use_logrotate --non-append
-
-#=================================================
-# RECONFIGURE THE APP (UPDATE CONF, APPLY MIGRATIONS...)
-#=================================================
-# UPDATE A CONFIG FILE
-#=================================================
-ynh_script_progression --message="Updating a config file..." --weight=1
-
-language="$(echo $language | head -c 2)"
-
-ynh_add_config --template=".env.production.sample" --destination="$config"
-
-chmod 400 "$config"
-chown $app:$app "$config"
-
-#=================================================
-# APPLY MIGRATIONS
-#=================================================
-ynh_script_progression --message="Applying migrations..." --weight=1
-
-pushd "$install_dir/live"
-	ynh_use_ruby
-	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails db:migrate
-	ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/tootctl cache clear
-popd
+chown "$app:$app" "/var/log/$app"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=1
+ynh_script_progression --message="Starting $app's systemd service..." --weight=1
 
-ynh_systemd_action --service_name=${app}-web --action="start" --log_path=/var/log/$app/$app-web.log --line_match="Listening on"
-ynh_systemd_action --service_name=${app}-sidekiq --action="start" --log_path=/var/log/$app/$app-sidekiq.log --line_match="Schedules Loaded"
-ynh_systemd_action --service_name=${app}-streaming --action="start" --log_path=/var/log/$app/$app-streaming.log --line_match="Streaming API now listening"
+ynh_systemd_action --service_name="${app}-web" --action="start" --log_path="/var/log/$app/$app-web.log" --line_match="Listening on"
+ynh_systemd_action --service_name="${app}-sidekiq" --action="start" --log_path="/var/log/$app/$app-sidekiq.log" --line_match="Schedules Loaded"
+ynh_systemd_action --service_name="${app}-streaming" --action="start" --log_path="/var/log/$app/$app-streaming.log" --line_match="Streaming API now listening"
 
 #=================================================
 # END OF SCRIPT
