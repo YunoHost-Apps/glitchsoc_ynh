@@ -60,7 +60,7 @@ ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 ynh_script_progression --message="Installing Yarn dependencies..." --weight=10
 
-pushd "$final_path/live"
+pushd "$install_dir/live"
 	ynh_use_nodejs
 	corepack enable
 	yarn install
