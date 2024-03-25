@@ -11,8 +11,8 @@ It shall NOT be edited by hand.
 
 *[Read this README is other languages.](./ALL_README.md)*
 
-> *This package allows you to install Glitch-Soc quickly and simply on a YunoHost server.
-If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/install) to learn how to install it.*
+> *This package allows you to install Glitch-Soc quickly and simply on a YunoHost server.*  
+> *If you don't have YunoHost, please consult [the guide](https://yunohost.org/install) to learn how to install it.*
 
 ## Overview
 
@@ -42,6 +42,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
+
 **Shipped version:** 2024.03.20~ynh1
 ## Disclaimers / important information
 
@@ -69,10 +70,9 @@ We invite you to block remote malicious instances from the administration interf
 
 ## Developer info
 
-Please send your pull request to the [testing branch](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing),
+Please send your pull request to the [`testing` branch](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing).
 
-
-To try the testing branch, please proceed like that:
+To try the `testing` branch, please proceed like that:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing --debug

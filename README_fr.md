@@ -5,16 +5,16 @@ Il NE doit PAS être modifié à la main.
 
 # Glitch-Soc pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![Status du fonctionnement](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+[![Niveau d’intégration](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
 
 [![Installer Glitch-Soc avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
 *[Lire le README dans d'autres langues.](./ALL_README.md)*
 
-> *Ce package vous permet d’installer Glitch-Soc rapidement et simplement sur un serveur YunoHost.
-Si vous n’avez pas YunoHost, consultez [ce guide](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
+> *Ce package vous permet d’installer Glitch-Soc rapidement et simplement sur un serveur YunoHost.*  
+> *Si vous n’avez pas YunoHost, consultez [ce guide](https://yunohost.org/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 `glitch-soc` est une [scission](https://fr.wikipedia.org/wiki/Fork_(d%C3%A9veloppement_logiciel)) sympa du logiciel de réseau social libre [Mastodon](https://joinmastodon.org/), avec comme objectif de fournir des fonctionnalités supplémentaires, au risque d'un logiciel un peu moins stable.
 
@@ -41,6 +41,7 @@ Si vous n’avez pas YunoHost, consultez [ce guide](https://yunohost.org/#/insta
 - Doodle
 
 Voir plus [sur la documentation](https://glitch-soc.github.io/docs/) (en anglais).
+
 
 **Version incluse :** 2024.03.20~ynh1
 ## Avertissements / informations importantes
@@ -69,10 +70,9 @@ Nous vous invitons à bloquer les instances malveillantes depuis l'interface d'a
 
 ## Informations pour les développeurs
 
-Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing),
+Merci de faire vos pull request sur la [branche `testing`](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing).
 
-
-Pour essayer la branche testing, procédez comme suit :
+Pour essayer la branche `testing`, procédez comme suit :
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing --debug
@@ -80,4 +80,4 @@ ou
 sudo yunohost app upgrade glitchsoc -u https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>
