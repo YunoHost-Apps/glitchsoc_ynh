@@ -1,284 +1,46 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
 source _common.sh
+source ynh_install_ruby__2
+source ynh_add_swap
 source /usr/share/yunohost/helpers
 
-#=================================================
-# LOAD SETTINGS
-#=================================================
-ynh_script_progression --message="Loading installation settings..." --weight=1
-
-app=$YNH_APP_INSTANCE_NAME
-
-domain=$(ynh_app_setting_get --app=$app --key=domain)
-path_url=$(ynh_app_setting_get --app=$app --key=path)
-admin=$(ynh_app_setting_get --app=$app --key=admin)
-final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-language=$(ynh_app_setting_get --app=$app --key=language)
-redis_namespace=$(ynh_app_setting_get --app=$app --key=db_name)
-db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-db_user=$(ynh_app_setting_get --app=$app --key=db_user)
-db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
-admin_mail=$(ynh_user_get_info --username=$admin --key='mail')
-port_web=$(ynh_app_setting_get --app=$app --key=port_web)
-port_stream=$(ynh_app_setting_get --app=$app --key=port_stream)
-
-secret_key_base=$(ynh_app_setting_get --app=$app --key=secret_key_base)
-otp_secret=$(ynh_app_setting_get --app=$app --key=otp_secret)
-vapid_private_key=$(ynh_app_setting_get --app=$app --key=vapid_private_key)
-vapid_public_key=$(ynh_app_setting_get --app=$app --key=vapid_public_key)
-
-config="$final_path/live/.env.production"
-
-max_toot_chars=$(ynh_app_setting_get --app=$app --key=max_toot_chars)
-max_pinned_toots=$(ynh_app_setting_get --app=$app --key=max_pinned_toots)
-max_bio_chars=$(ynh_app_setting_get --app=$app --key=max_bio_chars)
-max_profile_fields=$(ynh_app_setting_get --app=$app --key=max_profile_fields)
-max_display_name_chars=$(ynh_app_setting_get --app=$app --key=max_display_name_chars)
-max_poll_options=$(ynh_app_setting_get --app=$app --key=max_poll_options)
-max_poll_option_chars=$(ynh_app_setting_get --app=$app --key=max_poll_option_chars)
-max_image_size=$(ynh_app_setting_get --app=$app --key=max_image_size)
-max_video_size=$(ynh_app_setting_get --app=$app --key=max_video_size)
-max_emoji_size=$(ynh_app_setting_get --app=$app --key=max_emoji_size)
-max_remote_emoji_size=$(ynh_app_setting_get --app=$app --key=max_remote_emoji_size)
-
-#=================================================
-# CHECK VERSION
-#=================================================
-ynh_script_progression --message="Checking version..." --weight=1
-
-upgrade_type=$(ynh_check_app_version_changed)
-
-#=================================================
-# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
-#=================================================
-ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=1
-
-# Backup the current version of the app
-ynh_backup_before_upgrade
-ynh_clean_setup () {
-	ynh_clean_check_starting
-	# Restore it if the upgrade fails
-	ynh_restore_upgradebackup
-}
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# STANDARD UPGRADE STEPS
-#=================================================
-# STOP SYSTEMD SERVICE
-#=================================================
-ynh_script_progression --message="Stopping a systemd service..." --weight=1
-
-ynh_systemd_action --service_name=${app}-web --action="stop" --log_path=systemd --line_match="Stopped"
-ynh_systemd_action --service_name=${app}-sidekiq --action="stop" --log_path=systemd --line_match="Stopped"
-ynh_systemd_action --service_name=${app}-streaming --action="stop" --log_path=systemd --line_match="Stopped"
+config="$install_dir/live/.env.production"
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
 
-# Cleaning legacy permissions
-if ynh_legacy_permissions_exists; then
-	ynh_legacy_permissions_delete_all
-
-	ynh_app_setting_delete --app=$app --key=is_public
-fi
-
-# Create a permission if needed
-if ! ynh_permission_exists --permission="api"; then
-	ynh_permission_create --permission="api" --url="/api" --allowed="visitors" --auth_header="false" --show_tile="false" --protected="true"
-fi
-
-# If port_web doesn't exist, create it, needed for old install
-if [[ -z "$port_web" ]]; then
-	port_web=3000
-	ynh_app_setting_set --app=$app --key=port_web --value=$port_web
-fi
-
-# If port_web doesn't exist, create it, needed for old install
-if [[ -z "$port_stream" ]]; then
-	port_stream=4000
-	ynh_app_setting_set --app=$app --key=port_stream --value=$port_stream
-fi
-
-# If db_user doesn't exist, create it, needed for old install
-if [[ -z "$db_user" ]]; then
-	db_user=$(ynh_sanitize_dbid --db_name=$app)
-	ynh_app_setting_set --app=$app --key=db_user --value=$db_user
-fi
-
-# If db_pwd doesn't exist, create it, needed for old install
-if [[ -z "$db_pwd" ]]; then
-	db_pwd=$(ynh_string_random)
-	ynh_app_setting_set --app=$app --key=db_pwd --value=$db_pwd
-	ynh_psql_test_if_first_run
-	sudo --login --user=postgres psql -c"ALTER user $app WITH PASSWORD '$db_pwd'" postgres
-	ynh_replace_string --match_string="DB_PASS=" --replace_string="DB_PASS=${db_pwd}" --target_file="$config"
-fi
-
-# Remove paperclip_secret
-ynh_app_setting_delete --app=$app --key=paperclip_secret
-
-# If secret_key_base doesn't exist, retrieve it or create it
-if [[ -z "$secret_key_base" ]]; then
-	secret_key_base=$(grep -oP "SECRET_KEY_BASE=\K\w+" $config)
-	if [[ -z "$secret_key_base" ]]; then
-		secret_key_base=$(ynh_string_random --length=128)
-	fi
-	ynh_app_setting_set --app=$app --key=secret_key_base --value="$secret_key_base"
-fi
-
-# If otp_secret doesn't exist, retrieve it or create it
-if [[ -z "$otp_secret" ]]; then
-	otp_secret=$(grep -oP "OTP_SECRET=\K\w+" $config)
-	if [[ -z "$otp_secret" ]]; then
-		otp_secret=$(ynh_string_random --length=128)
-	fi
-	ynh_app_setting_set --app=$app --key=otp_secret --value="$otp_secret"
-fi
-
-# If vapid_private_key doesn't exist, retrieve it or create it
-if [[ -z "$vapid_private_key" ]]; then
-	vapid_private_key=$(grep -oP "VAPID_PRIVATE_KEY=\K.+" $config)
-	vapid_public_key=$(grep -oP "VAPID_PUBLIC_KEY=\K.+" $config)
-	ynh_app_setting_set "$app" vapid_private_key "$vapid_private_key"
-	ynh_app_setting_set "$app" vapid_public_key "$vapid_public_key"
-fi
-
-# If redis_namespace doesn't exist, create it
-if [[ -z "$redis_namespace" ]]; then
-	redis_namespace=${app}_production
-	ynh_app_setting_set --app=$app --key=redis_namespace --value=$redis_namespace
-fi
-
-if [ -z "$max_toot_chars" ]; then
-	max_toot_chars="500"
-	ynh_app_setting_set --app=$app --key=max_toot_chars --value=$max_toot_chars
-fi
-
-if [ -z "$max_pinned_toots" ]; then
-	max_pinned_toots="5"
-	ynh_app_setting_set --app=$app --key=max_pinned_toots --value=$max_pinned_toots
-fi
-
-if [ -z "$max_bio_chars" ]; then
-	max_bio_chars="500"
-	ynh_app_setting_set --app=$app --key=max_bio_chars --value=$max_bio_chars
-fi
-
-if [ -z "$max_profile_fields" ]; then
-	max_profile_fields="4"
-	ynh_app_setting_set --app=$app --key=max_profile_fields --value=$max_profile_fields
-fi
-
-if [ -z "$max_display_name_chars" ]; then
-	max_display_name_chars="30"
-	ynh_app_setting_set --app=$app --key=max_display_name_chars --value=$max_display_name_chars
-fi
-
-if [ -z "$max_poll_options" ]; then
-	max_poll_options="5"
-	ynh_app_setting_set --app=$app --key=max_poll_options --value=$max_poll_options
-fi
-
-if [ -z "$max_poll_option_chars" ]; then
-	max_poll_option_chars="100"
-	ynh_app_setting_set --app=$app --key=max_poll_option_chars --value=$max_poll_option_chars
-fi
-
-if [ -z "$max_image_size" ]; then
-	max_image_size="8388608"
-	ynh_app_setting_set --app=$app --key=max_image_size --value=$max_image_size
-fi
-
-if [ -z "$max_video_size" ]; then
-	max_video_size="41943040"
-	ynh_app_setting_set --app=$app --key=max_video_size --value=$max_video_size
-fi
-
-if [ -z "$max_emoji_size" ]; then
-	max_emoji_size="51200"
-	ynh_app_setting_set --app=$app --key=max_emoji_size --value=$max_emoji_size
-fi
-
-if [ -z "$max_remote_emoji_size" ]; then
-	max_remote_emoji_size="204800"
-	ynh_app_setting_set --app=$app --key=max_remote_emoji_size --value=$max_remote_emoji_size
+# Set `service` settings to support `yunohost app shell` command
+if [[ -z "${service:-}" ]]; then
+	service="$app-web.service"
+	ynh_app_setting_set --app="$app" --key=service --value="$service"
 fi
 
 #Remove previous added repository
 ynh_remove_extra_repo
 
 #=================================================
-# CREATE DEDICATED USER
+# STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
+ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-# Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app --home_dir=$final_path
+ynh_systemd_action --service_name="${app}-web" --action="stop" --log_path="/var/log/$app/$app-web.log"
+ynh_systemd_action --service_name="${app}-sidekiq" --action="stop" --log_path="/var/log/$app/$app-sidekiq.log"
+ynh_systemd_action --service_name="${app}-streaming" --action="stop" --log_path="/var/log/$app/$app-streaming.log"
 
-#=================================================
-# DOWNLOAD, CHECK AND UNPACK SOURCE
-#=================================================
-
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Upgrading source files..." --weight=1
-
-	# Download Glitch-Soc
-	tmpdir="$(mktemp -d)"
-
-	mkdir $tmpdir/system
-	if [ -d "$final_path/live/public/system" ]; then
-		mv --verbose --no-target-directory --backup=numbered "$final_path/live/public/system" "$final_path/system.tmp"
-	fi
-	rsync -a "$config" "$tmpdir/."
-	ynh_secure_remove --file="$final_path/live"
-	
-	ynh_setup_source --dest_dir="$final_path/live"
-
-	if [ -d "$final_path/system.tmp" ]; then
-		mv --verbose --no-target-directory "$final_path/system.tmp" "$final_path/live/public/system"
-	fi
-	rsync -a "$tmpdir/.env.production" "$final_path/live/."
-	ynh_secure_remove --file="$tmpdir"
-
-	# Clean files which are not needed anymore
-	ynh_secure_remove --file="$final_path/live/config/initializers/timeout.rb"
-
-	chmod 750 "$final_path"
-	chmod -R o-rwx "$final_path"
-	chown -R $app:www-data "$final_path"
+# Rename the database to match packaging v2 defaults db_name (`$app_production` to `$app`)
+if [[ $db_name = *'_production' ]]; then
+	ynh_psql_execute_as_root --sql="ALTER DATABASE $db_name RENAME TO $app;"
+	db_name=$app
+	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 fi
 
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=1
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
-
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=10
-
-ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$NODEJS_VERSION
-ynh_exec_warn_less ynh_install_ruby --ruby_version=$RUBY_VERSION
-
-#=================================================
-# SPECIFIC UPGRADE
 #=================================================
 # ADD SWAP IF NEEDED
 #=================================================
@@ -287,24 +49,33 @@ ynh_script_progression --message="Adding swap if needed..." --weight=1
 total_memory=$(ynh_get_ram --total)
 swap_needed=0
 
-if [ $total_memory -lt $MEMORY_NEEDED ]; then
+if [ $total_memory -lt $memory_needed ]; then
 	# Need a minimum of 8Go of memory
-	swap_needed=$(($MEMORY_NEEDED - $total_memory))
+	swap_needed=$(($memory_needed - $total_memory))
 fi
 
-ynh_script_progression --message="Adding $swap_needed Mo to swap..." --weight=1
+ynh_script_progression --message="Adding $swap_needed Mo to swap..."
 ynh_add_swap --size=$swap_needed
 
 #=================================================
-# INSTALLING RUBY AND BUNDLER
+# UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing Ruby dependencies..." --weight=5
+ynh_script_progression --message="Upgrading Ruby..." --weight=1
+ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
 
-pushd "$final_path/live"
-	ynh_use_ruby
-	ynh_gem update --system --no-document
-	ynh_gem install bundler --no-document
-popd
+ynh_script_progression --message="Upgrading NodeJS..." --weight=1
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression --message="Upgrading source files..." --weight=1
+
+# Download Mastodon
+ynh_setup_source --dest_dir="$install_dir/live" --keep="public/system/"
+
+chmod -R o-rwx "$install_dir"
+chown -R "$app:www-data" "$install_dir"
 
 #=================================================
 # UPDATE A CONFIG FILE
@@ -313,80 +84,82 @@ ynh_script_progression --message="Updating a config file..." --weight=1
 
 language="$(echo $language | head -c 2)"
 
-ynh_add_config --template="../conf/.env.production.sample" --destination="$config"
+ynh_add_config --template=".env.production.sample" --destination="$config"
 
 chmod 400 "$config"
-chown $app:$app "$config"
+chown "$app:$app" "$config"
 
 #=================================================
-# SETUP SYSTEMD
+# BUILD ASSETS
 #=================================================
-ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
+ynh_script_progression --message="Building assets..." --weight=1
+
+pushd "$install_dir/live"
+	ynh_use_ruby
+	ynh_gem update --system
+	ynh_gem install bundler --no-document
+	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle config deployment 'true'
+	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle config without 'development test'
+	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle config set force_ruby_platform true --quiet
+	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
+	ynh_use_nodejs
+	corepack enable
+	yarn install
+	if [ -d "$install_dir/live/public/assets" ]; then
+		ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails assets:clean
+	fi
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails assets:precompile
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:migrate
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/tootctl cache clear
+popd
+
+#=================================================
+# APPLY MIGRATIONS
+#=================================================
+ynh_script_progression --message="Applying migrations..." --weight=1
+
+pushd "$install_dir/live"
+	ynh_use_ruby
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:migrate
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/tootctl cache clear
+popd
+
+#=================================================
+# REAPPLY SYSTEM CONFIGURATIONS
+#=================================================
+ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
+
+ynh_add_nginx_config
+
+ynh_use_ruby
 
 # Create a dedicated systemd config
 ynh_add_systemd_config --service="$app-web" --template="glitchsoc-web.service"
-ynh_add_systemd_config --service="$app-sidekiq" --template="glitchsoc-sidekiq.service"
-ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streaming.service"
-
-#=================================================
-# UPGRADE GLITCH-SOC
-#=================================================
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Upgrading Glitch-Soc..." --weight=10
-
-	pushd "$final_path/live"
-		ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config deployment 'true'
-		ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle config without 'development test'
-		ynh_exec_as $app $ynh_ruby_load_path $ld_preload bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
-		ynh_use_nodejs
-		corepack enable
-		yarn install
-		if [ -d "$final_path/live/public/assets" ]; then
-			ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:clean
-		fi
-		ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:precompile
-		ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails db:migrate
-		ynh_exec_warn_less ynh_exec_as $app RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/tootctl cache clear
-	popd
-fi
-
-#=================================================
-# SETUP THE CRON FILE
-#=================================================
-ynh_script_progression --message="Setuping the cron file..." --weight=1
-
-ynh_add_config --template="../conf/cron" --destination="/etc/cron.d/$app"
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
-
 yunohost service add "$app-web" --description="$app web service"
+
+ynh_add_systemd_config --service="$app-sidekiq" --template="glitchsoc-sidekiq.service"
 yunohost service add "$app-sidekiq" --description="$app sidekiq service"
+
+ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streaming.service"
 yunohost service add "$app-streaming" --description="$app streaming service"
+
+ynh_add_config --template="cron" --destination="/etc/cron.d/$app"
+
+# Use logrotate to manage app-specific logfile(s)
+ynh_use_logrotate --non-append
+chown "$app:$app" "/var/log/$app"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=1
+ynh_script_progression --message="Starting $app's systemd service..." --weight=1
 
-ynh_systemd_action --service_name=${app}-web --action="start" --log_path=systemd --line_match="Listening on"
-ynh_systemd_action --service_name=${app}-sidekiq --action="start" --log_path=systemd --line_match="Schedules Loaded"
-ynh_systemd_action --service_name=${app}-streaming --action="start" --log_path=systemd --line_match="Streaming API now listening on"
-
-#=================================================
-# RELOAD NGINX
-#=================================================
-ynh_script_progression --message="Reloading NGINX web server..." --weight=1
-
-ynh_systemd_action --service_name=nginx --action=reload
+ynh_systemd_action --service_name="${app}-web" --action="start" --log_path="/var/log/$app/$app-web.log" --line_match="Listening on"
+ynh_systemd_action --service_name="${app}-sidekiq" --action="start" --log_path="/var/log/$app/$app-sidekiq.log" --line_match="Schedules Loaded"
+ynh_systemd_action --service_name="${app}-streaming" --action="start" --log_path="/var/log/$app/$app-streaming.log" --line_match="Streaming API now listening"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed" --weight=1
+ynh_script_progression --message="Upgrade of $app completed" --last

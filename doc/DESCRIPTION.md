@@ -1,5 +1,7 @@
 `glitch-soc` is a friendly [fork](https://en.wikipedia.org/wiki/Fork_(software_development)) of the open-source social media software [Mastodon](https://joinmastodon.org/), with the aim of providing additional features at the risk of potentially less stable software.
 
+⚠️ `glitch-soc` is beta software, and under active development. Use at your own risk!
+
 ###  What's different from Mastodon?
 
 `glitch-soc` adds a number of experimental features to Mastodon, such as:

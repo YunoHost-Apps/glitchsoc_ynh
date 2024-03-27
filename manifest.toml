@@ -1,0 +1,85 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/manifest.v2.schema.json
+
+packaging_format = 2
+
+id = "glitchsoc"
+name = "Glitch-Soc"
+description.en = "Libre and federated social network, fork of Mastodon"
+description.fr = "Réseau social libre et fédéré, scission de Mastodon"
+
+version = "2024.03.20~ynh1"
+
+maintainers = ["Tagada"]
+
+[upstream]
+license = "AGPL-3.0-or-later"
+website = "https://glitch-soc.github.io/docs/"
+code = "https://github.com/glitch-soc/mastodon"
+
+[integration]
+yunohost = ">= 11.2"
+architectures = "all"
+multi_instance = true
+
+ldap = true
+
+sso = false
+
+disk = "2G"
+ram.build = "1G"
+ram.runtime = "500M"
+
+[install]
+    [install.domain]
+    type = "domain"
+
+    [install.init_main_permission]
+    type = "group"
+    default = "visitors"
+
+    [install.language]
+    ask.en = "Choose the application language"
+    ask.fr = "Choisissez la langue de l'application"
+    type = "select"
+    choices = ["en_EN", "fr_FR"]
+    default = "fr_FR"
+
+    [install.admin]
+    type = "user"
+
+[resources]
+    [resources.sources]
+        [resources.sources.main]
+        url = "https://github.com/glitch-soc/mastodon/archive/3341db939cd077820ad598b0445d02ab2382eaf4.tar.gz"
+        sha256 = "abf095bbf7f879d35b3e62f3fd4f339ff99b6aac98023fcc836baccfe91a0b97"
+
+        autoupdate.strategy = "latest_github_commit"
+
+    [resources.system_user]
+    allow_email = true
+
+    [resources.install_dir]
+
+    [resources.permissions]
+    main.url = "/"
+
+    api.url = "/api"
+    api.allowed = "visitors"
+    api.auth_header = false
+    api.show_tile = false
+    api.protected = true
+
+    [resources.ports]
+    web.default = 3000
+    stream.default = 4000
+
+    [resources.apt]
+    packages = "imagemagick, ffmpeg, libpq-dev, libxml2-dev, libxslt1-dev, file, git, git-core, g++, libprotobuf-dev, protobuf-compiler, pkg-config, gcc, autoconf, bison, build-essential, libssl-dev, libyaml-dev, libreadline6-dev, zlib1g-dev, libncurses5-dev, libffi-dev, libgdbm6, libgdbm-dev, redis-tools, redis-server, postgresql, postgresql-contrib, libidn11-dev, libicu-dev, libjemalloc-dev, curl, apt-transport-https"
+
+        [resources.apt.extras.yarn]
+        repo = "deb https://dl.yarnpkg.com/debian/ stable main"
+        key = "https://dl.yarnpkg.com/debian/pubkey.gpg"
+        packages = "yarn"
+
+    [resources.database]
+    type = "postgresql"

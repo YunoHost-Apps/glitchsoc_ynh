@@ -18,6 +18,8 @@ Il NE doit PAS être modifié à la main.
 
 `glitch-soc` est une [scission](https://fr.wikipedia.org/wiki/Fork_(d%C3%A9veloppement_logiciel)) sympa du logiciel de réseau social libre [Mastodon](https://joinmastodon.org/), avec comme objectif de fournir des fonctionnalités supplémentaires, au risque d'un logiciel un peu moins stable.
 
+⚠️ `glitch-soc` est en constant développement, fournis avec les dernières fonctionnalités (incluant les derniers bugs).
+
 ###  Quelles sont les différences avec Mastodon?
 
 `glitch-soc` ajoute de nombreuses fonctionnalitées expérimentals, comme :
@@ -44,23 +46,6 @@ Voir plus [sur la documentation](https://glitch-soc.github.io/docs/) (en anglais
 
 
 **Version incluse :** 2024.03.20~ynh1
-## Avertissements / informations importantes
-
-Glitch-Soc est en constant développement, fournis avec les dernières fonctionnalités (incluant les derniers bugs).
-
-### Installation
-
-* L'application a besoin d'un domaine dédié.
-* L'utilisateurice choisie lors de l'installation sera administrateurice de l'instance. Il est possible d'en ajouter d'autre depuis l'application.
-
-L'authentification par LDAP et le Single-Sign-On sont activés pour les utilisateurices YunoHost.
-
-Nous vous invitons à bloquer les instances malveillantes depuis l'interface d'administration. Vous pouvez également ajouter du texte sur votre page d'accueil.
-
-### Problèmes connus
-
-* En se connectant via le SSO, se déconnecter depuis le portail YunoHost ne vous déconnecte pas de Glitch-Soc. Voir https://github.com/YunoHost/issues/issues/501
-
 ## Documentations et ressources
 
 - Site officiel de l’app : <https://glitch-soc.github.io/docs/>
