@@ -135,7 +135,7 @@ pushd "$install_dir/live"
 	ynh_exec_warn_less ynh_exec_as "$app" env $ynh_node_load_PATH NODE_OPTIONS="--max-old-space-size=5000" yarn install
 	echo "SAFETY_ASSURED=1">> "$config"
 	ynh_exec_warn_less ynh_exec_as "$app" env RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails db:migrate --quiet
-	ynh_exec_warn_less ynh_exec_as "$app" env RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:precompile --quiet
+	ynh_exec_warn_less ynh_exec_as "$app" env RAILS_ENV=production $ynh_ruby_load_path NODE_OPTIONS="--max-old-space-size=5000" $ld_preload bin/bundle exec rails assets:precompile --quiet
 	# Generate vapid keys
 	ynh_exec_warn_less ynh_exec_as "$app" env RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rake mastodon:webpush:generate_vapid_key > key.txt
 	# Create the first admin user
