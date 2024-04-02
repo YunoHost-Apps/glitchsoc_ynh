@@ -132,7 +132,7 @@ pushd "$install_dir/live"
 	env $ynh_node_load_PATH corepack enable
 	ynh_exec_warn_less ynh_exec_as "$app" env $ynh_node_load_PATH corepack enable
 	ynh_exec_warn_less ynh_exec_as "$app" env $ynh_node_load_PATH corepack prepare --activate
-	ynh_exec_warn_less ynh_exec_as "$app" env $ynh_node_load_PATH yarn install
+	ynh_exec_warn_less ynh_exec_as "$app" env $ynh_node_load_PATH NODE_OPTIONS="--max-old-space-size=3000" yarn install
 	echo "SAFETY_ASSURED=1">> "$config"
 	ynh_exec_warn_less ynh_exec_as "$app" env RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails db:migrate --quiet
 	ynh_exec_warn_less ynh_exec_as "$app" env RAILS_ENV=production $ynh_ruby_load_path $ld_preload bin/bundle exec rails assets:precompile --quiet
