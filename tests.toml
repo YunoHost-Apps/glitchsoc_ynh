@@ -20,9 +20,3 @@ test_format = 1.0
     # -------------------------------
     # Commits to test upgrade from
     # -------------------------------
-
-    test_upgrade_from.e6e04a0.name = "Upgrade from 2024.02.18~ynh1"
-    test_upgrade_from.e6e04a0.args.domain="domain.tld"
-    test_upgrade_from.e6e04a0.args.is_public=1
-    test_upgrade_from.e6e04a0.args.admin="john"
-    test_upgrade_from.e6e04a0.args.language="fr_FR"
