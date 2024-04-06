@@ -46,6 +46,7 @@ See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
 **Versión proporcionada:** 2024.03.20~ynh1
+
 ## Documentación e recursos
 
 - Web oficial da app: <https://glitch-soc.github.io/docs/>
