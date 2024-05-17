@@ -66,6 +66,8 @@ pushd "$install_dir/live"
 	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle install --redownload -j"$(nproc)"
 
 	ynh_use_nodejs
+	# This export might be removed in yunohost 12
+	export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 	corepack enable
 	yarn install
 popd
