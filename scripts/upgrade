@@ -108,11 +108,11 @@ pushd "$install_dir/live"
 	corepack enable
 	yarn install
 	if [ -d "$install_dir/live/public/assets" ]; then
-		ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails assets:clean
+		ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails assets:clean
 	fi
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails assets:precompile
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:migrate
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/tootctl cache clear
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails assets:precompile
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:migrate
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" "$ld_preload" bin/tootctl cache clear
 popd
 
 #=================================================
@@ -122,8 +122,8 @@ ynh_script_progression --message="Applying migrations..." --weight=1
 
 pushd "$install_dir/live"
 	ynh_use_ruby
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:migrate
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production "$ynh_ruby_load_path" "$ld_preload" bin/tootctl cache clear
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:migrate
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" "$ld_preload" bin/tootctl cache clear
 popd
 
 #=================================================
