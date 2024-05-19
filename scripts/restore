@@ -123,7 +123,7 @@ ynh_script_progression --message="Installing Yarn dependencies..." --weight=10
 
 pushd "$final_path/live"
 	corepack enable
-	yarn install
+	COREPACK_ENABLE_DOWNLOAD_PROMPT=0 yarn install
 popd
 
 #=================================================
