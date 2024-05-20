@@ -1,0 +1,29 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/tests.v1.schema.json
+
+test_format = 1.0
+
+[default]
+
+    # ------------
+    # Tests to run
+    # ------------
+
+    exclude = ["install.multi", "install.private", "change_url"]
+    # The test IDs to be used in only/exclude statements are: install.root, install.subdir, install.nourl, install.multi, backup_restore, upgrade, upgrade.someCommitId change_url
+
+    # -------------------------------
+    # Default args to use for install
+    # -------------------------------
+
+    # Nothing to do here...yet
+
+    # -------------------------------
+    # Commits to test upgrade from
+    # -------------------------------
+
+    [default.test_upgrade_from.c965f14cf660fd5c48c7b191c054a1177f42fbf4]
+    name = "Last packaging v1 version"
+    args.domain = "domain.tld"
+    args.is_public = 1
+    args.admin = "john"
+    args.language = "fr_FR"
