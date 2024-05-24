@@ -45,7 +45,7 @@ Il NE doit PAS être modifié à la main.
 Voir plus [sur la documentation](https://glitch-soc.github.io/docs/) (en anglais).
 
 
-**Version incluse :** 2024.03.20~ynh1
+**Version incluse :** 2024.05.23~ynh1
 ## Documentations et ressources
 
 - Site officiel de l’app : <https://glitch-soc.github.io/docs/>
