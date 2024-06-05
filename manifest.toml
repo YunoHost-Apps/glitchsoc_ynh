@@ -17,7 +17,7 @@ website = "https://glitch-soc.github.io/docs/"
 code = "https://github.com/glitch-soc/mastodon"
 
 [integration]
-yunohost = ">= 11.2"
+yunohost = ">= 11.2.12"
 architectures = "all"
 multi_instance = true
 
