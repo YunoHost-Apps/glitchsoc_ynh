@@ -11,20 +11,6 @@ source /usr/share/yunohost/helpers
 config="$install_dir/live/.env.production"
 
 #=================================================
-# ENSURE DOWNWARD COMPATIBILITY
-#=================================================
-ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
-
-# Set `service` settings to support `yunohost app shell` command
-if [[ -z "${service:-}" ]]; then
-	service="$app-web.service"
-	ynh_app_setting_set --app="$app" --key=service --value="$service"
-fi
-
-#Remove previous added repository
-ynh_remove_extra_repo
-
-#=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
@@ -38,6 +24,24 @@ if [[ $db_name = *'_production' ]]; then
 	ynh_psql_execute_as_root --sql="ALTER DATABASE $db_name RENAME TO $app;"
 	db_name=$app
 	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
+fi
+
+#=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
+
+# Set `service` settings to support `yunohost app shell` command
+if [[ -z "${service:-}" ]]; then
+	service="$app-web.service"
+	ynh_app_setting_set --app="$app" --key=service --value="$service"
+fi
+
+#Remove previous added repository
+ynh_remove_extra_repo
+
+if ynh_compare_current_package_version --comparison lt --version 2024.05.01~ynh1; then
+	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:encryption:init
 fi
 
 #=================================================
