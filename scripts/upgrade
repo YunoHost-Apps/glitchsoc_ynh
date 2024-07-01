@@ -44,6 +44,17 @@ if ynh_compare_current_package_version --comparison lt --version 2024.05.01~ynh1
 	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" "$ld_preload" bin/bundle exec rails db:encryption:init
 fi
 
+if [[ -z "${db_deterministic_key:-}" ]]; then
+	db_deterministic_key=$(ynh_string_random --length=32)
+	ynh_app_setting_set --app="$app" --key="db_deterministic_key" --value="$db_deterministic_key"
+
+	db_key_derivation_salt=$(ynh_string_random --length=32)
+	ynh_app_setting_set --app="$app" --key="db_key_derivation_salt" --value="$db_key_derivation_salt"
+
+	db_primary_key=$(ynh_string_random --length=32)
+	ynh_app_setting_set --app="$app" --key="db_primary_key" --value="$db_primary_key"
+fi
+
 #=================================================
 # ADD SWAP IF NEEDED
 #=================================================
