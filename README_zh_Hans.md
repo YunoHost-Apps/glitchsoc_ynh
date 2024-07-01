@@ -5,7 +5,7 @@
 
 # YunoHost 上的 Glitch-Soc
 
-[![集成程度](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![工作状态](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+[![集成程度](https://dash.yunohost.org/integration/glitchsoc.svg)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
 
 [![使用 YunoHost 安装 Glitch-Soc](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 

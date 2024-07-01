@@ -5,7 +5,7 @@ EZ editatu eskuz.
 
 # Glitch-Soc YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+[![Integrazio maila](https://dash.yunohost.org/integration/glitchsoc.svg)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
 
 [![Instalatu Glitch-Soc YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 

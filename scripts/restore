@@ -62,7 +62,7 @@ pushd "$install_dir/live"
 	ynh_use_ruby
 	ynh_gem update --system
 	ynh_gem install bundler --no-document
-	ynh_exec_as "$app" "$ynh_ruby_load_path" "$ld_preload" bin/bundle install --redownload -j"$(nproc)"
+	ynh_exec_as "$app" "$ynh_ruby_load_path" $ld_preload bin/bundle install --redownload -j"$(nproc)"
 
 	ynh_use_nodejs
 	# This export might be removed in yunohost 12
