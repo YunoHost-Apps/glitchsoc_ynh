@@ -11,20 +11,6 @@ source /usr/share/yunohost/helpers
 config="$install_dir/live/.env.production"
 
 #=================================================
-# ENSURE DOWNWARD COMPATIBILITY
-#=================================================
-ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
-
-# Set `service` settings to support `yunohost app shell` command
-if [[ -z "${service:-}" ]]; then
-	service="$app-web.service"
-	ynh_app_setting_set --app="$app" --key=service --value="$service"
-fi
-
-#Remove previous added repository
-ynh_remove_extra_repo
-
-#=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
@@ -38,6 +24,31 @@ if [[ $db_name = *'_production' ]]; then
 	ynh_psql_execute_as_root --sql="ALTER DATABASE $db_name RENAME TO $app;"
 	db_name=$app
 	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
+fi
+
+#=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
+
+# Set `service` settings to support `yunohost app shell` command
+if [[ -z "${service:-}" ]]; then
+	service="$app-web.service"
+	ynh_app_setting_set --app="$app" --key=service --value="$service"
+fi
+
+#Remove previous added repository
+ynh_remove_extra_repo
+
+if [[ -z "${db_deterministic_key:-}" ]]; then
+	db_deterministic_key=$(ynh_string_random --length=32)
+	ynh_app_setting_set --app="$app" --key="db_deterministic_key" --value="$db_deterministic_key"
+
+	db_key_derivation_salt=$(ynh_string_random --length=32)
+	ynh_app_setting_set --app="$app" --key="db_key_derivation_salt" --value="$db_key_derivation_salt"
+
+	db_primary_key=$(ynh_string_random --length=32)
+	ynh_app_setting_set --app="$app" --key="db_primary_key" --value="$db_primary_key"
 fi
 
 #=================================================
