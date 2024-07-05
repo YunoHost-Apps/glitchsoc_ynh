@@ -24,6 +24,17 @@ fi
 #Remove previous added repository
 ynh_remove_extra_repo
 
+if ynh_compare_current_package_version --comparison lt --version 2024.05.01~ynh1; then
+	active_record_encryption_primary_key=$(ynh_string_random --length=32)
+	ynh_app_setting_set --app="$app" --key=active_record_encryption_primary_key --value="$active_record_encryption_primary_key"
+
+	active_record_encryption_deterministic_key=$(ynh_string_random --length=32)
+	ynh_app_setting_set --app="$app" --key=active_record_encryption_deterministic_key --value="$active_record_encryption_deterministic_key"
+
+	active_record_encryption_key_derivation_salt=$(ynh_string_random --length=32)
+	ynh_app_setting_set --app="$app" --key=active_record_encryption_key_derivation_salt --value="$active_record_encryption_key_derivation_salt"
+fi
+
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
