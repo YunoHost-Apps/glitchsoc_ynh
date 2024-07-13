@@ -45,7 +45,7 @@ EZ editatu eskuz.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Paketatutako bertsioa:** 2024.07.04~ynh1
+**Paketatutako bertsioa:** 2024.07.07~ynh1
 ## Dokumentazioa eta baliabideak
 
 - Aplikazioaren webgune ofiziala: <https://glitch-soc.github.io/docs/>

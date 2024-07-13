@@ -82,7 +82,7 @@ ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 ynh_script_progression --message="Upgrading source files..." --weight=1
 
 # Download Mastodon
-ynh_setup_source --dest_dir="$install_dir/live" --keep="public/system/"
+ynh_setup_source --dest_dir="$install_dir/live" --full_replace=1 --keep="public/system/"
 
 chmod -R o-rwx "$install_dir"
 chown -R "$app:www-data" "$install_dir"
