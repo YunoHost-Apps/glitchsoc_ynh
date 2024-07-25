@@ -45,7 +45,7 @@
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**分发版本：** 2024.07.14~ynh1
+**分发版本：** 2024.07.19~ynh1
 ## 文档与资源
 
 - 官方应用网站： <https://glitch-soc.github.io/docs/>
