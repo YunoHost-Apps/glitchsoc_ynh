@@ -45,11 +45,11 @@ Ini TIDAK boleh diedit dengan tangan.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Versi terkirim:** 2024.07.19~ynh1
+**Versi terkirim:** 2024.07.27~ynh1
 ## Dokumentasi dan sumber daya
 
 - Website aplikasi resmi: <https://glitch-soc.github.io/docs/>
-- Repositori kode aplikasi hulu: <https://github.com/glitch-soc/mastodon>
+- Depot kode aplikasi hulu: <https://github.com/glitch-soc/mastodon>
 - Gudang YunoHost: <https://apps.yunohost.org/app/glitchsoc>
 - Laporkan bug: <https://github.com/YunoHost-Apps/glitchsoc_ynh/issues>
 
