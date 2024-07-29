@@ -45,7 +45,7 @@ NON debe editarse manualmente.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Versión proporcionada:** 2024.07.19~ynh1
+**Versión proporcionada:** 2024.07.27~ynh1
 ## Documentación e recursos
 
 - Web oficial da app: <https://glitch-soc.github.io/docs/>
