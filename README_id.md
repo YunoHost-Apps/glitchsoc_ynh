@@ -45,7 +45,7 @@ Ini TIDAK boleh diedit dengan tangan.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Versi terkirim:** 2024.08.11~ynh1
+**Versi terkirim:** 2024.08.16~ynh1
 ## Dokumentasi dan sumber daya
 
 - Website aplikasi resmi: <https://glitch-soc.github.io/docs/>
