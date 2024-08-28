@@ -5,7 +5,6 @@
 #=================================================
 
 source _common.sh
-source ynh_add_swap
 source /usr/share/yunohost/helpers
 
 #=================================================
