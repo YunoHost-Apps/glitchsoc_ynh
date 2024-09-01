@@ -12,48 +12,49 @@ config="$install_dir/live/.env.production"
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
+ynh_script_progression "Ensuring downward compatibility..."
 
 # Set `service` settings to support `yunohost app shell` command
+# FIXMEhelpers2.1: maybe replace with: ynh_app_setting_set_default --key=service --value="$app-web.service"
 if [[ -z "${service:-}" ]]; then
 	service="$app-web.service"
-	ynh_app_setting_set --app="$app" --key=service --value="$service"
+	ynh_app_setting_set --key=service --value="$service"
 fi
 
 #Remove previous added repository
 ynh_remove_extra_repo
 
-if ynh_compare_current_package_version --comparison lt --version 2024.05.01~ynh1; then
+if ynh_app_upgrading_from_version_before 2024.05.01~ynh1; then
 	active_record_encryption_primary_key=$(ynh_string_random --length=32)
-	ynh_app_setting_set --app="$app" --key=active_record_encryption_primary_key --value="$active_record_encryption_primary_key"
+	ynh_app_setting_set --key=active_record_encryption_primary_key --value="$active_record_encryption_primary_key"
 
 	active_record_encryption_deterministic_key=$(ynh_string_random --length=32)
-	ynh_app_setting_set --app="$app" --key=active_record_encryption_deterministic_key --value="$active_record_encryption_deterministic_key"
+	ynh_app_setting_set --key=active_record_encryption_deterministic_key --value="$active_record_encryption_deterministic_key"
 
 	active_record_encryption_key_derivation_salt=$(ynh_string_random --length=32)
-	ynh_app_setting_set --app="$app" --key=active_record_encryption_key_derivation_salt --value="$active_record_encryption_key_derivation_salt"
+	ynh_app_setting_set --key=active_record_encryption_key_derivation_salt --value="$active_record_encryption_key_derivation_salt"
 fi
 
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping a systemd service..." --weight=1
+ynh_script_progression "Stopping $app's systemd service..."
 
-ynh_systemd_action --service_name="${app}-web" --action="stop" --log_path="/var/log/$app/$app-web.log"
-ynh_systemd_action --service_name="${app}-sidekiq" --action="stop" --log_path="/var/log/$app/$app-sidekiq.log"
-ynh_systemd_action --service_name="${app}-streaming" --action="stop" --log_path="/var/log/$app/$app-streaming.log"
+ynh_systemctl --service="${app}-web" --action="stop" --log_path="/var/log/$app/$app-web.log"
+ynh_systemctl --service="${app}-sidekiq" --action="stop" --log_path="/var/log/$app/$app-sidekiq.log"
+ynh_systemctl --service="${app}-streaming" --action="stop" --log_path="/var/log/$app/$app-streaming.log"
 
 # Rename the database to match packaging v2 defaults db_name (`$app_production` to `$app`)
 if [[ $db_name = *'_production' ]]; then
-	ynh_psql_execute_as_root --sql="ALTER DATABASE $db_name RENAME TO $app;"
+	ynh_psql_db_shell <<< "ALTER DATABASE $db_name RENAME TO $app;"
 	db_name=$app
-	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
+	ynh_app_setting_set --key=db_name --value=$db_name
 fi
 
 #=================================================
 # ADD SWAP IF NEEDED
 #=================================================
-ynh_script_progression --message="Adding swap if needed..." --weight=1
+ynh_script_progression "Adding swap if needed..."
 
 total_memory=$(ynh_get_ram --total)
 swap_needed=0
@@ -63,118 +64,115 @@ if [ $total_memory -lt $memory_needed ]; then
 	swap_needed=$(($memory_needed - $total_memory))
 fi
 
-ynh_script_progression --message="Adding $swap_needed Mo to swap..."
+ynh_script_progression "Adding $swap_needed Mo to swap..."
 ynh_add_swap --size=$swap_needed
 
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading Ruby..." --weight=1
-ynh_install_ruby --ruby_version=$ruby_version 2>&1
+ynh_script_progression "Upgrading Ruby..."
+ruby_install 2>&1
 
-ynh_script_progression --message="Upgrading NodeJS..." --weight=1
-ynh_install_nodejs --nodejs_version=$nodejs_version 2>&1
+ynh_script_progression "Upgrading NodeJS..."
+ynh_nodejs_install 2>&1
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Upgrading source files..." --weight=1
+ynh_script_progression "Upgrading source files..."
 
 # Download Mastodon
-ynh_setup_source --dest_dir="$install_dir/live" --full_replace=1 --keep="public/system/"
+ynh_setup_source --dest_dir="$install_dir/live" --full_replace --keep="public/system/"
 
-chmod -R o-rwx "$install_dir"
-chown -R "$app:www-data" "$install_dir"
-
+#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
+#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R "$app:www-data" "$install_dir"
 #=================================================
 # UPDATE A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Updating a config file..." --weight=1
+ynh_script_progression "Updating a config file..."
 
 language="$(echo $language | head -c 2)"
 
-ynh_add_config --template=".env.production.sample" --destination="$config"
+ynh_config_add --template=".env.production.sample" --destination="$config"
 
-chmod 400 "$config"
-chown "$app:$app" "$config"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 400 "$config"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown "$app:$app" "$config"
 
 #=================================================
 # BUILD ASSETS
 #=================================================
-ynh_script_progression --message="Building assets..." --weight=1
+ynh_script_progression "Building assets..."
 
 pushd "$install_dir/live"
 {
-	ynh_use_ruby
-	ynh_gem update --system
-	ynh_gem install bundler --no-document
-	ynh_exec_as "$app" "$ynh_ruby_load_path" $ld_preload bin/bundle config deployment 'true'
-	ynh_exec_as "$app" "$ynh_ruby_load_path" $ld_preload bin/bundle config without 'development test'
-	ynh_exec_as "$app" "$ynh_ruby_load_path" $ld_preload bin/bundle config set force_ruby_platform true --quiet
-	ynh_exec_as "$app" "$ynh_ruby_load_path" $ld_preload bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
-	ynh_use_nodejs
+
+	gem update --system
+	gem install bundler --no-document
+	ynh_exec_as_app ruby_load_path" $ld_preload bin/bundle config deployment 'true'
+	ynh_exec_as_app ruby_load_path" $ld_preload bin/bundle config without 'development test'
+	ynh_exec_as_app ruby_load_path" $ld_preload bin/bundle config set force_ruby_platform true --quiet
+	ynh_exec_as_app ruby_load_path" $ld_preload bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
+
 	# This export might be removed in yunohost 12
-	export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+
 	corepack enable
 	yarn install
 	if [ -d "$install_dir/live/public/assets" ]; then
-		ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:clean 2>&1
+		ynh_exec_as_app RAILS_ENV=production  ruby_load_path" $ld_preload bin/bundle exec rails assets:clean 2>&1
 	fi
-	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:precompile 2>&1
-	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails db:migrate 2>&1
-	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/tootctl cache clear 2>&1
+	ynh_exec_as_app RAILS_ENV=production  ruby_load_path" $ld_preload bin/bundle exec rails assets:precompile 2>&1
+	ynh_exec_as_app RAILS_ENV=production  ruby_load_path" $ld_preload bin/bundle exec rails db:migrate 2>&1
+	ynh_exec_as_app RAILS_ENV=production  ruby_load_path" $ld_preload bin/tootctl cache clear 2>&1
 }
 popd
 
 #=================================================
 # APPLY MIGRATIONS
 #=================================================
-ynh_script_progression --message="Applying migrations..." --weight=1
+ynh_script_progression "Applying migrations..."
 
 pushd "$install_dir/live"
 {
-	ynh_use_ruby
-	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails db:migrate 2>&1
-	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/tootctl cache clear 2>&1
+
+	ynh_exec_as_app RAILS_ENV=production  ruby_load_path" $ld_preload bin/bundle exec rails db:migrate 2>&1
+	ynh_exec_as_app RAILS_ENV=production  ruby_load_path" $ld_preload bin/tootctl cache clear 2>&1
 }
 popd
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
+ynh_script_progression "Upgrading system configurations related to $app..."
 
-ynh_add_nginx_config
-
-ynh_use_ruby
+ynh_config_add_nginx
 
 # Create a dedicated systemd config
-ynh_add_systemd_config --service="$app-web" --template="glitchsoc-web.service"
+ynh_config_add_systemd --service="$app-web" --template="glitchsoc-web.service"
 yunohost service add "$app-web" --description="$app web service"
 
-ynh_add_systemd_config --service="$app-sidekiq" --template="glitchsoc-sidekiq.service"
+ynh_config_add_systemd --service="$app-sidekiq" --template="glitchsoc-sidekiq.service"
 yunohost service add "$app-sidekiq" --description="$app sidekiq service"
 
-ynh_add_systemd_config --service="$app-streaming" --template="glitchsoc-streaming.service"
+ynh_config_add_systemd --service="$app-streaming" --template="glitchsoc-streaming.service"
 yunohost service add "$app-streaming" --description="$app streaming service"
 
-ynh_add_config --template="cron" --destination="/etc/cron.d/$app"
+ynh_config_add --template="cron" --destination="/etc/cron.d/$app"
 
 # Use logrotate to manage app-specific logfile(s)
-ynh_use_logrotate --non-append
-chown "$app:$app" "/var/log/$app"
+ynh_config_add_logrotate
+#REMOVEME? Assuming ynh_config_add_logrotate is called, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown "$app:$app" "/var/log/$app"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting $app's systemd service..." --weight=1
+ynh_script_progression "Starting $app's systemd service..."
 
-ynh_systemd_action --service_name="${app}-web" --action="start" --log_path="/var/log/$app/$app-web.log" --line_match="Listening on"
-ynh_systemd_action --service_name="${app}-sidekiq" --action="start" --log_path="/var/log/$app/$app-sidekiq.log" --line_match="Schedules Loaded"
-ynh_systemd_action --service_name="${app}-streaming" --action="start" --log_path="/var/log/$app/$app-streaming.log" --line_match="Streaming API now listening"
+ynh_systemctl --service="${app}-web" --action="start" --log_path="/var/log/$app/$app-web.log" --wait_until="Listening on"
+ynh_systemctl --service="${app}-sidekiq" --action="start" --log_path="/var/log/$app/$app-sidekiq.log" --wait_until="Schedules Loaded"
+ynh_systemctl --service="${app}-streaming" --action="start" --log_path="/var/log/$app/$app-streaming.log" --wait_until="Streaming API now listening"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed" --last
+ynh_script_progression "Upgrade of $app completed"
