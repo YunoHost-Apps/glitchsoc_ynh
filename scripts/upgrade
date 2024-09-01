@@ -70,10 +70,10 @@ ynh_add_swap --size=$swap_needed
 # UPGRADE DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Upgrading Ruby..." --weight=1
-ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
+ynh_install_ruby --ruby_version=$ruby_version 2>&1
 
 ynh_script_progression --message="Upgrading NodeJS..." --weight=1
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+ynh_install_nodejs --nodejs_version=$nodejs_version 2>&1
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -104,6 +104,7 @@ chown "$app:$app" "$config"
 ynh_script_progression --message="Building assets..." --weight=1
 
 pushd "$install_dir/live"
+{
 	ynh_use_ruby
 	ynh_gem update --system
 	ynh_gem install bundler --no-document
@@ -117,11 +118,12 @@ pushd "$install_dir/live"
 	corepack enable
 	yarn install
 	if [ -d "$install_dir/live/public/assets" ]; then
-		ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:clean
+		ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:clean 2>&1
 	fi
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:precompile
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails db:migrate
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/tootctl cache clear
+	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:precompile 2>&1
+	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails db:migrate 2>&1
+	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/tootctl cache clear 2>&1
+}
 popd
 
 #=================================================
@@ -130,9 +132,11 @@ popd
 ynh_script_progression --message="Applying migrations..." --weight=1
 
 pushd "$install_dir/live"
+{
 	ynh_use_ruby
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails db:migrate
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/tootctl cache clear
+	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails db:migrate 2>&1
+	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/tootctl cache clear 2>&1
+}
 popd
 
 #=================================================

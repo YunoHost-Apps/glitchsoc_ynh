@@ -13,15 +13,15 @@ source /usr/share/yunohost/helpers
 ynh_script_progression --message="Removing system configurations related to $app..." --weight=1
 
 # Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
-if ynh_exec_warn_less yunohost service status "$app-web" >/dev/null; then
+if yunohost service status "$app-web" >/dev/null 2>&1; then
     yunohost service remove "$app-web"
 fi
 
-if ynh_exec_warn_less yunohost service status "$app-sidekiq" >/dev/null; then
+if yunohost service status "$app-sidekiq" >/dev/null 2>&1; then
     yunohost service remove "$app-sidekiq"
 fi
 
-if ynh_exec_warn_less yunohost service status "$app-streaming" >/dev/null; then
+if yunohost service status "$app-streaming" >/dev/null 2>&1; then
     yunohost service remove "$app-streaming"
 fi
 

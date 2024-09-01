@@ -62,10 +62,10 @@ ynh_app_setting_set --app="$app" --key=active_record_encryption_key_derivation_s
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing Ruby..." --weight=1
-ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
+ynh_install_ruby --ruby_version=$ruby_version 2>&1
 
 ynh_script_progression --message="Installing NodeJS..." --weight=1
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+ynh_install_nodejs --nodejs_version=$nodejs_version 2>&1
 
 #=================================================
 # ADD SWAP IF NEEDED
@@ -140,12 +140,12 @@ pushd "$install_dir/live"
 	# This export might be removed in yunohost 12
 	COREPACK_ENABLE_DOWNLOAD_PROMPT=0 yarn install
 	echo "SAFETY_ASSURED=1">> "$config"
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails db:migrate --quiet
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:precompile --quiet
+	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails db:migrate --quiet 2>&1
+	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:precompile --quiet 2>&1
 	# Generate vapid keys
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rake mastodon:webpush:generate_vapid_key > key.txt
+	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rake mastodon:webpush:generate_vapid_key > key.txt 2>&1
 	# Create the first admin user
-	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/tootctl accounts create "$admin" --email="$admin_mail" --confirmed --role=Owner > /dev/null
+	ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/tootctl accounts create "$admin" --email="$admin_mail" --confirmed --role=Owner > /dev/null 2>&1
 popd
 
 # Re-generate config with vapid keys
