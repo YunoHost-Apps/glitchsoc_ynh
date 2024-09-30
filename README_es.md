@@ -45,7 +45,7 @@ No se debe editar a mano.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Versión actual:** 2024.08.31~ynh1
+**Versión actual:** 2024.09.29~ynh1
 ## Documentaciones y recursos
 
 - Sitio web oficial: <https://glitch-soc.github.io/docs/>
@@ -55,7 +55,7 @@ See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 ## Información para desarrolladores
 
-Por favor enviar sus correcciones a la [`branch testing`](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing
+Por favor enviar sus correcciones a la [rama `testing`](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing).
 
 Para probar la rama `testing`, sigue asÍ:
 
