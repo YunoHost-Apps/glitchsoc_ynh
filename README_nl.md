@@ -5,7 +5,9 @@ Hij mag NIET handmatig aangepast worden.
 
 # Glitch-Soc voor Yunohost
 
-[![Integratieniveau](https://dash.yunohost.org/integration/glitchsoc.svg)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/) ![Mate van functioneren](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Onderhoudsstatus](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+[![Integratieniveau](https://apps.yunohost.org/badge/integration/glitchsoc)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/)
+![Mate van functioneren](https://apps.yunohost.org/badge/state/glitchsoc)
+![Onderhoudsstatus](https://apps.yunohost.org/badge/maintained/glitchsoc)
 
 [![Glitch-Soc met Yunohost installeren](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
@@ -45,7 +47,7 @@ Hij mag NIET handmatig aangepast worden.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Geleverde versie:** 2024.11.16~ynh1
+**Geleverde versie:** 2024.11.24~ynh1
 ## Documentatie en bronnen
 
 - Officiele website van de app: <https://glitch-soc.github.io/docs/>

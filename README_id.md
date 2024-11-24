@@ -5,7 +5,9 @@ Ini TIDAK boleh diedit dengan tangan.
 
 # Glitch-Soc untuk YunoHost
 
-[![Tingkat integrasi](https://dash.yunohost.org/integration/glitchsoc.svg)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/) ![Status kerja](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Status pemeliharaan](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+[![Tingkat integrasi](https://apps.yunohost.org/badge/integration/glitchsoc)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/)
+![Status kerja](https://apps.yunohost.org/badge/state/glitchsoc)
+![Status pemeliharaan](https://apps.yunohost.org/badge/maintained/glitchsoc)
 
 [![Pasang Glitch-Soc dengan YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
@@ -45,7 +47,7 @@ Ini TIDAK boleh diedit dengan tangan.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Versi terkirim:** 2024.11.16~ynh1
+**Versi terkirim:** 2024.11.24~ynh1
 ## Dokumentasi dan sumber daya
 
 - Website aplikasi resmi: <https://glitch-soc.github.io/docs/>
