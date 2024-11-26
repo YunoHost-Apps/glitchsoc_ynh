@@ -5,7 +5,9 @@
 
 # YunoHost 上的 Glitch-Soc
 
-[![集成程度](https://dash.yunohost.org/integration/glitchsoc.svg)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+[![集成程度](https://apps.yunohost.org/badge/integration/glitchsoc)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/)
+![工作状态](https://apps.yunohost.org/badge/state/glitchsoc)
+![维护状态](https://apps.yunohost.org/badge/maintained/glitchsoc)
 
 [![使用 YunoHost 安装 Glitch-Soc](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
@@ -45,7 +47,7 @@
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**分发版本：** 2024.11.16~ynh1
+**分发版本：** 2024.11.24~ynh1
 ## 文档与资源
 
 - 官方应用网站： <https://glitch-soc.github.io/docs/>
