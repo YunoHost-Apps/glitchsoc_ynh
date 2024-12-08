@@ -47,7 +47,7 @@ Nie powinno być ono edytowane ręcznie.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Dostarczona wersja:** 2024.12.01~ynh1
+**Dostarczona wersja:** 2024.12.02~ynh1
 ## Dokumentacja i zasoby
 
 - Oficjalna strona aplikacji: <https://glitch-soc.github.io/docs/>
