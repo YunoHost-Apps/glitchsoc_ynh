@@ -21,7 +21,7 @@ if [[ -z "${service:-}" ]]; then
 	ynh_app_setting_set --app="$app" --key=service --value="$service"
 fi
 
-#Remove previous added repository
+# Remove previous added repository
 ynh_remove_extra_repo
 
 if ynh_compare_current_package_version --comparison lt --version 2024.05.01~ynh1; then
@@ -115,8 +115,9 @@ pushd "$install_dir/live"
 	ynh_use_nodejs
 	# This export might be removed in yunohost 12
 	export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-	corepack enable
-	yarn install
+	env $ynh_node_load_PATH corepack enable
+	echo Y | ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH yarn workspaces focus --production
+	ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH yarn install --immutable
 	if [ -d "$install_dir/live/public/assets" ]; then
 		ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:clean
 	fi

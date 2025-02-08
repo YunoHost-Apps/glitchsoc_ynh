@@ -137,9 +137,10 @@ pushd "$install_dir/live"
 
 	# Building assets
 	ynh_use_nodejs
-	corepack enable
+	env $ynh_node_load_PATH corepack enable
 	# This export might be removed in yunohost 12
-	COREPACK_ENABLE_DOWNLOAD_PROMPT=0 yarn install
+	echo Y | ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH yarn workspaces focus --production
+	ynh_exec_warn_less ynh_exec_as $app env $ynh_node_load_PATH yarn install --immutable
 	echo "SAFETY_ASSURED=1">> "$config"
 	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails db:migrate --quiet
 	ynh_exec_warn_less ynh_exec_as "$app" RAILS_ENV=production COREPACK_ENABLE_DOWNLOAD_PROMPT=0 "$ynh_ruby_load_path" $ld_preload bin/bundle exec rails assets:precompile --quiet
