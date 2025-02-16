@@ -47,7 +47,7 @@
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Поставляемая версия:** 2024.12.29~ynh1
+**Поставляемая версия:** 2025.02.12~ynh1
 ## Документация и ресурсы
 
 - Официальный веб-сайт приложения: <https://glitch-soc.github.io/docs/>
