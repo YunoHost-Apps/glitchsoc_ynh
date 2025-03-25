@@ -47,7 +47,7 @@ EZ editatu eskuz.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Paketatutako bertsioa:** 2024.12.29~ynh1
+**Paketatutako bertsioa:** 2025.03.08~ynh1
 ## Dokumentazioa eta baliabideak
 
 - Aplikazioaren webgune ofiziala: <https://glitch-soc.github.io/docs/>
@@ -59,7 +59,7 @@ See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 Bidali `pull request`a [`testing` abarrera](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing).
 
-`testing` abarra probatzeko, ondorengoa egin:
+`testing` abarra probatzeko, honakoa egin:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing --debug

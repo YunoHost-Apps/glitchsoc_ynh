@@ -5,18 +5,22 @@ Sie darf NICHT von Hand bearbeitet werden.
 
 # Glitch-Soc für YunoHost
 
-[![Integrations-Level](https://dash.yunohost.org/integration/glitchsoc.svg)](https://dash.yunohost.org/appci/app/glitchsoc) ![Funktionsstatus](https://ci-apps.yunohost.org/ci/badges/glitchsoc.status.svg) ![Wartungsstatus](https://ci-apps.yunohost.org/ci/badges/glitchsoc.maintain.svg)
+[![Integrations-Level](https://apps.yunohost.org/badge/integration/glitchsoc)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/)
+![Funktionsstatus](https://apps.yunohost.org/badge/state/glitchsoc)
+![Wartungsstatus](https://apps.yunohost.org/badge/maintained/glitchsoc)
 
 [![Glitch-Soc mit YunoHost installieren](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=glitchsoc)
 
 *[Dieses README in anderen Sprachen lesen.](./ALL_README.md)*
 
-> *Mit diesem Paket können Sie Glitch-Soc schnell und einfach auf einem YunoHost-Server installieren.
-Wenn Sie YunoHost nicht haben, lesen Sie bitte [die Anleitung](https://yunohost.org/#/install), um zu erfahren, wie Sie es installieren.*
+> *Mit diesem Paket können Sie Glitch-Soc schnell und einfach auf einem YunoHost-Server installieren.*  
+> *Wenn Sie YunoHost nicht haben, lesen Sie bitte [die Anleitung](https://yunohost.org/install), um zu erfahren, wie Sie es installieren.*
 
 ## Übersicht
 
 `glitch-soc` is a friendly [fork](https://en.wikipedia.org/wiki/Fork_(software_development)) of the open-source social media software [Mastodon](https://joinmastodon.org/), with the aim of providing additional features at the risk of potentially less stable software.
+
+⚠️ `glitch-soc` is beta software, and under active development. Use at your own risk!
 
 ###  What's different from Mastodon?
 
@@ -42,24 +46,8 @@ Wenn Sie YunoHost nicht haben, lesen Sie bitte [die Anleitung](https://yunohost.
 
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
-**Ausgelieferte Version:** 2024.03.20~ynh1
-## Haftungsausschlüsse / wichtige Informationen
 
-⚠️ Glitch-Soc is beta software, and under active development. Use at your own risk!
-
-### Install
-
-* This app require a dedicated domain or subdomain.
-* The user choosen during the installation is created in Glitch-Soc with admin rights.
-
-LDAP authentication and SSO are enabled. All YunoHost users can authenticate.
-
-We invite you to block remote malicious instances from the administration interface. You can also add text on your home page.
-
-### Known issues
-
-* When logged in with SSO, log-out from YunoHost's portal don't log-out from Glitch-Soc. See https://github.com/YunoHost/issues/issues/501
-
+**Ausgelieferte Version:** 2025.03.08~ynh1
 ## Dokumentation und Ressourcen
 
 - Offizielle Website der App: <https://glitch-soc.github.io/docs/>
@@ -69,10 +57,9 @@ We invite you to block remote malicious instances from the administration interf
 
 ## Entwicklerinformationen
 
-Bitte senden Sie Ihren Pull-Request an den [testing branch](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing),
+Bitte senden Sie Ihren Pull-Request an den [`testing` branch](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing).
 
-
-Um den Testing-Branch auszuprobieren, gehen Sie bitte wie folgt vor:
+Um den `testing` Branch auszuprobieren, gehen Sie bitte wie folgt vor:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing --debug
