@@ -59,7 +59,7 @@ See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 Bidali `pull request`a [`testing` abarrera](https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing).
 
-`testing` abarra probatzeko, ondorengoa egin:
+`testing` abarra probatzeko, honakoa egin:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/glitchsoc_ynh/tree/testing --debug

@@ -3,7 +3,7 @@ Este archivo README esta generado automaticamente<https://github.com/YunoHost/ap
 No se debe editar a mano.
 -->
 
-# Glitch-Soc para Yunohost
+# Glitch-Soc para YunoHost
 
 [![Nivel de integración](https://apps.yunohost.org/badge/integration/glitchsoc)](https://ci-apps.yunohost.org/ci/apps/glitchsoc/)
 ![Estado funcional](https://apps.yunohost.org/badge/state/glitchsoc)
