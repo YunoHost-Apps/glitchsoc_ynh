@@ -47,7 +47,7 @@ It shall NOT be edited by hand.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Shipped version:** 2025.03.22~ynh1
+**Shipped version:** 2025.03.30~ynh1
 ## Documentation and resources
 
 - Official app website: <https://glitch-soc.github.io/docs/>

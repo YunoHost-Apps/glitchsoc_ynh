@@ -47,7 +47,7 @@ NO s'ha de modificar manualment.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Versió inclosa:** 2025.03.22~ynh1
+**Versió inclosa:** 2025.03.30~ynh1
 ## Documentació i recursos
 
 - Lloc web oficial de l'aplicació: <https://glitch-soc.github.io/docs/>
