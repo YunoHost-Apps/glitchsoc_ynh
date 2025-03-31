@@ -47,7 +47,7 @@ Sie darf NICHT von Hand bearbeitet werden.
 See more [on the documentation](https://glitch-soc.github.io/docs/).
 
 
-**Ausgelieferte Version:** 2025.03.22~ynh1
+**Ausgelieferte Version:** 2025.03.30~ynh1
 ## Dokumentation und Ressourcen
 
 - Offizielle Website der App: <https://glitch-soc.github.io/docs/>
