@@ -7,7 +7,7 @@ name = "Glitch-Soc"
 description.en = "Libre and federated social network, fork of Mastodon"
 description.fr = "Réseau social libre et fédéré, scission de Mastodon"
 
-version = "2025.04.25~ynh1"
+version = "2025.05.25~ynh1"
 
 maintainers = ["Tagada"]
 
@@ -50,8 +50,8 @@ ram.runtime = "500M"
 [resources]
     [resources.sources]
         [resources.sources.main]
-        url = "https://github.com/glitch-soc/mastodon/archive/42ae13058d450dc0e9b77c5c6c9a89527f0cb3d5.tar.gz"
-        sha256 = "3a864d466015995a1cd297417dae8cba69e7b6b91b34ee932b959e96c202fe56"
+        url = "https://github.com/glitch-soc/mastodon/archive/c9c2fbb27d7bed7e60589f19961375cb0d589162.tar.gz"
+        sha256 = "3d5b6f1888e9275b0ef3de05b1fbe503dde7ee3f589c2a4963d8f0a2371be05b"
 
         autoupdate.strategy = "latest_github_commit"
 
