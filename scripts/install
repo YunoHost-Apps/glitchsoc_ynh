@@ -41,9 +41,6 @@ ynh_app_setting_set --app="$app" --key="max_remote_emoji_size" --value="$max_rem
 # Set `service` settings to support `yunohost app shell` command
 ynh_app_setting_set --app="$app" --key=service --value="$app-web.service"
 
-redis_namespace=${app}_production
-ynh_app_setting_set --app="$app" --key=redis_namespace --value="$redis_namespace"
-
 secret_key_base=$(ynh_string_random --length=128)
 ynh_app_setting_set --app="$app" --key=secret_key_base --value="$secret_key_base"
 
@@ -92,6 +89,7 @@ ynh_script_progression --message="Setting up source files..." --weight=1
 
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir/live"
+ynh_setup_source --source_id=redis_migration --dest_dir="$install_dir/live"
 
 chown -R "$app:www-data" "$install_dir"
 

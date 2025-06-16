@@ -53,7 +53,15 @@ ram.runtime = "500M"
         url = "https://github.com/glitch-soc/mastodon/archive/fe337904b26c4e53763808c671493416d6386124.tar.gz"
         sha256 = "7f9345b48f25b6e0a0bfa30af3bbe4b74c2ba81f25f26921a5123aae67edb64c"
 
+
         autoupdate.strategy = "latest_github_commit"
+
+        [resources.sources.redis_migration]
+        url = "https://raw.githubusercontent.com/mastodon/redis_namespace_migration/refs/heads/main/rename.rb"
+        sha256 = "3134a5c7e0157ee752f5cb49b942c89480951e94236b03dd1cb3cb1d3afdcdd2"
+        in_subdir = false
+        extract = false
+        rename = "rename.rb"
 
     [resources.system_user]
     allow_email = true
@@ -74,7 +82,7 @@ ram.runtime = "500M"
     stream.default = 4000
 
     [resources.apt]
-    packages = "imagemagick, ffmpeg, libpq-dev, libxml2-dev, libxslt1-dev, file, git, git-core, g++, libprotobuf-dev, protobuf-compiler, pkg-config, gcc, autoconf, bison, build-essential, libssl-dev, libyaml-dev, libreadline6-dev, zlib1g-dev, libncurses5-dev, libffi-dev, libgdbm6, libgdbm-dev, redis-tools, redis-server, postgresql, postgresql-contrib, libidn11-dev, libicu-dev, libjemalloc-dev, curl, apt-transport-https"
+    packages = "libvips42, imagemagick, ffmpeg, libpq-dev, libxml2-dev, libxslt1-dev, file, git, git-core, g++, libprotobuf-dev, protobuf-compiler, pkg-config, gcc, autoconf, bison, build-essential, libssl-dev, libyaml-dev, libreadline6-dev, zlib1g-dev, libncurses5-dev, libffi-dev, libgdbm6, libgdbm-dev, redis-tools, redis-server, postgresql, postgresql-contrib, libidn11-dev, libicu-dev, libjemalloc-dev, curl, apt-transport-https"
 
         [resources.apt.extras.yarn]
         repo = "deb https://dl.yarnpkg.com/debian/ stable main"
