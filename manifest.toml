@@ -9,7 +9,7 @@ description.fr = "Réseau social libre et fédéré, scission de Mastodon"
 
 version = "2025.06.27~ynh1"
 
-maintainers = ["Tagada"]
+maintainers = []
 
 [upstream]
 license = "AGPL-3.0-or-later"
