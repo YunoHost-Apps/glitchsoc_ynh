@@ -8,8 +8,8 @@ User=__APP__
 WorkingDirectory=__INSTALL_DIR__/live
 Environment="NODE_ENV=production"
 Environment="PORT=__PORT_STREAM__"
-Environment="__YNH_NODE_LOAD_PATH__"
-ExecStart=__YNH_NODE__ ./streaming
+Environment="PATH=__PATH_WITH_NODEJS__"
+ExecStart=__NODEJS_DIR__/node ./streaming
 TimeoutSec=15
 Restart=always
 StandardOutput=append:/var/log/__APP__/__APP__-streaming.log
