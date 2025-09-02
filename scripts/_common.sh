@@ -5,8 +5,8 @@
 #=================================================
 
 memory_needed="2560"
-ruby_version=3.4.5
-nodejs_version=20
+#REMOVEME? ruby_version=3.4.5
+#REMOVEME? nodejs_version=20
 
 # Workaround for Mastodon on Bullseye
 # See https://github.com/mastodon/mastodon/issues/15751#issuecomment-873594463
