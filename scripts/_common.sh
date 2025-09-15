@@ -5,8 +5,6 @@
 #=================================================
 
 memory_needed="2560"
-#REMOVEME? ruby_version=3.4.5
-#REMOVEME? nodejs_version=20
 
 # Workaround for Mastodon on Bullseye
 # See https://github.com/mastodon/mastodon/issues/15751#issuecomment-873594463
@@ -32,15 +30,3 @@ then
 else
 	ld_preload=""
 fi
-
-#=================================================
-# PERSONAL HELPERS
-#=================================================
-
-#=================================================
-# EXPERIMENTAL HELPERS
-#=================================================
-
-#=================================================
-# FUTURE OFFICIAL HELPERS
-#=================================================
