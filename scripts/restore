@@ -9,14 +9,6 @@ source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression "Reinstalling Ruby and NodeJS..."
-
-ynh_ruby_install
-ynh_nodejs_install
-
-#=================================================
 # ADD SWAP IF NEEDED
 #=================================================
 ynh_script_progression "Adding swap if needed..."
@@ -54,13 +46,11 @@ ynh_psql_db_shell < ./db.sql
 ynh_script_progression "Rebuilding app..."
 
 pushd "$install_dir/live"
-
 	gem update --system
 	gem install bundler --no-document
 	ynh_exec_as_app bin/bundle install --redownload -j"$(nproc)"
 
 	# This export might be removed in yunohost 12
-
 	corepack enable
 	 yarn install
 popd
