@@ -12,11 +12,11 @@ source /usr/share/yunohost/helpers
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Reinstalling Ruby..." --weight=1
-ynh_exec_warn_less ynh_install_ruby --ruby_version="$ruby_version"
+#REMOVEME? ynh_script_progression --message="Reinstalling Ruby..." --weight=1
+#REMOVEME? ynh_exec_warn_less #REMOVEME? ynh_install_ruby --#REMOVEME? ruby_version="$ruby_version"
 
-ynh_script_progression --message="Reinstalling NodeJS..." --weight=1
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version="$nodejs_version"
+#REMOVEME? ynh_script_progression --message="Reinstalling NodeJS..." --weight=1
+#REMOVEME? ynh_exec_warn_less #REMOVEME? ynh_install_nodejs --#REMOVEME? nodejs_version="$nodejs_version"
 
 #=================================================
 # ADD SWAP IF NEEDED
@@ -59,12 +59,12 @@ ynh_psql_connect_as --user="$db_user" --password="$db_pwd" --database="$db_name"
 ynh_script_progression --message="Rebuilding app..." --weight=1
 
 pushd "$install_dir/live"
-	ynh_use_ruby
+	#REMOVEME? ynh_use_ruby
 	ynh_gem update --system
 	ynh_gem install bundler --no-document
-	ynh_exec_as "$app" "$ynh_ruby_load_path" $ld_preload bin/bundle install --redownload -j"$(nproc)"
+	ynh_exec_as "$app" "$#REMOVEME? ynh_ruby_load_path" $ld_preload bin/bundle install --redownload -j"$(nproc)"
 
-	ynh_use_nodejs
+	#REMOVEME? ynh_use_nodejs
 	# This export might be removed in yunohost 12
 	export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 	corepack enable
