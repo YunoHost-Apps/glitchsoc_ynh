@@ -57,15 +57,6 @@ active_record_encryption_key_derivation_salt=$(ynh_string_random --length=32)
 ynh_app_setting_set --key=active_record_encryption_key_derivation_salt --value="$active_record_encryption_key_derivation_salt"
 
 #=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression "Installing dependencies..."
-
-ynh_ruby_install
-
-ynh_nodejs_install
-
-#=================================================
 # ADD SWAP IF NEEDED
 #=================================================
 ynh_script_progression "Adding swap if needed..."
@@ -120,8 +111,6 @@ ynh_store_file_checksum "$install_dir/live/config/settings.yml"
 ynh_script_progression "Building app..."
 
 pushd "$install_dir/live"
-	# Building ruby packages
-
 	gem update --system
 	gem install bundler --no-document
 	ynh_exec_as_app $ld_preload bin/bundle config deployment 'true'
@@ -130,7 +119,6 @@ pushd "$install_dir/live"
 	ynh_exec_as_app $ld_preload bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
 
 	# Building assets
-
 	corepack enable
 	# This export might be removed in yunohost 12
 	yarn install
