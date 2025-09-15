@@ -94,7 +94,7 @@ pushd "$install_dir/live"
 	# Building assets
 	corepack enable
 	# This export might be removed in yunohost 12
-	 yarn install
+	yarn install
 	echo "SAFETY_ASSURED=1">> "$config"
 	ynh_hide_warnings ynh_exec_as_app env RAILS_ENV=production bin/bundle exec rails db:migrate --quiet
 	ynh_hide_warnings ynh_exec_as_app env RAILS_ENV=production bin/bundle exec rails db:seed --quiet
