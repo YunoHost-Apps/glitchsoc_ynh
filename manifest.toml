@@ -18,6 +18,7 @@ code = "https://github.com/glitch-soc/mastodon"
 
 [integration]
 yunohost = ">= 12.1.17"
+helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
 
@@ -65,6 +66,7 @@ ram.runtime = "500M"
     allow_email = true
 
     [resources.install_dir]
+    group = "www-data:rx"
 
     [resources.permissions]
     main.url = "/"
