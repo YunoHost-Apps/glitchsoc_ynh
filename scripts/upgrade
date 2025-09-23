@@ -57,6 +57,8 @@ ynh_setup_source --dest_dir="$install_dir/live" --full_replace --keep="public/sy
 # Download redis migration script
 ynh_setup_source --source_id=redis_migration --dest_dir="$install_dir/live"
 
+chown -R "$app:www-data" "$install_dir"
+
 #=================================================
 # UPDATE A CONFIG FILE
 #=================================================

@@ -66,7 +66,7 @@ ram.runtime = "500M"
     allow_email = true
 
     [resources.install_dir]
-    group = "www-data:r-x"
+    group = "www-data:rx"
 
     [resources.permissions]
     main.url = "/"
