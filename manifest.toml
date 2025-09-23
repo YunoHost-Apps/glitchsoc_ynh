@@ -96,4 +96,4 @@ ram.runtime = "500M"
     version = "20"
 
     [resources.ruby]
-    version = "3.4.5"
+    version = "3.4.6"
