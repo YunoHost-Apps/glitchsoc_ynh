@@ -5,39 +5,44 @@
 #=================================================
 
 source _common.sh
+source ynh_add_swap
 source /usr/share/yunohost/helpers
 
 #=================================================
 # REMOVE SYSTEMD SERVICE
 #=================================================
-ynh_script_progression "Removing system configurations related to $app..."
+ynh_script_progression --message="Removing system configurations related to $app..." --weight=1
 
 # Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
-if ynh_hide_warnings yunohost service status "$app-web" >/dev/null; then
+if ynh_exec_warn_less yunohost service status "$app-web" >/dev/null; then
     yunohost service remove "$app-web"
 fi
 
-if ynh_hide_warnings yunohost service status "$app-sidekiq" >/dev/null; then
+if ynh_exec_warn_less yunohost service status "$app-sidekiq" >/dev/null; then
     yunohost service remove "$app-sidekiq"
 fi
 
-if ynh_hide_warnings yunohost service status "$app-streaming" >/dev/null; then
+if ynh_exec_warn_less yunohost service status "$app-streaming" >/dev/null; then
     yunohost service remove "$app-streaming"
 fi
 
 # Remove the dedicated systemd config
-ynh_config_remove_systemd "$app-web"
-ynh_config_remove_systemd "$app-sidekiq"
-ynh_config_remove_systemd "$app-streaming"
+ynh_remove_systemd_config --service="$app-web"
+ynh_remove_systemd_config --service="$app-sidekiq"
+ynh_remove_systemd_config --service="$app-streaming"
 
 # Remove the dedicated NGINX config
-ynh_config_remove_nginx
+ynh_remove_nginx_config
 
 # Remove a cron file
-ynh_safe_rm "/etc/cron.d/$app"
+ynh_secure_remove --file="/etc/cron.d/$app"
 
 # Remote logrotate config
-ynh_config_remove_logrotate
+ynh_remove_logrotate
+
+# Remove metapackage and its dependencies
+ynh_remove_ruby
+ynh_remove_nodejs
 
 # Remove swap
 ynh_del_swap
@@ -46,4 +51,4 @@ ynh_del_swap
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression "Removal of $app completed"
+ynh_script_progression --message="Removal of $app completed" --last

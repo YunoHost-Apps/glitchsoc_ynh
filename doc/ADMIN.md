@@ -1,14 +1,6 @@
 ## Administrate with tooctl
 
-```
-$ sudo yunohost app shell __APP__
-$ bin/tootctl media usage
-```
-
-## Custom configuration
-
-Glitch-soc supports a few environment variables to customize the instance. You can edit them at __INSTALL_DIR__/live/.env.production.local
-You'll need to restart services to take the new configuration.
+`$ (cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl --help)`
 
 ## Update
 
@@ -27,25 +19,17 @@ You could consider cleaning up your local cache first as otherwise your backup w
 
 To check your space usage, on a command line run:
 
-```
-$ sudo yunohost app shell __APP__
-$ bin/tootctl media usage`
-```
+`$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media usage`
 
 If your cache is too big to backup, you can run the following command to clean up Attachments (the first line). Substitute X by the number of days you want to keep, e.g. 1 day. All older images will be deleted but will be refetched from the original server if necessary.
 
 First dry-run to see how much space is freed up (without actually removing):
 
-```
-$ sudo yunohost app shell __APP__
-$ bin/tootctl media remove --days=X --dry-run`
+`$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media remove --days=X --dry-run`
 
 If all looks good commit the cleanup:
 
-```
-$ sudo yunohost app shell __APP__
-$ bin/tootctl media remove --days=X `
-```
+`$ sudo cd /var/www/mastodon/live && sudo -u mastodon RAILS_ENV=production PATH=/opt/rbenv/versions/mastodon/bin bin/tootctl media remove --days=X `
 
 ## Known Bugs
 
