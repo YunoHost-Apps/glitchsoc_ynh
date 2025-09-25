@@ -1,14 +1,6 @@
 ## Administration avec tooctl
 
-```
-$ sudo yunohost app shell __APP__
-$ RAILS_ENV=production bin/tootctl media usage
-```
-
-## Personalisation de l'instance
-
-Glitch-soc fournit quelques variables d'environnement afin de personnaliser l'instance. Elles sont modifiables dans le fichier `__INSTALL_DIR__/live/.env.production.local`.
-Il faut redémarrer les services pour prendre la configuration en compte.
+`$ cd  __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl --help`
 
 ## Mise à jour
 
@@ -27,24 +19,15 @@ Vous devriez réfléchir à vider votre cache local avant de faire une sauvegard
 
 Pour vérifier l'utilisation du stockage, en ligne de commande utilisez :
 
-```
-$ sudo yunohost app shell __APP__
-$ RAILS_ENV=production bin/tootctl media usage`
-```
+`$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media usage`
 
 Si le cache est trop gros pour être sauvegardé, vous pouvez lancer la commande suivante pour en supprimer les médias attachés. Changez `X` par le nombre de cache à conserver, par ex. 1 jour. Tous les médias plus anciens seront supprimés, mais ils pourront être rechargé du serveur d'origine si nécessaire.
 
 En premier faite un essai à blanc pour voir combien de place sera libérée (sans rien supprimer):
-```
-$ sudo yunohost app shell __APP__
-$ RAILS_ENV=production bin/tootctl media remove --days=X --dry-run`
-```
+`$ sudo cd __INSTALL_DIR__/live && sudo -u __APP__ RAILS_ENV=production PATH=/opt/rbenv/versions/glitchsoc/bin bin/tootctl media remove --days=X --dry-run`
 
 Si cela semble bon, effectuez le nettoyage :
-```
-$ sudo yunohost app shell __APP__
-$ RAILS_ENV=production bin/tootctl media remove --days=X `
-```
+`$ sudo cd /var/www/mastodon/live && sudo -u mastodon RAILS_ENV=production PATH=/opt/rbenv/versions/mastodon/bin bin/tootctl media remove --days=X `
 
 ## Bugs connus
 
