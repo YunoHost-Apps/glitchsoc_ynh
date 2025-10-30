@@ -21,9 +21,6 @@ if [[ -z "${service:-}" ]]; then
 	ynh_app_setting_set --key=service --value="$service"
 fi
 
-#Remove previous added repository
-ynh_remove_extra_repo
-
 if ynh_app_upgrading_from_version_before 2024.05.01~ynh1; then
 	active_record_encryption_primary_key=$(ynh_string_random --length=32)
 	ynh_app_setting_set --key=active_record_encryption_primary_key --value="$active_record_encryption_primary_key"
