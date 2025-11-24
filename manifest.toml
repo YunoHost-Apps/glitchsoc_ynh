@@ -17,13 +17,12 @@ website = "https://glitch-soc.github.io/docs/"
 code = "https://github.com/glitch-soc/mastodon"
 
 [integration]
-yunohost = ">= 12"
+yunohost = ">= 12.1.17"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
 
 ldap = true
-
 sso = false
 
 disk = "2G"
@@ -93,3 +92,4 @@ ram.runtime = "500M"
 
     [resources.ruby]
     version = "3.4.5"
+    
