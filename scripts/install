@@ -112,21 +112,21 @@ pushd "$install_dir/live"
 	# Building ruby packages
 	gem update --system
 	gem install bundler -v '~> 2.7' --no-document
-	ynh_hide_warnings ynh_exec_as_app LD_PRELOAD=libjemalloc.so bin/bundle config deployment 'true'
-	ynh_hide_warnings ynh_exec_as_app LD_PRELOAD=libjemalloc.so bin/bundle config without 'development test'
-	ynh_hide_warnings ynh_exec_as_app LD_PRELOAD=libjemalloc.so bin/bundle config set force_ruby_platform true
-	ynh_hide_warnings ynh_exec_as_app LD_PRELOAD=libjemalloc.so bin/bundle install -j$(getconf _NPROCESSORS_ONLN)
+	ynh_hide_warnings ynh_exec_as_app LD_PRELOAD=libjemalloc.so bundle config deployment 'true'
+	ynh_hide_warnings ynh_exec_as_app LD_PRELOAD=libjemalloc.so bundle config without 'development test'
+	ynh_hide_warnings ynh_exec_as_app LD_PRELOAD=libjemalloc.so bundle config set force_ruby_platform true
+	ynh_hide_warnings ynh_exec_as_app LD_PRELOAD=libjemalloc.so bundle install -j$(getconf _NPROCESSORS_ONLN)
 
 	# Building assets
 	corepack enable
 	# This export might be removed in yunohost 12
 	 yarn install
 	echo "SAFETY_ASSURED=1">> "$config"
-	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production LD_PRELOAD=libjemalloc.so bin/bundle exec rails db:migrate --quiet
-	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production LD_PRELOAD=libjemalloc.so bin/bundle exec rails db:seed --quiet
-	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production LD_PRELOAD=libjemalloc.so bin/bundle exec rails assets:precompile --quiet
+	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production LD_PRELOAD=libjemalloc.so bundle exec rails db:migrate --quiet
+	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production LD_PRELOAD=libjemalloc.so bundle exec rails db:seed --quiet
+	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production LD_PRELOAD=libjemalloc.so bundle exec rails assets:precompile --quiet
 	# Generate vapid keys
-	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production LD_PRELOAD=libjemalloc.so bin/bundle exec rake mastodon:webpush:generate_vapid_key > key.txt
+	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production LD_PRELOAD=libjemalloc.so bundle exec rake mastodon:webpush:generate_vapid_key > key.txt
 	# Create the first admin user
 	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production LD_PRELOAD=libjemalloc.so bin/tootctl accounts create "$admin" --email="$admin_mail" --confirmed --role=Owner > /dev/null
 popd
